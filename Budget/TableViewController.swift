@@ -49,6 +49,31 @@ class TableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) {  (action, sourceView, actionPerformed) in
+            let deleteAlertAction = UIAlertAction(title: "Transaktion löschen", style: .destructive) { (action) in
+                self.transactions.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                actionPerformed(true)
+            }
+            
+            let cancelAction = UIAlertAction(title: "Abbrechen", style: .cancel) { (action) in
+                actionPerformed(true)
+            }
+            
+            let alert = UIAlertController(
+                title: nil,
+                message: "Diese Transaktion wird endgültig gelöscht. Der Vorgang kann nicht widerrufen werden.",
+                preferredStyle: .actionSheet)
+            alert.addAction(deleteAlertAction)
+            alert.addAction(cancelAction)
+            
+            self.present(alert, animated: true)
+        }
+        deleteAction.image = UIImage(systemName: "trash.fill")
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
     
     /*
      // Override to support conditional editing of the table view.
