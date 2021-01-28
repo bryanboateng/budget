@@ -1,5 +1,5 @@
 //
-//  TableViewCell.swift
+//  TransactionCell.swift
 //  Budget
 //
 //  Created by Bryan Oppong-Boateng on 27.01.21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TableViewCell: UITableViewCell {
+class TransactionCell: UITableViewCell {
     
     @IBOutlet weak private var innerVi: UIView!
     @IBOutlet weak private var dateLabel: UILabel!

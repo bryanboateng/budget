@@ -52,7 +52,7 @@
                                     <outlet property="currentBalanceLabel" destination="gaM-ho-tcU" id="Zdy-uQ-H7n"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" id="Lbj-ZK-AgJ" customClass="TableViewCell" customModule="Budget" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" id="Lbj-ZK-AgJ" customClass="TransactionCell" customModule="Budget" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92.5" width="414" height="65"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Lbj-ZK-AgJ" id="jGH-3g-jF7">

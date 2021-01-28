@@ -48,7 +48,7 @@ class TableViewController: UITableViewController {
             }
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as! TableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as! TransactionCell
             let transaction = transactions[indexPath.row-1]
             cell.title = transaction.title
             cell.price = transaction.price
