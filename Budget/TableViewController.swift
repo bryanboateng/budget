@@ -8,7 +8,22 @@
 import UIKit
 
 class TableViewController: UITableViewController {
-
+    
+    var transactions: [Transaction] = [
+        Transaction(title: "Convini", price: 9.99, date: Date()),
+        Transaction(title: "Convini", price: 9.99, date: Date()),
+        Transaction(title: "Convini", price: 9.99, date: Date()),
+        Transaction(title: "Convini", price: 9.99, date: Date()),
+        Transaction(title: "Convini", price: 9.99, date: Date()),
+        Transaction(title: "Convini", price: 9.99, date: Date()),
+        Transaction(title: "Convini", price: 9.99, date: Date()),
+        Transaction(title: "Convini", price: 9.99, date: Date()),
+        Transaction(title: "Convini", price: 9.99, date: Date()),
+        Transaction(title: "Convini", price: 9.99, date: Date()),
+        Transaction(title: "Convini", price: 9.99, date: Date()),
+        Transaction(title: "Convini", price: 9.99, date: Date()),
+    ]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -22,14 +37,15 @@ class TableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 100
+        return transactions.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as! TableViewCell
-        cell.title = "Convini"
-        cell.price = 9.99
-        cell.date = Date()
+        let transaction = transactions[indexPath.row]
+        cell.title = transaction.title
+        cell.price = transaction.price
+        cell.date = transaction.date
         return cell
     }
 
