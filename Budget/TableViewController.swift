@@ -37,23 +37,32 @@ class TableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return transactions.count
+        return transactions.count+1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as! TableViewCell
-        let transaction = transactions[indexPath.row]
-        cell.title = transaction.title
-        cell.price = transaction.price
-        cell.date = transaction.date
-        return cell
+        if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "currentBalance", for: indexPath) as! CurrentBalanceCell
+            cell.price = transactions.reduce(0) { (result, transaction) in
+                return result + transaction.price
+            }
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as! TableViewCell
+            let transaction = transactions[indexPath.row-1]
+            cell.title = transaction.title
+            cell.price = transaction.price
+            cell.date = transaction.date
+            return cell
+        }        
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) {  (action, sourceView, actionPerformed) in
             let deleteAlertAction = UIAlertAction(title: "Transaktion löschen", style: .destructive) { (action) in
-                self.transactions.remove(at: indexPath.row)
+                self.transactions.remove(at: indexPath.row-1)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
                 actionPerformed(true)
             }
             
