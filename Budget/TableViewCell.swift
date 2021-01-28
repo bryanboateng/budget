@@ -30,7 +30,7 @@ class TableViewCell: UITableViewCell {
                 
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateStyle = .short
-
+                
                 dateLabel.text = "\(timeFormatter.string(from: date)) · \(dateFormatter.string(from: date))"
             }
         }
@@ -42,7 +42,7 @@ class TableViewCell: UITableViewCell {
                 let formatter = NumberFormatter()
                 formatter.currencyCode = "EUR"
                 formatter.numberStyle = .currency
-
+                
                 priceLabel.text = formatter.string(from: NSNumber(value: price))!
             }
         }
