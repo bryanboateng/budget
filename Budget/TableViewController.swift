@@ -9,20 +9,7 @@ import UIKit
 
 class TableViewController: UITableViewController {
     
-    var transactions: [Transaction] = [
-        Transaction(title: "Convini", price: 9.99, date: Date()),
-        Transaction(title: "Convini", price: 9.99, date: Date()),
-        Transaction(title: "Convini", price: 9.99, date: Date()),
-        Transaction(title: "Convini", price: 9.99, date: Date()),
-        Transaction(title: "Convini", price: 9.99, date: Date()),
-        Transaction(title: "Convini", price: 9.99, date: Date()),
-        Transaction(title: "Convini", price: 9.99, date: Date()),
-        Transaction(title: "Convini", price: 9.99, date: Date()),
-        Transaction(title: "Convini", price: 9.99, date: Date()),
-        Transaction(title: "Convini", price: 9.99, date: Date()),
-        Transaction(title: "Convini", price: 9.99, date: Date()),
-        Transaction(title: "Convini", price: 9.99, date: Date()),
-    ]
+    var transactions: [Transaction] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -128,5 +115,4 @@ class TableViewController: UITableViewController {
      // Pass the selected object to the new view controller.
      }
      */
-    
 }
