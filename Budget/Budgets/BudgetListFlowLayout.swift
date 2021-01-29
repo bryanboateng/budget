@@ -1,5 +1,5 @@
 //
-//  CollectionViewFlowLayout.swift
+//  BudgetListFlowLayout.swift
 //  Budget
 //
 //  Created by Bryan Oppong-Boateng on 26.01.21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CollectionViewFlowLayout: UICollectionViewFlowLayout {
+class BudgetListFlowLayout: UICollectionViewFlowLayout {
     private let spacing: CGFloat = 4
     
     override func prepare() {
