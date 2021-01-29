@@ -43,7 +43,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? TableViewController {
+        if let destination = segue.destination as? TransactionList {
             if let indexPath = self.collectionView.indexPathsForSelectedItems!.last {
                 destination.transactions = budgets[indexPath.row].transactions
             }

@@ -1,5 +1,5 @@
 //
-//  TableViewController.swift
+//  TransactionList.swift
 //  Budget
 //
 //  Created by Bryan Oppong-Boateng on 27.01.21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TableViewController: UITableViewController {
+class TransactionList: UITableViewController {
     
     var transactions: [Transaction] = []
     
