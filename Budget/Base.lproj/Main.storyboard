@@ -129,7 +129,7 @@
         <!--Budgets-->
         <scene sceneID="XCm-Y6-vvh">
             <objects>
-                <collectionViewController id="XIK-gO-oCS" customClass="CollectionViewController" customModule="Budget" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController id="XIK-gO-oCS" customClass="BudgetList" customModule="Budget" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="3d2-LS-XIB">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

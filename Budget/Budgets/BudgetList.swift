@@ -1,5 +1,5 @@
 //
-//  CollectionViewController.swift
+//  BudgetList.swift
 //  Budget
 //
 //  Created by Bryan Oppong-Boateng on 28.01.21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class BudgetList: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     let budgets = [
         Budget(title: "Groceries", color: Color(uiColor: .blue), transactions: [
