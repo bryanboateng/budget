@@ -45,6 +45,7 @@ class TransactionList: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard indexPath.row != 0 else { return UISwipeActionsConfiguration(actions: []) }
         let deleteAction = UIContextualAction(style: .destructive, title: nil) {  (action, sourceView, actionPerformed) in
             let deleteAlertAction = UIAlertAction(title: "Transaktion löschen", style: .destructive) { (action) in
                 self.transactions.remove(at: indexPath.row-1)
