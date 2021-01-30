@@ -41,9 +41,12 @@ class BudgetCell: UICollectionViewCell {
         }
     }
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
+    override func awakeFromNib() {
+        super.awakeFromNib()
         layer.cornerRadius = 10
+
+        let descriptor = titleLabel.font.fontDescriptor.withSymbolicTraits(.traitBold)
+        titleLabel.font = UIFont(descriptor: descriptor!, size: 0) //size 0 means keep the size as it is
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
