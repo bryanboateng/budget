@@ -23,6 +23,7 @@
 		B664D64F25C3094400D23D6D /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B664D64E25C3094400D23D6D /* Color.swift */; };
 		B6CD0EB625C49D7D00806A42 /* BudgetFace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CD0EB525C49D7D00806A42 /* BudgetFace.swift */; };
 		B6DB868A25C2E21E0047DC55 /* CurrentBalanceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DB868925C2E21E0047DC55 /* CurrentBalanceCell.swift */; };
+		B6F8606E25D2668C00ADD3FE /* TotalBalanceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F8606D25D2668C00ADD3FE /* TotalBalanceCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		B664D64E25C3094400D23D6D /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		B6CD0EB525C49D7D00806A42 /* BudgetFace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetFace.swift; sourceTree = "<group>"; };
 		B6DB868925C2E21E0047DC55 /* CurrentBalanceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentBalanceCell.swift; sourceTree = "<group>"; };
+		B6F8606D25D2668C00ADD3FE /* TotalBalanceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalBalanceCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				B664D64125C2EC8900D23D6D /* BudgetList.swift */,
 				B664D64425C2EEAD00D23D6D /* BudgetListFlowLayout.swift */,
 				B664D64725C2EF3600D23D6D /* BudgetCell.swift */,
+				B6F8606D25D2668C00ADD3FE /* TotalBalanceCell.swift */,
 				B612B6FC25C5911A000B4751 /* BudgetCreator */,
 			);
 			path = Budgets;
@@ -208,6 +211,7 @@
 				B6167B7F25C1AB9B00819A25 /* TransactionList.swift in Sources */,
 				B664D64225C2EC8900D23D6D /* BudgetList.swift in Sources */,
 				B62EAD0B25C4E2F600E90C1A /* BudgetCreator.swift in Sources */,
+				B6F8606E25D2668C00ADD3FE /* TotalBalanceCell.swift in Sources */,
 				B62BD7D525BB91EE00E60CC2 /* SceneDelegate.swift in Sources */,
 				B664D64525C2EEAD00D23D6D /* BudgetListFlowLayout.swift in Sources */,
 				B664D64825C2EF3600D23D6D /* BudgetCell.swift in Sources */,

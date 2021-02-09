@@ -54,29 +54,49 @@ class BudgetList: UICollectionViewController, UICollectionViewDelegateFlowLayout
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return budgets.count
+        return budgets.count + 1
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "budget", for: indexPath) as! BudgetCell
-        let budget = budgets[indexPath.row]
-        cell.title = budget.title
-        cell.color = budget.color
-        cell.balance = budget.transactions.reduce(0) { (result, transaction) in
-            return result + transaction.price
+        if indexPath.row == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "totalBalance", for: indexPath) as! TotalBalanceCell
+            cell.balance = budgets.reduce(0) { (result, budget) in
+                return result + budget.transactions.reduce(0) { (result, transaction) in
+                    return result + transaction.price
+                }
+            }
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "budget", for: indexPath) as! BudgetCell
+            let budget = budgets[indexPath.row - 1]
+            cell.title = budget.title
+            cell.color = budget.color
+            cell.balance = budget.transactions.reduce(0) { (result, transaction) in
+                return result + transaction.price
+            }
+            return cell
         }
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let sectionInset = (collectionViewLayout as! UICollectionViewFlowLayout).sectionInset
-        let referenceWidth = collectionView.safeAreaLayoutGuide.layoutFrame.width
-            - sectionInset.left
-            - sectionInset.right
-            - collectionView.contentInset.left
-            - collectionView.contentInset.right
-            - (collectionViewLayout as! UICollectionViewFlowLayout).minimumInteritemSpacing
-        return CGSize(width: referenceWidth/2, height: 100)
+        
+        if indexPath.row == 0 {
+            let referenceWidth = collectionView.safeAreaLayoutGuide.layoutFrame.width
+                - sectionInset.left
+                - sectionInset.right
+                - collectionView.contentInset.left
+                - collectionView.contentInset.right
+            return CGSize(width: referenceWidth, height: 100)
+        } else {
+            let referenceWidth = collectionView.safeAreaLayoutGuide.layoutFrame.width
+                - sectionInset.left
+                - sectionInset.right
+                - collectionView.contentInset.left
+                - collectionView.contentInset.right
+                - (collectionViewLayout as! UICollectionViewFlowLayout).minimumInteritemSpacing
+            return CGSize(width: referenceWidth/2, height: 100)
+        }
     }
     
     // MARK: UICollectionViewDelegate

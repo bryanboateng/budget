@@ -231,7 +231,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xj8-aT-0Se" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1373.913043478261" y="-338.16964285714283"/>
+            <point key="canvasLocation" x="2390" y="-279"/>
         </scene>
         <!--Budgets-->
         <scene sceneID="XCm-Y6-vvh">
@@ -249,7 +249,7 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="budget" id="wfj-Lo-ubV" customClass="BudgetCell" customModule="Budget" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="128" height="57"/>
+                                <rect key="frame" x="0.0" y="1" width="128" height="57"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="cPo-eL-9ol">
                                     <rect key="frame" x="0.0" y="0.0" width="128" height="57"/>
@@ -283,6 +283,42 @@
                                     <outlet property="balanceLabel" destination="HFC-nS-GlW" id="vcO-oW-vIU"/>
                                     <outlet property="titleLabel" destination="ONq-sP-iJO" id="bTr-q8-aVl"/>
                                     <segue destination="jiU-Fj-ypI" kind="show" id="cC7-UZ-jet"/>
+                                </connections>
+                            </collectionViewCell>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="totalBalance" id="LMa-Oy-azg" customClass="TotalBalanceCell" customModule="Budget" customModuleProvider="target">
+                                <rect key="frame" x="138" y="0.0" width="131.5" height="58.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="LlD-ZL-8vf">
+                                    <rect key="frame" x="0.0" y="0.0" width="131.5" height="58.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Zv9-94-HK4">
+                                            <rect key="frame" x="0.0" y="8" width="131.5" height="42.5"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ofB-4U-tPH">
+                                                    <rect key="frame" x="0.0" y="0.0" width="131.5" height="26.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gesamter Kontostand" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H9X-Nt-x2C">
+                                                    <rect key="frame" x="0.0" y="26.5" width="131.5" height="16"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Zv9-94-HK4" secondAttribute="bottom" id="f4B-N3-Q1b"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Zv9-94-HK4" secondAttribute="trailing" id="fJm-vT-Wy7"/>
+                                        <constraint firstItem="Zv9-94-HK4" firstAttribute="leading" secondItem="LlD-ZL-8vf" secondAttribute="leading" id="nGm-uh-ypx"/>
+                                        <constraint firstItem="Zv9-94-HK4" firstAttribute="top" secondItem="LlD-ZL-8vf" secondAttribute="topMargin" id="uDB-Qr-M2E"/>
+                                    </constraints>
+                                </collectionViewCellContentView>
+                                <connections>
+                                    <outlet property="totalBalanceLabel" destination="ofB-4U-tPH" id="8Se-Df-boR"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -337,7 +373,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TWe-ck-hPt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="463.768115942029" y="-338.16964285714283"/>
+            <point key="canvasLocation" x="1467" y="-279"/>
         </scene>
     </scenes>
     <resources>
