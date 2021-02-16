@@ -30,6 +30,8 @@ class BudgetCreator: UIViewController, UIColorPickerViewControllerDelegate {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.openColorPicker))
         budgetFace.addGestureRecognizer(tap)
+        
+        textField.becomeFirstResponder()
     }
     
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
