@@ -12,6 +12,7 @@ class BudgetCreator: UIViewController, UIColorPickerViewControllerDelegate {
     @IBOutlet weak private var bottomContraint: NSLayoutConstraint!
     @IBOutlet weak private var budgetFace: BudgetFace!
     @IBOutlet weak private var textField: UITextField!
+    @IBOutlet weak private var saveButton: UIBarButtonItem!
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
         dismiss(animated: true)
@@ -32,10 +33,14 @@ class BudgetCreator: UIViewController, UIColorPickerViewControllerDelegate {
         budgetFace.addGestureRecognizer(tap)
         
         textField.becomeFirstResponder()
+        textField.addTarget(self, action: #selector(updateSaveButtonIsEnabled), for: .editingChanged)
+        
+        saveButton.isEnabled = false
     }
     
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
         budgetFace.color = viewController.selectedColor
+        updateSaveButtonIsEnabled()
     }
         
     @objc private func openColorPicker(_ sender: Any) {
@@ -56,5 +61,9 @@ class BudgetCreator: UIViewController, UIColorPickerViewControllerDelegate {
         } else {
             bottomContraint.constant = keyboardViewEndFrame.height - view.safeAreaInsets.bottom
         }
+    }
+    
+    @objc func updateSaveButtonIsEnabled() {
+        saveButton.isEnabled = !(textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true) && budgetFace.color != nil
     }
 }

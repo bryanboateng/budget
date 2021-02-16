@@ -190,6 +190,7 @@
                     <connections>
                         <outlet property="bottomContraint" destination="BAm-gg-AGO" id="IVl-As-Rg5"/>
                         <outlet property="budgetFace" destination="plf-5o-dj0" id="8tt-Fy-Xe3"/>
+                        <outlet property="saveButton" destination="csx-a2-f9T" id="dwg-Xn-nl7"/>
                         <outlet property="textField" destination="ITc-Ji-Fpx" id="iZA-ah-p7a"/>
                     </connections>
                 </viewController>
