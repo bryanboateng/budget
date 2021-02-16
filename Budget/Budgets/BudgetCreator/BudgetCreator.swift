@@ -9,8 +9,9 @@ import UIKit
 
 class BudgetCreator: UIViewController, UIColorPickerViewControllerDelegate {
     
-    @IBOutlet weak private var scrollView: UIScrollView!
+    @IBOutlet weak private var bottomContraint: NSLayoutConstraint!
     @IBOutlet weak private var budgetFace: BudgetFace!
+    @IBOutlet weak private var textField: UITextField!
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
         dismiss(animated: true)
@@ -49,11 +50,9 @@ class BudgetCreator: UIViewController, UIColorPickerViewControllerDelegate {
         let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
         
         if notification.name == UIResponder.keyboardWillHideNotification {
-            scrollView.contentInset = .zero
+            bottomContraint.constant = .zero
         } else {
-            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+            bottomContraint.constant = keyboardViewEndFrame.height - view.safeAreaInsets.bottom
         }
-        
-        scrollView.scrollIndicatorInsets = scrollView.contentInset
     }
 }
