@@ -16,7 +16,7 @@ struct Budget: View {
         return formatter
     }()
     
-    let amount = 99.99
+    let amount: Double
     let color: Color = .blue
     
     var body: some View {
@@ -36,7 +36,7 @@ struct Budget: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        Budget()
+        Budget(amount: 99.99)
             .previewLayout(.sizeThatFits)
     }
 }
