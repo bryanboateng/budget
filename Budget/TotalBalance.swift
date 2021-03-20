@@ -8,9 +8,18 @@
 import SwiftUI
 
 struct TotalBalance: View {
+    static let currencyFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = "EUR"
+        return formatter
+    }()
+    
+    let amount: Double
+    
     var body: some View {
         VStack(alignment: .leading) {
-            Text("1.204,63 €")
+            Text("\(NSNumber(value: amount), formatter: Self.currencyFormatter)")
                 .bold()
                 .font(.system(.title2, design: .rounded))
             Text("Gesamter Stand")
@@ -22,6 +31,6 @@ struct TotalBalance: View {
 
 struct TotalBalance_Previews: PreviewProvider {
     static var previews: some View {
-        TotalBalance()
+        TotalBalance(amount: 1204.63)
     }
 }
