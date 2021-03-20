@@ -17,7 +17,7 @@ struct BudgetListItem: View {
     }()
     
     let amount: Double
-    let color: Color = .blue
+    let color: Color
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -36,7 +36,7 @@ struct BudgetListItem: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        BudgetListItem(amount: 99.99)
+        BudgetListItem(amount: 99.99, color: .yellow)
             .previewLayout(.sizeThatFits)
     }
 }

@@ -35,7 +35,7 @@ struct BudgetList: View {
                 )
                 LazyVGrid(columns: columns, spacing: BudgetList.spacing) {
                     ForEach(budgets, id: \.self) { budget in
-                        BudgetListItem(amount: budget.amount)
+                        BudgetListItem(amount: budget.amount, color: budget.color)
                     }
                 }
             }

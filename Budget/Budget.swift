@@ -9,4 +9,5 @@ import SwiftUI
 
 struct Budget: Hashable {
     let amount: Double
+    let color: Color = .blue
 }
