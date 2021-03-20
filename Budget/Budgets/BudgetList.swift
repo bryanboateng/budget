@@ -10,27 +10,48 @@ import UIKit
 class BudgetList: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     let budgets = [
-        Budget(title: "Groceries", color: Color(uiColor: .blue), transactions: [
+        Budget(title: "Groceries", color: Color(uiColor: .systemRed), transactions: [
             Transaction(title: "Convini", price: 9.99, date: Date()),
         ]),
-        Budget(title: "Groceries", color: Color(uiColor: .blue), transactions: [
+        Budget(title: "Groceries", color: Color(uiColor: .systemOrange), transactions: [
             Transaction(title: "Convini", price: 9.99, date: Date()),
         ]),
-        Budget(title: "Groceries", color: Color(uiColor: .blue), transactions: [
+        Budget(title: "Groceries", color: Color(uiColor: .systemYellow), transactions: [
             Transaction(title: "Convini", price: 9.99, date: Date()),
         ]),
-        Budget(title: "Groceries", color: Color(uiColor: .blue), transactions: [
+        Budget(title: "Groceries", color: Color(uiColor: .systemGreen), transactions: [
             Transaction(title: "Convini", price: 9.99, date: Date()),
         ]),
-        Budget(title: "Groceries", color: Color(uiColor: .blue), transactions: [
+        Budget(title: "Groceries", color: Color(uiColor: .systemTeal), transactions: [
             Transaction(title: "Convini", price: 9.99, date: Date()),
         ]),
-        Budget(title: "Groceries", color: Color(uiColor: .blue), transactions: [
+        Budget(title: "Groceries", color: Color(uiColor: .systemBlue), transactions: [
             Transaction(title: "Convini", price: 9.99, date: Date()),
         ]),
-        Budget(title: "Groceries", color: Color(uiColor: .blue), transactions: [
+        Budget(title: "Groceries", color: Color(uiColor: .systemPurple), transactions: [
             Transaction(title: "Convini", price: 9.99, date: Date()),
         ]),
+        Budget(title: "Groceries", color: Color(uiColor: .systemRed), transactions: [
+            Transaction(title: "Convini", price: 9.99, date: Date()),
+        ]),
+        Budget(title: "Groceries", color: Color(uiColor: .systemOrange), transactions: [
+            Transaction(title: "Convini", price: 9.99, date: Date()),
+        ]),
+        Budget(title: "Groceries", color: Color(uiColor: .systemYellow), transactions: [
+            Transaction(title: "Convini", price: 9.99, date: Date()),
+        ]),
+        Budget(title: "Groceries", color: Color(uiColor: .systemGreen), transactions: [
+            Transaction(title: "Convini", price: 9.99, date: Date()),
+        ]),
+        Budget(title: "Groceries", color: Color(uiColor: .systemTeal), transactions: [
+            Transaction(title: "Convini", price: 9.99, date: Date()),
+        ]),
+        Budget(title: "Groceries", color: Color(uiColor: .systemBlue), transactions: [
+            Transaction(title: "Convini", price: 9.99, date: Date()),
+        ]),
+        Budget(title: "Groceries", color: Color(uiColor: .systemPurple), transactions: [
+            Transaction(title: "Convini", price: 9.99, date: Date()),
+        ])
     ]
     
     override func viewDidLoad() {
