@@ -31,7 +31,6 @@ struct Budget: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(color.opacity(0.35))
         .cornerRadius(16)
-        
     }
 }
 
