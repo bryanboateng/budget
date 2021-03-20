@@ -14,6 +14,7 @@ struct TotalBalance: View {
                 .bold()
                 .font(.system(.title2, design: .rounded))
             Text("Gesamter Stand")
+                .font(.footnote)
                 .foregroundColor(.secondary)
         }
     }
