@@ -9,6 +9,14 @@ import SwiftUI
 struct Budget: View {
     @Environment(\.colorScheme) var colorScheme
     
+    static let currencyFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = "EUR"
+        return formatter
+    }()
+    
+    let amount = 99.99
     let color: Color = .blue
     
     var body: some View {
@@ -17,7 +25,7 @@ struct Budget: View {
                 .bold()
                 .foregroundColor(color)
                 .brightness(colorScheme == .light ? -0.2 : 0)
-            Text("99,99 €")
+            Text("\(NSNumber(value: amount), formatter: Self.currencyFormatter)")
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
