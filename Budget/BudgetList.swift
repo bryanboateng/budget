@@ -15,13 +15,16 @@ struct BudgetList: View {
         GridItem(.flexible(), spacing: spacing)
     ]
     
+    let budgetCount = 20
+    let budgetAmount = 99.99
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading){
-                TotalBalance(amount: 9.99)
+                TotalBalance(amount: budgetAmount * Double(budgetCount))
                 LazyVGrid(columns: columns, spacing: BudgetList.spacing) {
-                    ForEach((0..<100)) {_ in
-                        Budget(amount: 99.99)
+                    ForEach((0..<budgetCount)) {_ in
+                        Budget(amount: budgetAmount)
                     }
                 }
             }
