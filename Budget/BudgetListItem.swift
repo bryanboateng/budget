@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-struct Budget: View {
+struct BudgetListItem: View {
     @Environment(\.colorScheme) var colorScheme
     
     static let currencyFormatter: NumberFormatter = {
@@ -36,7 +36,7 @@ struct Budget: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        Budget(amount: 99.99)
+        BudgetListItem(amount: 99.99)
             .previewLayout(.sizeThatFits)
     }
 }

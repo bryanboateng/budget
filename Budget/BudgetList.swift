@@ -24,7 +24,7 @@ struct BudgetList: View {
                 TotalBalance(amount: budgetAmount * Double(budgetCount))
                 LazyVGrid(columns: columns, spacing: BudgetList.spacing) {
                     ForEach((0..<budgetCount)) {_ in
-                        Budget(amount: budgetAmount)
+                        BudgetListItem(amount: budgetAmount)
                     }
                 }
             }
