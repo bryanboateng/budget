@@ -15,6 +15,6 @@ class BudgetListFlowLayout: UICollectionViewFlowLayout {
         
         minimumInteritemSpacing = spacing
         minimumLineSpacing = spacing
-        sectionInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
+        sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 10, right: 16)
     }
 }
