@@ -17,9 +17,12 @@ struct BudgetList: View {
     
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: columns, spacing: BudgetList.spacing) {
-                ForEach((0..<100)) {_ in
-                    Budget()
+            VStack(alignment: .leading){
+                TotalBalance()
+                LazyVGrid(columns: columns, spacing: BudgetList.spacing) {
+                    ForEach((0..<100)) {_ in
+                        Budget()
+                    }
                 }
             }
             .padding(.horizontal)
