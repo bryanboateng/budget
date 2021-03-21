@@ -24,7 +24,6 @@ struct BudgetList: View {
         Budget(name: "Lebensmittel", color: .blue)
     ]
     @State private var isCreatingBudget = false
-
     
     var body: some View {
         ScrollView {
