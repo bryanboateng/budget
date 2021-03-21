@@ -24,6 +24,7 @@ struct BudgetListItem: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(name)
                 .bold()
+                .lineLimit(0)
                 .foregroundColor(color.swiftUIColor)
                 .brightness(colorScheme == .light ? -0.2 : 0)
             Text("\(NSNumber(value: amount), formatter: Self.currencyFormatter)")
