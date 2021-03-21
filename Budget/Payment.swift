@@ -8,6 +8,7 @@
 import Foundation
 
 struct Payment: Hashable {
+    private let id = UUID()
     let party: String
     let purpose: String
     let amount: Double
