@@ -28,6 +28,7 @@ struct BudgetListItem: View {
                 .foregroundColor(color.swiftUIColor)
                 .brightness(colorScheme == .light ? -0.2 : 0)
             Text("\(NSNumber(value: amount), formatter: Self.currencyFormatter)")
+                .font(.system(.body, design: .rounded))
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
