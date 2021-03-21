@@ -12,6 +12,9 @@
 		B6C78A862606B816007B2CC5 /* Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A852606B816007B2CC5 /* Budget.swift */; };
 		B6C78A892606BDC7007B2CC5 /* BudgetCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */; };
 		B6C78A8C2607619E007B2CC5 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */; };
+		B6C78A9026077E53007B2CC5 /* BudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A8F26077E52007B2CC5 /* BudgetView.swift */; };
+		B6C78AA4260790C2007B2CC5 /* PaymentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78AA3260790C2007B2CC5 /* PaymentRow.swift */; };
+		B6C78AA726079C46007B2CC5 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78AA626079C45007B2CC5 /* Payment.swift */; };
 		B6F504BC260695E5005E20A5 /* BudgetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F504BB260695E5005E20A5 /* BudgetApp.swift */; };
 		B6F504BE260695E5005E20A5 /* BudgetListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F504BD260695E5005E20A5 /* BudgetListItem.swift */; };
 		B6F504C0260695E7005E20A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6F504BF260695E7005E20A5 /* Assets.xcassets */; };
@@ -24,6 +27,9 @@
 		B6C78A852606B816007B2CC5 /* Budget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget.swift; sourceTree = "<group>"; };
 		B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCreator.swift; sourceTree = "<group>"; };
 		B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
+		B6C78A8F26077E52007B2CC5 /* BudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetView.swift; sourceTree = "<group>"; };
+		B6C78AA3260790C2007B2CC5 /* PaymentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRow.swift; sourceTree = "<group>"; };
+		B6C78AA626079C45007B2CC5 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		B6F504B8260695E5005E20A5 /* Budget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Budget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6F504BB260695E5005E20A5 /* BudgetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetApp.swift; sourceTree = "<group>"; };
 		B6F504BD260695E5005E20A5 /* BudgetListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetListItem.swift; sourceTree = "<group>"; };
@@ -68,7 +74,10 @@
 				B6C78A7F2606AB6D007B2CC5 /* TotalBalance.swift */,
 				B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */,
 				B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */,
+				B6C78A8F26077E52007B2CC5 /* BudgetView.swift */,
+				B6C78AA3260790C2007B2CC5 /* PaymentRow.swift */,
 				B6C78A852606B816007B2CC5 /* Budget.swift */,
+				B6C78AA626079C45007B2CC5 /* Payment.swift */,
 				B6F504BF260695E7005E20A5 /* Assets.xcassets */,
 				B6F504C4260695E7005E20A5 /* Info.plist */,
 				B6F504C1260695E7005E20A5 /* Preview Content */,
@@ -154,9 +163,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6F504BE260695E5005E20A5 /* BudgetListItem.swift in Sources */,
+				B6C78A9026077E53007B2CC5 /* BudgetView.swift in Sources */,
 				B6F504BC260695E5005E20A5 /* BudgetApp.swift in Sources */,
 				B6C78A8C2607619E007B2CC5 /* ColorPicker.swift in Sources */,
+				B6C78AA726079C46007B2CC5 /* Payment.swift in Sources */,
 				B6C78A862606B816007B2CC5 /* Budget.swift in Sources */,
+				B6C78AA4260790C2007B2CC5 /* PaymentRow.swift in Sources */,
 				B6C78A892606BDC7007B2CC5 /* BudgetCreator.swift in Sources */,
 				B683B27826069F7800F7F347 /* BudgetList.swift in Sources */,
 				B6C78A802606AB6D007B2CC5 /* TotalBalance.swift in Sources */,

@@ -16,12 +16,12 @@ struct BudgetList: View {
     ]
     
     @State private var budgets = [
-        Budget(name: "Lebensmittel", amount: 9.99, color: .orange),
-        Budget(name: "Lebensmittel", amount: 9.98, color: .red),
-        Budget(name: "Lebensmittel", amount: 9.97, color: .green),
-        Budget(name: "Lebensmittel", amount: 9.96, color: .pink),
-        Budget(name: "Lebensmittel", amount: 9.95, color: .yellow),
-        Budget(name: "Lebensmittel", amount: 9.94, color: .blue)
+        Budget(name: "Lebensmittel", color: .orange),
+        Budget(name: "Lebensmittel", color: .red),
+        Budget(name: "Lebensmittel", color: .green),
+        Budget(name: "Lebensmittel", color: .pink),
+        Budget(name: "Lebensmittel", color: .yellow),
+        Budget(name: "Lebensmittel", color: .blue)
     ]
     @State private var isCreatingBudget = false
 
@@ -32,12 +32,15 @@ struct BudgetList: View {
                 TotalBalance(
                     amount:
                         budgets.reduce(0, { x, budget  in
-                            x + budget.amount
+                            x + budget.totalBalance
                         })
                 )
                 LazyVGrid(columns: columns, spacing: BudgetList.spacing) {
                     ForEach(budgets, id: \.self) { budget in
-                        BudgetListItem(name: budget.name, amount: budget.amount, color: budget.color)
+                        NavigationLink(destination: BudgetView(budget: budget)){
+                            BudgetListItem(name: budget.name, amount: budget.totalBalance, color: budget.color)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
             }

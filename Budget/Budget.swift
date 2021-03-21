@@ -9,8 +9,21 @@ import SwiftUI
 
 struct Budget: Hashable {
     let name: String
-    let amount: Double
     let color: Color
+    
+    let payments: Set<Payment> = [
+        Payment(party: "Convini", purpose: "Snacks", amount: 9.99, date: Date()),
+        Payment(party: "Convini", purpose: "Snacks", amount: -9.98, date: Date()),
+        Payment(party: "Convini", purpose: "Snacks", amount: 9.95, date: Date()),
+        Payment(party: "Convini", purpose: "Snacks", amount: 9.91, date: Date()),
+        Payment(party: "Convini", purpose: "Snacks", amount: 9.92, date: Date())
+    ]
+    
+    var totalBalance: Double {
+        return payments.reduce(0, { x, payment  in
+            x + payment.amount
+        })
+    }
     
     enum Color: CaseIterable {
         case red

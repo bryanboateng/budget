@@ -40,7 +40,7 @@ struct BudgetCreator: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Fertig") {
-                        budgets.append(Budget(name: budgetName.trimmingCharacters(in: .whitespaces), amount: 3.21, color: color))
+                        budgets.append(Budget(name: budgetName.trimmingCharacters(in: .whitespaces), color: color))
                         presentationMode.wrappedValue.dismiss()
                     }
                     .disabled(budgetName.trimmingCharacters(in: .whitespaces).isEmpty)
@@ -53,6 +53,6 @@ struct BudgetCreator: View {
 
 struct BudgetCreator_Previews: PreviewProvider {
     static var previews: some View {
-        BudgetCreator(budgets: .constant([Budget(name: "Lebensmittel", amount: 9.24, color: .blue)]))
+        BudgetCreator(budgets: .constant([Budget(name: "Lebensmittel", color: .blue)]))
     }
 }
