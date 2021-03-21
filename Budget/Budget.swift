@@ -13,10 +13,10 @@ struct Budget: Hashable {
     
     let payments: Set<Payment> = [
         Payment(party: "Convini", purpose: "Snacks", amount: 9.99, date: Date()),
-        Payment(party: "Convini", purpose: "Snacks", amount: -9.98, date: Date()),
-        Payment(party: "Convini", purpose: "Snacks", amount: 9.95, date: Date()),
-        Payment(party: "Convini", purpose: "Snacks", amount: 9.91, date: Date()),
-        Payment(party: "Convini", purpose: "Snacks", amount: 9.92, date: Date())
+        Payment(party: "Convini", purpose: "Snacks", amount: 9.99, date: Date()),
+        Payment(party: "Convini", purpose: "Snacks", amount: 9.99, date: Date()),
+        Payment(party: "Convini", purpose: "Snacks", amount: 9.99, date: Date()),
+        Payment(party: "Convini", purpose: "Snacks", amount: 9.99, date: Date()),
     ]
     
     var totalBalance: Double {
