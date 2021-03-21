@@ -16,27 +16,28 @@ struct BudgetListItem: View {
         return formatter
     }()
     
+    let name: String
     let amount: Double
-    let color: Color
+    let color: Budget.Color
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Groceries")
+            Text(name)
                 .bold()
-                .foregroundColor(color)
+                .foregroundColor(color.swiftUIColor)
                 .brightness(colorScheme == .light ? -0.2 : 0)
             Text("\(NSNumber(value: amount), formatter: Self.currencyFormatter)")
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(color.opacity(0.35))
+        .background(color.swiftUIColor.opacity(0.35))
         .cornerRadius(16)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        BudgetListItem(amount: 99.99, color: .yellow)
+        BudgetListItem(name: "Lebensmittel", amount: 99.99, color: .yellow)
             .previewLayout(.sizeThatFits)
     }
 }

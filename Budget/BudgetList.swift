@@ -15,14 +15,16 @@ struct BudgetList: View {
         GridItem(.flexible(), spacing: spacing)
     ]
     
-    let budgets = [
-        Budget(amount: 9.99),
-        Budget(amount: 9.98),
-        Budget(amount: 9.97),
-        Budget(amount: 9.96),
-        Budget(amount: 9.95),
-        Budget(amount: 9.94)
+    @State private var budgets = [
+        Budget(name: "Lebensmittel", amount: 9.99, color: .orange),
+        Budget(name: "Lebensmittel", amount: 9.98, color: .red),
+        Budget(name: "Lebensmittel", amount: 9.97, color: .green),
+        Budget(name: "Lebensmittel", amount: 9.96, color: .pink),
+        Budget(name: "Lebensmittel", amount: 9.95, color: .yellow),
+        Budget(name: "Lebensmittel", amount: 9.94, color: .blue)
     ]
+    @State private var isCreatingBudget = false
+
     
     var body: some View {
         ScrollView {
@@ -35,13 +37,21 @@ struct BudgetList: View {
                 )
                 LazyVGrid(columns: columns, spacing: BudgetList.spacing) {
                     ForEach(budgets, id: \.self) { budget in
-                        BudgetListItem(amount: budget.amount, color: budget.color)
+                        BudgetListItem(name: budget.name, amount: budget.amount, color: budget.color)
                     }
                 }
             }
             .padding(.horizontal)
         }
         .navigationTitle("Budgets")
+        .toolbar {
+            Button(action: { isCreatingBudget = true }) {
+                Image(systemName: "plus")
+            }
+        }
+        .sheet(isPresented: $isCreatingBudget) {
+            BudgetCreator(budgets: $budgets)
+        }
     }
 }
 
