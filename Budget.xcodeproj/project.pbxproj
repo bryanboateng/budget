@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B64FC473260C09CF00CA02A4 /* BudgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64FC472260C09CF00CA02A4 /* BudgetModel.swift */; };
 		B683B27826069F7800F7F347 /* BudgetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683B27726069F7800F7F347 /* BudgetList.swift */; };
 		B6C78A802606AB6D007B2CC5 /* TotalBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A7F2606AB6D007B2CC5 /* TotalBalance.swift */; };
 		B6C78A862606B816007B2CC5 /* Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A852606B816007B2CC5 /* Budget.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B64FC472260C09CF00CA02A4 /* BudgetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetModel.swift; sourceTree = "<group>"; };
 		B683B27726069F7800F7F347 /* BudgetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetList.swift; sourceTree = "<group>"; };
 		B6C78A7F2606AB6D007B2CC5 /* TotalBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalBalance.swift; sourceTree = "<group>"; };
 		B6C78A852606B816007B2CC5 /* Budget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget.swift; sourceTree = "<group>"; };
@@ -49,6 +51,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B64FC475260C09D900CA02A4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B64FC472260C09CF00CA02A4 /* BudgetModel.swift */,
+				B6C78A852606B816007B2CC5 /* Budget.swift */,
+				B6C78AA626079C45007B2CC5 /* Payment.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		B6F504AF260695E5005E20A5 = {
 			isa = PBXGroup;
 			children = (
@@ -69,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				B6F504BB260695E5005E20A5 /* BudgetApp.swift */,
+				B64FC475260C09D900CA02A4 /* Model */,
 				B683B27726069F7800F7F347 /* BudgetList.swift */,
 				B6F504BD260695E5005E20A5 /* BudgetListItem.swift */,
 				B6C78A7F2606AB6D007B2CC5 /* TotalBalance.swift */,
@@ -76,8 +89,6 @@
 				B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */,
 				B6C78A8F26077E52007B2CC5 /* BudgetView.swift */,
 				B6C78AA3260790C2007B2CC5 /* PaymentRow.swift */,
-				B6C78A852606B816007B2CC5 /* Budget.swift */,
-				B6C78AA626079C45007B2CC5 /* Payment.swift */,
 				B6F504BF260695E7005E20A5 /* Assets.xcassets */,
 				B6F504C4260695E7005E20A5 /* Info.plist */,
 				B6F504C1260695E7005E20A5 /* Preview Content */,
@@ -169,6 +180,7 @@
 				B6C78AA726079C46007B2CC5 /* Payment.swift in Sources */,
 				B6C78A862606B816007B2CC5 /* Budget.swift in Sources */,
 				B6C78AA4260790C2007B2CC5 /* PaymentRow.swift in Sources */,
+				B64FC473260C09CF00CA02A4 /* BudgetModel.swift in Sources */,
 				B6C78A892606BDC7007B2CC5 /* BudgetCreator.swift in Sources */,
 				B683B27826069F7800F7F347 /* BudgetList.swift in Sources */,
 				B6C78A802606AB6D007B2CC5 /* TotalBalance.swift in Sources */,

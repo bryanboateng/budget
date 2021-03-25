@@ -15,14 +15,7 @@ struct BudgetList: View {
         GridItem(.flexible(), spacing: spacing)
     ]
     
-    @State private var budgets = [
-        Budget(name: "Lebensmittel", color: .orange),
-        Budget(name: "Lebensmittel", color: .red),
-        Budget(name: "Lebensmittel", color: .green),
-        Budget(name: "Lebensmittel", color: .pink),
-        Budget(name: "Lebensmittel", color: .yellow),
-        Budget(name: "Lebensmittel", color: .blue)
-    ]
+    @EnvironmentObject private var model: BudgetModel
     @State private var isCreatingBudget = false
     
     var body: some View {
@@ -30,12 +23,12 @@ struct BudgetList: View {
             VStack(alignment: .leading){
                 TotalBalance(
                     amount:
-                        budgets.reduce(0, { x, budget  in
+                        model.budgets.reduce(0, { x, budget  in
                             x + budget.totalBalance
                         })
                 )
                 LazyVGrid(columns: columns, spacing: BudgetList.spacing) {
-                    ForEach(budgets, id: \.self) { budget in
+                    ForEach(model.budgets.sorted { (lhs, rhs) in return lhs.name < rhs.name }, id: \.self) { budget in
                         NavigationLink(destination: BudgetView(budget: budget)){
                             BudgetListItem(name: budget.name, amount: budget.totalBalance, color: budget.color)
                         }
@@ -52,7 +45,7 @@ struct BudgetList: View {
             }
         }
         .sheet(isPresented: $isCreatingBudget) {
-            BudgetCreator(budgets: $budgets)
+            BudgetCreator()
         }
     }
 }

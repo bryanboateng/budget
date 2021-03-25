@@ -9,11 +9,10 @@ import SwiftUI
 
 struct BudgetCreator: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject private var model: BudgetModel
     
     @State var budgetName = ""
     @State var color = Budget.Color.allCases.randomElement()!
-    
-    @Binding var budgets: [Budget]
     
     var body: some View {
         NavigationView {
@@ -40,7 +39,7 @@ struct BudgetCreator: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Fertig") {
-                        budgets.append(Budget(name: budgetName.trimmingCharacters(in: .whitespaces), color: color))
+                        model.budgets.insert(Budget(name: budgetName.trimmingCharacters(in: .whitespaces), color: color))
                         presentationMode.wrappedValue.dismiss()
                     }
                     .disabled(budgetName.trimmingCharacters(in: .whitespaces).isEmpty)
@@ -53,6 +52,6 @@ struct BudgetCreator: View {
 
 struct BudgetCreator_Previews: PreviewProvider {
     static var previews: some View {
-        BudgetCreator(budgets: .constant([Budget(name: "Lebensmittel", color: .blue)]))
+        BudgetCreator()
     }
 }
