@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Budget" representedClassName="Budget" syncable="YES" codeGenerationType="class">
+        <attribute name="colorRaw" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String"/>
+        <relationship name="payments" toMany="YES" deletionRule="Nullify" destinationEntity="Payment" inverseName="budget" inverseEntity="Payment"/>
+    </entity>
+    <entity name="Payment" representedClassName="Payment" syncable="YES" codeGenerationType="class">
+        <attribute name="amount" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="party" attributeType="String"/>
+        <attribute name="purpose" attributeType="String"/>
+        <relationship name="budget" maxCount="1" deletionRule="Nullify" destinationEntity="Budget" inverseName="payments" inverseEntity="Budget"/>
+    </entity>
+    <elements>
+        <element name="Budget" positionX="-40.7205810546875" positionY="-148.5665588378906" width="128" height="74"/>
+        <element name="Payment" positionX="-41.299560546875" positionY="3.96002197265625" width="128" height="118"/>
+    </elements>
+</model>

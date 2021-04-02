@@ -9,10 +9,10 @@ import SwiftUI
 
 struct BudgetCreator: View {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject private var model: BudgetModel
+    @Environment(\.managedObjectContext) private var managedObjectContext
     
     @State var budgetName = ""
-    @State var color = Budget.Color.allCases.randomElement()!
+    @State var color = BudgetColor.allCases.randomElement()!
     
     var body: some View {
         NavigationView {
@@ -39,7 +39,11 @@ struct BudgetCreator: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Fertig") {
-                        model.budgets.insert(Budget(name: budgetName.trimmingCharacters(in: .whitespaces), color: color))
+                        let budget = Budget(context: managedObjectContext)
+                        budget.name = budgetName.trimmingCharacters(in: .whitespaces)
+                        budget.color = color
+                        PersistenceController.shared.save()
+                        
                         presentationMode.wrappedValue.dismiss()
                     }
                     .disabled(budgetName.trimmingCharacters(in: .whitespaces).isEmpty)

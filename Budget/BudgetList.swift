@@ -15,7 +15,13 @@ struct BudgetList: View {
         GridItem(.flexible(), spacing: spacing)
     ]
     
-    @EnvironmentObject private var model: BudgetModel
+    @FetchRequest(
+        entity: Budget.entity(),
+        sortDescriptors: [
+            NSSortDescriptor(keyPath: \Budget.name, ascending: true),
+        ]
+    ) var budgets: FetchedResults<Budget>
+    
     @State private var isCreatingBudget = false
     
     var body: some View {
@@ -23,12 +29,12 @@ struct BudgetList: View {
             VStack(alignment: .leading){
                 TotalBalance(
                     amount:
-                        model.budgets.reduce(0, { x, budget  in
-                            x + budget.totalBalance
+                        budgets.reduce(0, { x, budget  in
+                            budget.totalBalance.adding(x)
                         })
                 )
                 LazyVGrid(columns: columns, spacing: BudgetList.spacing) {
-                    ForEach(model.budgets.sorted { (lhs, rhs) in return lhs.name < rhs.name }, id: \.self) { budget in
+                    ForEach(budgets, id: \.self) { budget in
                         NavigationLink(destination: BudgetView(budget: budget)){
                             BudgetListItem(budget: budget)
                         }

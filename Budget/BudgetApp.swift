@@ -9,13 +9,13 @@ import SwiftUI
 
 @main
 struct BudgetApp: App {
-    @StateObject private var model = BudgetModel()
+    let persistenceController = PersistenceController.shared
     
     var body: some Scene {
         WindowGroup {
             NavigationView {
                 BudgetList()
-                    .environmentObject(model)
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
         }
     }

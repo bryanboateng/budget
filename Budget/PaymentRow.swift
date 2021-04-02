@@ -27,14 +27,14 @@ struct PaymentRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
-                Text(payment.purpose)
+                Text(payment.purpose!)
                     .font(.headline)
                 Spacer()
-                Text("\(payment.amount > 0 ? "+" : "")\(NSNumber(value: abs(payment.amount)), formatter: Self.currencyFormatter)")
-                    .font(.system(payment.amount > 0 ? .headline : .body, design: .rounded))
-                    .foregroundColor(payment.amount > 0 ? .green : .primary)
+                Text("\(payment.amount! as Decimal > 0 ? "+" : "")\(NSDecimalNumber(decimal: abs((payment.amount! as Decimal))), formatter: Self.currencyFormatter)")
+                    .font(.system((payment.amount! as Decimal) > 0 ? .headline : .body, design: .rounded))
+                    .foregroundColor((payment.amount! as Decimal) > 0 ? .green : .primary)
             }
-            Text("\(payment.party) - \(payment.date, formatter: Self.dateFormatter)")
+            Text("\(payment.party!) - \(payment.date!, formatter: Self.dateFormatter)")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }
@@ -47,7 +47,14 @@ struct PaymentRow: View {
 
 struct PaymentRow_Previews: PreviewProvider {
     static var previews: some View {
-        PaymentRow(payment: Payment(party: "Convini", purpose: "Snacks", amount: 9.99, date: Date()))
+        
+        let payment = Payment(context: PersistenceController.preview.container.viewContext)
+        payment.amount = 9.99
+        payment.date = Date()
+        payment.party = "Bryan"
+        payment.purpose = "Giotto"
+        
+        return PaymentRow(payment: payment)
             .previewLayout(.sizeThatFits)
     }
 }

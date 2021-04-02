@@ -9,11 +9,11 @@ import SwiftUI
 
 
 struct ColorPicker: View {
-    @Binding var selectedColor: Budget.Color
+    @Binding var selectedColor: BudgetColor
     
     var body: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 45), spacing: 10)], spacing: 10) {
-            ForEach(Budget.Color.allCases, id: \.self) { color in
+            ForEach(BudgetColor.allCases, id: \.self) { color in
                 Circle()
                     .foregroundColor(color.swiftUIColor)
                     .aspectRatio(contentMode: .fill)

@@ -20,12 +20,12 @@ struct BudgetListItem: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(budget.name)
+            Text(budget.name!)
                 .bold()
                 .lineLimit(0)
                 .foregroundColor(budget.color.swiftUIColor)
                 .brightness(colorScheme == .light ? -0.2 : 0)
-            Text("\(NSNumber(value: budget.totalBalance), formatter: Self.currencyFormatter)")
+            Text("\(budget.totalBalance, formatter: Self.currencyFormatter)")
                 .font(.system(.body, design: .rounded))
         }
         .padding(10)
@@ -37,7 +37,12 @@ struct BudgetListItem: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        BudgetListItem(budget: Budget(name: "Lebensmittel", color: .yellow))
+        
+        let budget = Budget(context: PersistenceController.preview.container.viewContext)
+        budget.name = "Lebensmittel"
+        budget.color = .pink
+        
+        return BudgetListItem(budget: budget)
             .previewLayout(.sizeThatFits)
     }
 }

@@ -15,11 +15,11 @@ struct TotalBalance: View {
         return formatter
     }()
     
-    let amount: Double
+    let amount: NSDecimalNumber
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("\(NSNumber(value: amount), formatter: Self.currencyFormatter)")
+            Text("\(amount, formatter: Self.currencyFormatter)")
                 .bold()
                 .font(.system(.title2, design: .rounded))
             Text("Gesamter Stand")
