@@ -30,7 +30,7 @@ struct BudgetList: View {
                 LazyVGrid(columns: columns, spacing: BudgetList.spacing) {
                     ForEach(model.budgets.sorted { (lhs, rhs) in return lhs.name < rhs.name }, id: \.self) { budget in
                         NavigationLink(destination: BudgetView(budget: budget)){
-                            BudgetListItem(name: budget.name, amount: budget.totalBalance, color: budget.color)
+                            BudgetListItem(budget: budget)
                         }
                         .buttonStyle(PlainButtonStyle())
                     }

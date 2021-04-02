@@ -16,30 +16,28 @@ struct BudgetListItem: View {
         return formatter
     }()
     
-    let name: String
-    let amount: Double
-    let color: Budget.Color
+    let budget: Budget
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(name)
+            Text(budget.name)
                 .bold()
                 .lineLimit(0)
-                .foregroundColor(color.swiftUIColor)
+                .foregroundColor(budget.color.swiftUIColor)
                 .brightness(colorScheme == .light ? -0.2 : 0)
-            Text("\(NSNumber(value: amount), formatter: Self.currencyFormatter)")
+            Text("\(NSNumber(value: budget.totalBalance), formatter: Self.currencyFormatter)")
                 .font(.system(.body, design: .rounded))
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(color.swiftUIColor.opacity(0.35))
+        .background(budget.color.swiftUIColor.opacity(0.35))
         .cornerRadius(16)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        BudgetListItem(name: "Lebensmittel", amount: 99.99, color: .yellow)
+        BudgetListItem(budget: Budget(name: "Lebensmittel", color: .yellow))
             .previewLayout(.sizeThatFits)
     }
 }
