@@ -16,22 +16,28 @@ struct BudgetListItem: View {
         return formatter
     }()
     
-    let budget: Budget
+    @ObservedObject var budget: Budget
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(budget.name!)
-                .bold()
-                .lineLimit(0)
-                .foregroundColor(budget.color.swiftUIColor)
-                .brightness(colorScheme == .light ? -0.2 : 0)
-            Text("\(budget.totalBalance, formatter: Self.currencyFormatter)")
-                .font(.system(.body, design: .rounded))
+        Group {
+            if (budget.isFault) {
+                EmptyView()
+            } else {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(budget.name!)
+                        .bold()
+                        .lineLimit(0)
+                        .foregroundColor(budget.color.swiftUIColor)
+                        .brightness(colorScheme == .light ? -0.2 : 0)
+                    Text("\(budget.totalBalance, formatter: Self.currencyFormatter)")
+                        .font(.system(.body, design: .rounded))
+                }
+                .padding(10)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(budget.color.swiftUIColor.opacity(0.35))
+                .cornerRadius(16)
+            }
         }
-        .padding(10)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(budget.color.swiftUIColor.opacity(0.35))
-        .cornerRadius(16)
     }
 }
 

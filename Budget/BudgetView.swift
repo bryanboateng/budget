@@ -8,22 +8,40 @@
 import SwiftUI
 
 struct BudgetView: View {
-    let budget: Budget
+    @State private var isEditing = false
+    
+    @ObservedObject var budget: Budget
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading){
-                TotalBalance(amount: budget.totalBalance)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                VStack(spacing: 4) {
-                    ForEach((budget.payments as! Set<Payment>).sorted { (x, y) in return x.date! < y.date! }, id: \.self) { payment in
-                        PaymentRow(payment: payment)
+        Group {
+            if budget.isFault {
+                EmptyView()
+            } else {
+                ScrollView {
+                    VStack(alignment: .leading){
+                        TotalBalance(amount: budget.totalBalance)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        VStack(spacing: 4) {
+                            ForEach((budget.payments as! Set<Payment>).sorted { (x, y) in return x.date! < y.date! }, id: \.self) { payment in
+                                PaymentRow(payment: payment)
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+                .navigationTitle(budget.name!)
+                .toolbar {
+                    Button {
+                        isEditing = true
+                    } label: {
+                        Image(systemName: "info.circle")
                     }
                 }
+                .sheet(isPresented: $isEditing) {
+                    BudgetEditor(budget: budget)
+                }
             }
-            .padding(.horizontal)
         }
-        .navigationTitle(budget.name!)
     }
 }
 
