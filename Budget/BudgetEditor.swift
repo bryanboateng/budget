@@ -2,7 +2,6 @@ import SwiftUI
 
 struct BudgetEditor: View {
     @Environment(\.presentationMode) var presentationMode
-    @Environment(\.managedObjectContext) private var managedObjectContext
     
     @State private var 	budgetName = ""
     @State private var color = BudgetColor.green

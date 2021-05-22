@@ -2,7 +2,6 @@ import SwiftUI
 
 struct BudgetCreator: View {
     @Environment(\.presentationMode) var presentationMode
-    @Environment(\.managedObjectContext) private var managedObjectContext
     
     @State var budgetName = ""
     @State var color = BudgetColor.allCases.randomElement()!
@@ -32,7 +31,7 @@ struct BudgetCreator: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Fertig") {
-                        let budget = Budget(context: managedObjectContext)
+                        let budget = Budget(context: PersistenceController.shared.container.viewContext)
                         budget.name = budgetName.trimmingCharacters(in: .whitespaces)
                         budget.color = color
                         PersistenceController.shared.save()
