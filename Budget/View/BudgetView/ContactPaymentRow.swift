@@ -1,26 +1,26 @@
 import SwiftUI
 
-struct PaymentRow: View {
-    static let dateFormatter: DateFormatter = {
+struct ContactPaymentRow: View {
+    private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .short
         return formatter
     }()
     
-    let payment: Payment
+    let contactPayment: ContactPayment
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
-                Text(payment.purpose!)
+                Text(contactPayment.purpose!)
                     .font(.headline)
                 Spacer()
-                Text("\(payment.amount! as Decimal > 0 ? "+" : "")\(NSDecimalNumber(decimal: abs((payment.amount! as Decimal))), formatter: NumberFormatter.currency)")
+                Text("\(contactPayment.direction == .incoming ? "+" : "")\(contactPayment.amount!, formatter: NumberFormatter.currency)")
                     .font(.system(.body, design: .rounded))
-                    .foregroundColor((payment.amount! as Decimal) > 0 ? .green : .primary)
+                    .foregroundColor(contactPayment.direction == .incoming ? .green : .primary)
             }
-            Text("\(payment.party!) - \(payment.date!, formatter: Self.dateFormatter)")
+            Text("\(contactPayment.date!, formatter: Self.dateFormatter)")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }
@@ -31,16 +31,17 @@ struct PaymentRow: View {
     }
 }
 
-struct PaymentRow_Previews: PreviewProvider {
+struct ContactPaymentRow_Previews: PreviewProvider {
     static var previews: some View {
         
-        let payment = Payment(context: PersistenceController.preview.container.viewContext)
+        let payment = ContactPayment(context: PersistenceController.preview.container.viewContext)
         payment.amount = 9.99
         payment.date = Date()
-        payment.party = "Bryan"
         payment.purpose = "Giotto"
+        payment.contact = "HIT Ulrich"
+        payment.direction = .incoming
         
-        return PaymentRow(payment: payment)
+        return ContactPaymentRow(contactPayment: payment)
             .previewLayout(.sizeThatFits)
     }
 }

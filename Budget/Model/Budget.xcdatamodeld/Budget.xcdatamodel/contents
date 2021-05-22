@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20E241" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Budget" representedClassName="Budget" syncable="YES" codeGenerationType="class">
         <attribute name="colorRaw" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
-        <relationship name="payments" toMany="YES" deletionRule="Nullify" destinationEntity="Payment" inverseName="budget" inverseEntity="Payment"/>
+        <relationship name="contactPayments" toMany="YES" deletionRule="Nullify" destinationEntity="ContactPayment" inverseName="budget" inverseEntity="ContactPayment"/>
+        <relationship name="receivedBudgetPayments" toMany="YES" deletionRule="Nullify" destinationEntity="BudgetPayment" inverseName="receiver" inverseEntity="BudgetPayment"/>
+        <relationship name="sendBudgetPayments" toMany="YES" deletionRule="Nullify" destinationEntity="BudgetPayment" inverseName="sender" inverseEntity="BudgetPayment"/>
     </entity>
-    <entity name="Payment" representedClassName="Payment" syncable="YES" codeGenerationType="class">
-        <attribute name="amount" attributeType="Decimal" defaultValueString="0.0"/>
-        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="party" attributeType="String"/>
+    <entity name="BudgetPayment" representedClassName="BudgetPayment" parentEntity="Payment" syncable="YES" codeGenerationType="class">
+        <relationship name="receiver" maxCount="1" deletionRule="Nullify" destinationEntity="Budget" inverseName="receivedBudgetPayments" inverseEntity="Budget"/>
+        <relationship name="sender" maxCount="1" deletionRule="Nullify" destinationEntity="Budget" inverseName="sendBudgetPayments" inverseEntity="Budget"/>
+    </entity>
+    <entity name="ContactPayment" representedClassName="ContactPayment" parentEntity="Payment" syncable="YES" codeGenerationType="class">
+        <attribute name="contact" attributeType="String"/>
+        <attribute name="directionRaw" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="budget" maxCount="1" deletionRule="Nullify" destinationEntity="Budget" inverseName="contactPayments" inverseEntity="Budget"/>
+    </entity>
+    <entity name="Payment" representedClassName="Payment" isAbstract="YES" syncable="YES" codeGenerationType="class">
+        <attribute name="amount" attributeType="Decimal" minValueString="0" defaultValueString="0.0"/>
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="purpose" attributeType="String"/>
-        <relationship name="budget" maxCount="1" deletionRule="Nullify" destinationEntity="Budget" inverseName="payments" inverseEntity="Budget"/>
     </entity>
     <elements>
-        <element name="Budget" positionX="-40.7205810546875" positionY="-148.5665588378906" width="128" height="74"/>
-        <element name="Payment" positionX="-41.299560546875" positionY="3.96002197265625" width="128" height="118"/>
+        <element name="Budget" positionX="-306.0841674804688" positionY="-538.729248046875" width="128" height="104"/>
+        <element name="BudgetPayment" positionX="-501.8565063476562" positionY="-677.6525268554688" width="128" height="59"/>
+        <element name="ContactPayment" positionX="-104.3825073242188" positionY="-690.5258178710938" width="128" height="74"/>
+        <element name="Payment" positionX="-307.4661865234376" positionY="-851.3091430664062" width="128" height="88"/>
     </elements>
 </model>
