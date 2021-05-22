@@ -1,10 +1,3 @@
-//
-//  Budget+BudgetColor.swift
-//  Budget
-//
-//  Created by Bryan Oppong-Boateng on 02.04.21.
-//
-
 import Foundation
 
 extension Budget {

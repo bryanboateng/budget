@@ -1,10 +1,3 @@
-//
-//  PersistenceController.swift
-//  Budget
-//
-//  Created by Bryan Oppong-Boateng on 01.04.21.
-//
-
 import CoreData
 
 struct PersistenceController {

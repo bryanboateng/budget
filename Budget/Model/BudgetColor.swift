@@ -1,10 +1,3 @@
-//
-//  BudgetColor.swift
-//  Budget
-//
-//  Created by Bryan Oppong-Boateng on 02.04.21.
-//
-
 import SwiftUI
 
 enum BudgetColor: Int16, CaseIterable  {

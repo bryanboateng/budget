@@ -1,10 +1,3 @@
-//
-//  BudgetEditor.swift
-//  Budget
-//
-//  Created by Bryan Oppong-Boateng on 02.04.21.
-//
-
 import SwiftUI
 
 struct BudgetEditor: View {
