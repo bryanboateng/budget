@@ -17,7 +17,7 @@ struct PaymentRow: View {
                     .font(.headline)
                 Spacer()
                 Text("\(payment.amount! as Decimal > 0 ? "+" : "")\(NSDecimalNumber(decimal: abs((payment.amount! as Decimal))), formatter: NumberFormatter.currency)")
-                    .font(.system((payment.amount! as Decimal) > 0 ? .headline : .body, design: .rounded))
+                    .font(.system(.body, design: .rounded))
                     .foregroundColor((payment.amount! as Decimal) > 0 ? .green : .primary)
             }
             Text("\(payment.party!) - \(payment.date!, formatter: Self.dateFormatter)")
@@ -26,7 +26,7 @@ struct PaymentRow: View {
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(UIColor.systemFill))
+        .background(Color(UIColor.secondarySystemGroupedBackground))
         .cornerRadius(16)
     }
 }
