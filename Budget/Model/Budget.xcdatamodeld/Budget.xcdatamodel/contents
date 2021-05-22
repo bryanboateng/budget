@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20E241" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Budget" representedClassName="Budget" syncable="YES" codeGenerationType="class">
-        <attribute name="colorRaw" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="colorRaw" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
         <relationship name="contactPayments" toMany="YES" deletionRule="Nullify" destinationEntity="ContactPayment" inverseName="budget" inverseEntity="ContactPayment"/>
         <relationship name="receivedBudgetPayments" toMany="YES" deletionRule="Nullify" destinationEntity="BudgetPayment" inverseName="receiver" inverseEntity="BudgetPayment"/>
