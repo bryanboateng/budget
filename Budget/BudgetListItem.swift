@@ -2,13 +2,6 @@ import SwiftUI
 struct BudgetListItem: View {
     @Environment(\.colorScheme) var colorScheme
     
-    static let currencyFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencyCode = "EUR"
-        return formatter
-    }()
-    
     @ObservedObject var budget: Budget
     
     var body: some View {
@@ -22,7 +15,7 @@ struct BudgetListItem: View {
                         .lineLimit(1)
                         .foregroundColor(budget.color.swiftUIColor)
                         .brightness(colorScheme == .light ? -0.2 : 0)
-                    Text("\(budget.totalBalance, formatter: Self.currencyFormatter)")
+                    Text("\(budget.totalBalance, formatter: NumberFormatter.currency)")
                         .font(.system(.body, design: .rounded))
                 }
                 .padding(10)

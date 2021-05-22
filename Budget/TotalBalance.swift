@@ -1,18 +1,11 @@
 import SwiftUI
 
 struct TotalBalance: View {
-    static let currencyFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencyCode = "EUR"
-        return formatter
-    }()
-    
     let amount: NSDecimalNumber
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("\(amount, formatter: Self.currencyFormatter)")
+            Text("\(amount, formatter: NumberFormatter.currency)")
                 .bold()
                 .font(.system(.title2, design: .rounded))
             Text("Gesamter Stand")

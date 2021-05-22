@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B63D5403265906E300B366B2 /* NumberFormatter+Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63D5402265906E300B366B2 /* NumberFormatter+Currency.swift */; };
 		B668E3A5261644F50099C3AB /* Budget.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B668E3A3261644F50099C3AB /* Budget.xcdatamodeld */; };
 		B668E3A8261645850099C3AB /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668E3A7261645850099C3AB /* PersistenceController.swift */; };
 		B668E3B226164FF00099C3AB /* Budget+TotalBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668E3B126164FF00099C3AB /* Budget+TotalBalance.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B63D5402265906E300B366B2 /* NumberFormatter+Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter+Currency.swift"; sourceTree = "<group>"; };
 		B668E3A4261644F50099C3AB /* Budget.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Budget.xcdatamodel; sourceTree = "<group>"; };
 		B668E3A7261645850099C3AB /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		B668E3B126164FF00099C3AB /* Budget+TotalBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Budget+TotalBalance.swift"; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 				B668E3B126164FF00099C3AB /* Budget+TotalBalance.swift */,
 				B6E4DD0726169286004C3D3C /* Budget+BudgetColor.swift */,
 				B6E4DD0A261692EA004C3D3C /* BudgetColor.swift */,
+				B63D5402265906E300B366B2 /* NumberFormatter+Currency.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -193,6 +196,7 @@
 				B6C78AA4260790C2007B2CC5 /* PaymentRow.swift in Sources */,
 				B6C78A892606BDC7007B2CC5 /* BudgetCreator.swift in Sources */,
 				B668E3B226164FF00099C3AB /* Budget+TotalBalance.swift in Sources */,
+				B63D5403265906E300B366B2 /* NumberFormatter+Currency.swift in Sources */,
 				B668E3A8261645850099C3AB /* PersistenceController.swift in Sources */,
 				B683B27826069F7800F7F347 /* BudgetList.swift in Sources */,
 				B6C78A802606AB6D007B2CC5 /* TotalBalance.swift in Sources */,

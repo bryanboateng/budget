@@ -1,13 +1,6 @@
 import SwiftUI
 
 struct PaymentRow: View {
-    static let currencyFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencyCode = "EUR"
-        return formatter
-    }()
-    
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -23,7 +16,7 @@ struct PaymentRow: View {
                 Text(payment.purpose!)
                     .font(.headline)
                 Spacer()
-                Text("\(payment.amount! as Decimal > 0 ? "+" : "")\(NSDecimalNumber(decimal: abs((payment.amount! as Decimal))), formatter: Self.currencyFormatter)")
+                Text("\(payment.amount! as Decimal > 0 ? "+" : "")\(NSDecimalNumber(decimal: abs((payment.amount! as Decimal))), formatter: NumberFormatter.currency)")
                     .font(.system((payment.amount! as Decimal) > 0 ? .headline : .body, design: .rounded))
                     .foregroundColor((payment.amount! as Decimal) > 0 ? .green : .primary)
             }
