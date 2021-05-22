@@ -7,14 +7,4 @@ extension Budget {
             payment.amount!.adding(x)
         }
     }
-    
-    override public class func keyPathsForValuesAffectingValue(forKey key: String) -> Set<String>{
-        let keyPaths = super.keyPathsForValuesAffectingValue(forKey: key)
-        switch key {
-        case "totalBalance":
-            return keyPaths.union(Set(["payments"]))
-        default:
-            return keyPaths
-        }
-    }
 }
