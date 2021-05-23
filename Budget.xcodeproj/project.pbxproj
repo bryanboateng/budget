@@ -22,7 +22,6 @@
 		B67A91422659C9DB003AADD8 /* PaymentViewBudgetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67A91412659C9DB003AADD8 /* PaymentViewBudgetRow.swift */; };
 		B67A91442659CB02003AADD8 /* BudgetPaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67A91432659CB02003AADD8 /* BudgetPaymentView.swift */; };
 		B683B27826069F7800F7F347 /* BudgetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683B27726069F7800F7F347 /* BudgetList.swift */; };
-		B69B71D1265A3FC500179C55 /* PaymentEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69B71D0265A3FC500179C55 /* PaymentEditor.swift */; };
 		B6BA883D26595B5A00811898 /* ContactCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BA883C26595B5A00811898 /* ContactCreator.swift */; };
 		B6BA883F2659620700811898 /* PaymentPartyPickerBudgetsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BA883E2659620700811898 /* PaymentPartyPickerBudgetsList.swift */; };
 		B6C78A802606AB6D007B2CC5 /* TotalBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A7F2606AB6D007B2CC5 /* TotalBalance.swift */; };
@@ -57,7 +56,6 @@
 		B67A91412659C9DB003AADD8 /* PaymentViewBudgetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewBudgetRow.swift; sourceTree = "<group>"; };
 		B67A91432659CB02003AADD8 /* BudgetPaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetPaymentView.swift; sourceTree = "<group>"; };
 		B683B27726069F7800F7F347 /* BudgetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetList.swift; sourceTree = "<group>"; };
-		B69B71D0265A3FC500179C55 /* PaymentEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentEditor.swift; sourceTree = "<group>"; };
 		B6BA883C26595B5A00811898 /* ContactCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCreator.swift; sourceTree = "<group>"; };
 		B6BA883E2659620700811898 /* PaymentPartyPickerBudgetsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentPartyPickerBudgetsList.swift; sourceTree = "<group>"; };
 		B6C78A7F2606AB6D007B2CC5 /* TotalBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalBalance.swift; sourceTree = "<group>"; };
@@ -123,7 +121,6 @@
 			isa = PBXGroup;
 			children = (
 				B6E093162628D8DD0091F9A6 /* PaymentCreator.swift */,
-				B69B71D0265A3FC500179C55 /* PaymentEditor.swift */,
 				B6D09D7A26429F65000A6F4A /* PaymentCreatorBudgetRow.swift */,
 				B61DA5D126299259008CADBF /* CurrencyField.swift */,
 				B63D54062659315C00B366B2 /* PaymentPartyPicker.swift */,
@@ -277,7 +274,6 @@
 				B62CB21B265860B700A0CEDA /* PaymentParty.swift in Sources */,
 				B62CB2192658557600A0CEDA /* BudgetPaymentRow.swift in Sources */,
 				B63D54072659315C00B366B2 /* PaymentPartyPicker.swift in Sources */,
-				B69B71D1265A3FC500179C55 /* PaymentEditor.swift in Sources */,
 				B6E4DD14261726DF004C3D3C /* BudgetEditor.swift in Sources */,
 				B6C78AA4260790C2007B2CC5 /* ContactPaymentRow.swift in Sources */,
 				B6BA883F2659620700811898 /* PaymentPartyPickerBudgetsList.swift in Sources */,

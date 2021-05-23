@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct BudgetPaymentView: View {
+    @Environment(\.presentationMode) private var presentationMode
+    
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -9,49 +11,62 @@ struct BudgetPaymentView: View {
     }()
     
     @ScaledMetric private var amountTextSize: CGFloat = 50
-    @State private var isEditing = false
+    @State private var isAskingForDeletionConformation = false
     
     let budgetPayment: BudgetPayment
     let shownDirection: PaymentDirection
     
     var body: some View {
-        List {
-            VStack {
-                Text("\(shownDirection == .incoming ? "+" : "")\(budgetPayment.amount!, formatter: NumberFormatter.currency)")
-                    .font(.system(size: amountTextSize, weight: .semibold, design: .rounded))
-                    .foregroundColor(shownDirection == .incoming ? .green : .primary)
-                
-                Text("\(budgetPayment.date!, formatter: Self.dateFormatter)")
-                    .foregroundColor(.secondary)
-            }
-            .frame(maxWidth: .infinity)
-            .listRowBackground(Color(UIColor.systemGroupedBackground))
-            
-            Section(header: Text("Aufträger")) {
-                PaymentViewBudgetRow(budget: budgetPayment.sender!)
-            }
-            
-            Section (header: Text("Begünstiger")) {
-                PaymentViewBudgetRow(budget: budgetPayment.receiver!)
-            }
-            
-            Section(header: Text("Verwendungszweck")) {
-                Text(budgetPayment.purpose!)
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Bearbeiten") {
-                    isEditing = true
+        if budgetPayment.isFault {
+            EmptyView()
+        } else {
+            List {
+                VStack {
+                    Text("\(shownDirection == .incoming ? "+" : "")\(budgetPayment.amount!, formatter: NumberFormatter.currency)")
+                        .font(.system(size: amountTextSize, weight: .semibold, design: .rounded))
+                        .foregroundColor(shownDirection == .incoming ? .green : .primary)
+                    
+                    Text("\(budgetPayment.date!, formatter: Self.dateFormatter)")
+                        .foregroundColor(.secondary)
                 }
+                .frame(maxWidth: .infinity)
+                .listRowBackground(Color(UIColor.systemGroupedBackground))
+                
+                Section(header: Text("Aufträger")) {
+                    PaymentViewBudgetRow(budget: budgetPayment.sender!)
+                }
+                
+                Section (header: Text("Begünstiger")) {
+                    PaymentViewBudgetRow(budget: budgetPayment.receiver!)
+                }
+                
+                Section(header: Text("Verwendungszweck")) {
+                    Text(budgetPayment.purpose!)
+                }
+                
+                Button("Zahlung löschen") {
+                    isAskingForDeletionConformation = true
+                }
+                .foregroundColor(.red)
             }
+            .actionSheet(isPresented: $isAskingForDeletionConformation) {
+                ActionSheet(
+                    title: Text("Zahlung löschen"),
+                    message: Text("Soll die Zahlung wirklich gelöscht werden?"),
+                    buttons: [
+                        .destructive(Text("Zahlung löschen")) {
+                            presentationMode.wrappedValue.dismiss()
+                            PersistenceController.shared.container.viewContext.delete(budgetPayment)
+                            PersistenceController.shared.save()
+                        },
+                        .cancel()
+                    ]
+                )
+            }
+            .listStyle(InsetGroupedListStyle())
+            .navigationTitle("Zahlung")
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .sheet(isPresented: $isEditing) {
-            PaymentEditor(payment: budgetPayment)
-        }
-        .listStyle(InsetGroupedListStyle())
-        .navigationTitle("Zahlung")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
