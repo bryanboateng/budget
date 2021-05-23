@@ -5,24 +5,22 @@ struct BudgetListItem: View {
     @ObservedObject var budget: Budget
     
     var body: some View {
-        Group {
-            if (budget.isFault) {
-                EmptyView()
-            } else {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(budget.name!)
-                        .bold()
-                        .lineLimit(1)
-                        .foregroundColor(budget.color.swiftUIColor)
-                        .brightness(colorScheme == .light ? -0.2 : 0)
-                    Text("\(budget.totalBalance, formatter: NumberFormatter.currency)")
-                        .font(.system(.body, design: .rounded))
-                }
-                .padding(10)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(budget.color.swiftUIColor.opacity(0.35))
-                .cornerRadius(16)
+        if (budget.isFault) {
+            EmptyView()
+        } else {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(budget.name!)
+                    .bold()
+                    .lineLimit(1)
+                    .foregroundColor(budget.color.swiftUIColor)
+                    .brightness(colorScheme == .light ? -0.2 : 0)
+                Text("\(budget.totalBalance, formatter: NumberFormatter.currency)")
+                    .font(.system(.body, design: .rounded))
             }
+            .padding(10)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(budget.color.swiftUIColor.opacity(0.35))
+            .cornerRadius(16)
         }
     }
 }

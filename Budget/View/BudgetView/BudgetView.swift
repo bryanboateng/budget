@@ -9,76 +9,74 @@ struct BudgetView: View {
         ZStack {
             Color(UIColor.systemGroupedBackground)
                 .edgesIgnoringSafeArea(.all)
-            Group {
-                if budget.isFault {
-                    EmptyView()
-                } else {
-                    ScrollView {
-                        VStack(alignment: .leading){
-                            TotalBalance(amount: budget.totalBalance)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            VStack(spacing: 4) {
-                                ForEach((budget.payments).sorted { (x, y) in return x.date! < y.date! }, id: \.self) { payment in
-                                    switch payment {
-                                    case let contactPayment as ContactPayment:
+            if budget.isFault {
+                EmptyView()
+            } else {
+                ScrollView {
+                    VStack(alignment: .leading){
+                        TotalBalance(amount: budget.totalBalance)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        VStack(spacing: 4) {
+                            ForEach((budget.payments).sorted { (x, y) in return x.date! < y.date! }, id: \.self) { payment in
+                                switch payment {
+                                case let contactPayment as ContactPayment:
+                                    NavigationLink (
+                                        destination:
+                                            ContactPaymentView(contactPayment: contactPayment)
+                                    ){
+                                        ContactPaymentRow(contactPayment: contactPayment)
+                                    }
+                                case let budgetPayment as BudgetPayment:
+                                    if budget.receivedBudgetPayments!.contains(budgetPayment) {
                                         NavigationLink (
                                             destination:
-                                                ContactPaymentView(contactPayment: contactPayment)
+                                                BudgetPaymentView(budgetPayment: budgetPayment, shownDirection: .incoming)
                                         ){
-                                            ContactPaymentRow(contactPayment: contactPayment)
+                                            BudgetPaymentRow(budgetPayment: budgetPayment, shownDirection: .incoming)
                                         }
-                                    case let budgetPayment as BudgetPayment:
-                                        if budget.receivedBudgetPayments!.contains(budgetPayment) {
-                                            NavigationLink (
-                                                destination:
-                                                    BudgetPaymentView(budgetPayment: budgetPayment, shownDirection: .incoming)
-                                            ){
-                                                BudgetPaymentRow(budgetPayment: budgetPayment, shownDirection: .incoming)
-                                            }
-                                        } else if budget.sendBudgetPayments!.contains(budgetPayment) {
-                                            NavigationLink (
-                                                destination:
-                                                    BudgetPaymentView(budgetPayment: budgetPayment, shownDirection: .outgoing)
-                                            ){
-                                                BudgetPaymentRow(budgetPayment: budgetPayment, shownDirection: .outgoing)
-                                            }
-                                        } else {
-                                            fatalError()
+                                    } else if budget.sendBudgetPayments!.contains(budgetPayment) {
+                                        NavigationLink (
+                                            destination:
+                                                BudgetPaymentView(budgetPayment: budgetPayment, shownDirection: .outgoing)
+                                        ){
+                                            BudgetPaymentRow(budgetPayment: budgetPayment, shownDirection: .outgoing)
                                         }
-                                    default:
+                                    } else {
                                         fatalError()
                                     }
+                                default:
+                                    fatalError()
                                 }
                             }
                         }
-                        .padding(.horizontal)
-                        .navigationTitle(budget.name!)
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button { isEditing = true } label: {
-                                    Image(systemName: "info.circle")
-                                }
-                            }
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Menu {
-                                    Button { directionOfNewPayment = .outgoing } label: {
-                                        Label("Ausgehende Zahlung", systemImage: "arrow.up")
-                                    }
-                                    Button{ directionOfNewPayment = .incoming } label: {
-                                        Label("Eingehende Zahlung", systemImage: "arrow.down")
-                                    }
-                                } label: {
-                                    Image(systemName: "plus")
-                                        .imageScale(.large)
-                                }
+                    }
+                    .padding(.horizontal)
+                    .navigationTitle(budget.name!)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button { isEditing = true } label: {
+                                Image(systemName: "info.circle")
                             }
                         }
-                        .sheet(isPresented: $isEditing) {
-                            BudgetEditor(budget: budget)
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Menu {
+                                Button { directionOfNewPayment = .outgoing } label: {
+                                    Label("Ausgehende Zahlung", systemImage: "arrow.up")
+                                }
+                                Button{ directionOfNewPayment = .incoming } label: {
+                                    Label("Eingehende Zahlung", systemImage: "arrow.down")
+                                }
+                            } label: {
+                                Image(systemName: "plus")
+                                    .imageScale(.large)
+                            }
                         }
-                        .sheet(item: $directionOfNewPayment) { direction in
-                            PaymentCreator(budget: budget, direction: direction)
-                        }
+                    }
+                    .sheet(isPresented: $isEditing) {
+                        BudgetEditor(budget: budget)
+                    }
+                    .sheet(item: $directionOfNewPayment) { direction in
+                        PaymentCreator(budget: budget, direction: direction)
                     }
                 }
             }
