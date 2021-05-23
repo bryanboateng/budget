@@ -23,6 +23,9 @@ struct PaymentCreator: View {
     var body: some View {
         NavigationView {
             Form {
+                CurrencyField(amount: $amount)
+                    .listRowBackground(Color(UIColor.systemGroupedBackground))
+                
                 Section(header: Text("Aufträger")) {
                     switch direction {
                     case .outgoing:
@@ -39,10 +42,6 @@ struct PaymentCreator: View {
                     case .incoming:
                         PaymentCreatorBudgetRow(budget: budget)
                     }
-                }
-                
-                Section(header: Text("Betrag")) {
-                    CurrencyField(amount: $amount)
                 }
                 
                 Section(header: Text("Datum")) {
@@ -80,6 +79,7 @@ struct PaymentCreator: View {
                 }
             }
             .navigationTitle("Neue Zahlung")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Abbrechen") {
