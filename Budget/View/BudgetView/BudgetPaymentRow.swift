@@ -28,6 +28,7 @@ struct BudgetPaymentRow: View {
                     .foregroundColor(otherParty.color.swiftUIColor)
                 Text(budgetPayment.purpose!)
                     .font(.headline)
+                    .foregroundColor(.primary)
                 Spacer()
                 Text("\(shownDirection == .incoming ? "+" : "")\(budgetPayment.amount!, formatter: NumberFormatter.currency)")
                     .font(.system(.body, design: .rounded))

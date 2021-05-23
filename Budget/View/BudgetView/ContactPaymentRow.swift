@@ -15,6 +15,7 @@ struct ContactPaymentRow: View {
             HStack {
                 Text(contactPayment.purpose!)
                     .font(.headline)
+                    .foregroundColor(.primary)
                 Spacer()
                 Text("\(contactPayment.direction == .incoming ? "+" : "")\(contactPayment.amount!, formatter: NumberFormatter.currency)")
                     .font(.system(.body, design: .rounded))

@@ -21,12 +21,27 @@ struct BudgetView: View {
                                 ForEach((budget.payments).sorted { (x, y) in return x.date! < y.date! }, id: \.self) { payment in
                                     switch payment {
                                     case let contactPayment as ContactPayment:
-                                        ContactPaymentRow(contactPayment: contactPayment)
+                                        NavigationLink (
+                                            destination:
+                                                ContactPaymentView(contactPayment: contactPayment)
+                                        ){
+                                            ContactPaymentRow(contactPayment: contactPayment)
+                                        }
                                     case let budgetPayment as BudgetPayment:
                                         if budget.receivedBudgetPayments!.contains(budgetPayment) {
-                                            BudgetPaymentRow(budgetPayment: budgetPayment, shownDirection: .incoming)
+                                            NavigationLink (
+                                                destination:
+                                                    BudgetPaymentView(budgetPayment: budgetPayment, shownDirection: .incoming)
+                                            ){
+                                                BudgetPaymentRow(budgetPayment: budgetPayment, shownDirection: .incoming)
+                                            }
                                         } else if budget.sendBudgetPayments!.contains(budgetPayment) {
-                                            BudgetPaymentRow(budgetPayment: budgetPayment, shownDirection: .outgoing)
+                                            NavigationLink (
+                                                destination:
+                                                    BudgetPaymentView(budgetPayment: budgetPayment, shownDirection: .outgoing)
+                                            ){
+                                                BudgetPaymentRow(budgetPayment: budgetPayment, shownDirection: .outgoing)
+                                            }
                                         } else {
                                             fatalError()
                                         }
