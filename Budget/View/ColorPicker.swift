@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 struct ColorPicker: View {
     @Binding var selectedColor: BudgetColor
     

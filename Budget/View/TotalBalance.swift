@@ -5,7 +5,7 @@ struct TotalBalance: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("\(amount, formatter: NumberFormatter.currency)")
+            Text(amount.decimalValue.formatted(.eur()))
                 .bold()
                 .font(.system(.title2, design: .rounded))
             Text("Gesamter Stand")

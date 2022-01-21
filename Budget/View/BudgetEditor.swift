@@ -3,7 +3,7 @@ import SwiftUI
 struct BudgetEditor: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @State private var 	budgetName = ""
+    @State private var budgetName = ""
     @State private var color = BudgetColor.green
     @State private var isAskingForDeletionConformation = false
     
@@ -23,16 +23,8 @@ struct BudgetEditor: View {
                             .font(.title)
                             .multilineTextAlignment(.center)
                         ColorPicker(selectedColor: $color)
-                        if budget.totalBalance == 0 {
-                            Button("Budget löschen") {
-                                isAskingForDeletionConformation = true
-                            }
-                            .foregroundColor(.red)
-                        } else {
-                            Text("Das Budget kann nur bei einem Kontostand von 0,00 € gelöscht werden.")
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.secondary)
-                                .font(.footnote)
+                        Button("Budget löschen", role: .destructive) {
+                            isAskingForDeletionConformation = true
                         }
                     }
                     .padding(.top, 60)

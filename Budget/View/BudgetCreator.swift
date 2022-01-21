@@ -32,6 +32,7 @@ struct BudgetCreator: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Fertig") {
                         let budget = Budget(context: PersistenceController.shared.container.viewContext)
+                        budget.id = UUID()
                         budget.name = budgetName.trimmingCharacters(in: .whitespaces)
                         budget.color = color
                         PersistenceController.shared.save()

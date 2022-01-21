@@ -101,6 +101,6 @@ class UIKitCurrencyField: UILabel, UIKeyInput {
     }
     
     func updateText() {
-        text = NumberFormatter.currency.string(from: amount as NSDecimalNumber)!
+        text = amount.formatted(.eur())
     }
 }

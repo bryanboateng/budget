@@ -1,5 +1,5 @@
 import SwiftUI
-struct BudgetListItem: View {
+struct BudgetRow: View {
     @Environment(\.colorScheme) var colorScheme
     
     @ObservedObject var budget: Budget
@@ -14,7 +14,7 @@ struct BudgetListItem: View {
                     .lineLimit(1)
                     .foregroundColor(budget.color.swiftUIColor)
                     .brightness(colorScheme == .light ? -0.2 : 0)
-                Text("\(budget.totalBalance, formatter: NumberFormatter.currency)")
+                Text(budget.balance!.decimalValue.formatted(.eur()))
                     .font(.system(.body, design: .rounded))
             }
             .padding(10)
@@ -32,7 +32,7 @@ struct ContentView_Previews: PreviewProvider {
         budget.name = "Lebensmittel"
         budget.color = .pink
         
-        return BudgetListItem(budget: budget)
+        return BudgetRow(budget: budget)
             .previewLayout(.sizeThatFits)
     }
 }
