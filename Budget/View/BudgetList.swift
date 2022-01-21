@@ -26,23 +26,21 @@ struct BudgetList: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 VStack(spacing: BudgetList.spacing) {
                     ForEach(budgets, id: \.id!) { budget in
-                        BudgetRow(budget: budget)
-                            .contentShape(
-                                RoundedRectangle(cornerRadius: 16)
-                            )
-                            .contextMenu {
-                                Button {
-                                    budgetChangingBalance = budget
-                                } label: {
-                                    Label("Bewegen", systemImage: "arrow.left.arrow.right")
-                                }
-                                
-                                Button {
-                                    budgetBeingEdited = budget
-                                } label: {
-                                    Label("Bearbeiten", systemImage: "pencil")
-                                }
+                        Menu {
+                            Button {
+                                budgetChangingBalance = budget
+                            } label: {
+                                Label("Bewegen", systemImage: "arrow.left.arrow.right")
                             }
+
+                            Button {
+                                budgetBeingEdited = budget
+                            } label: {
+                                Label("Bearbeiten", systemImage: "pencil")
+                            }
+                        } label: {
+                            BudgetRow(budget: budget)
+                        }
                     }
                 }
             }

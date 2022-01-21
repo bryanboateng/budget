@@ -16,6 +16,7 @@ struct BudgetRow: View {
                     .brightness(colorScheme == .light ? -0.2 : 0)
                 Text(budget.balance!.decimalValue.formatted(.eur()))
                     .font(.system(.body, design: .rounded))
+                    .foregroundColor(.primary) // !!!: Should not be used but .buttonStyle(PlainButtonStyle()) is not working currently
             }
             .padding(10)
             .frame(maxWidth: .infinity, alignment: .leading)
