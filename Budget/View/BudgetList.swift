@@ -55,7 +55,7 @@ struct BudgetList: View {
                             VStack(spacing: BudgetList.spacing) {
                                 ForEach(
                                     (category.budgets! as! Set<Budget>).sorted { lhs, rhs in
-                                        lhs.balance!.compare(rhs.balance!) == .orderedAscending
+                                        lhs.balance!.compare(rhs.balance!) == .orderedDescending
                                     }, id: \Budget.id!
                                 ) { budget in
                                     Menu {
