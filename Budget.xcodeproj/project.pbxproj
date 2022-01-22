@@ -12,6 +12,7 @@
 		B668E3A5261644F50099C3AB /* Budget.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B668E3A3261644F50099C3AB /* Budget.xcdatamodeld */; };
 		B668E3A8261645850099C3AB /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668E3A7261645850099C3AB /* PersistenceController.swift */; };
 		B683B27826069F7800F7F347 /* BudgetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683B27726069F7800F7F347 /* BudgetList.swift */; };
+		B6BC697E279C3783003EAA81 /* CategoryCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BC697D279C3783003EAA81 /* CategoryCreator.swift */; };
 		B6C78A802606AB6D007B2CC5 /* TotalBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A7F2606AB6D007B2CC5 /* TotalBalance.swift */; };
 		B6C78A892606BDC7007B2CC5 /* BudgetCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */; };
 		B6C78A8C2607619E007B2CC5 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */; };
@@ -31,6 +32,7 @@
 		B668E3A4261644F50099C3AB /* Budget.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Budget.xcdatamodel; sourceTree = "<group>"; };
 		B668E3A7261645850099C3AB /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		B683B27726069F7800F7F347 /* BudgetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetList.swift; sourceTree = "<group>"; };
+		B6BC697D279C3783003EAA81 /* CategoryCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCreator.swift; sourceTree = "<group>"; };
 		B6C78A7F2606AB6D007B2CC5 /* TotalBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalBalance.swift; sourceTree = "<group>"; };
 		B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCreator.swift; sourceTree = "<group>"; };
 		B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				B683B27726069F7800F7F347 /* BudgetList.swift */,
+				B6BC697D279C3783003EAA81 /* CategoryCreator.swift */,
 				B6F504BD260695E5005E20A5 /* BudgetRow.swift */,
 				B6C78A7F2606AB6D007B2CC5 /* TotalBalance.swift */,
 				B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */,
@@ -211,6 +214,7 @@
 				B6C78A892606BDC7007B2CC5 /* BudgetCreator.swift in Sources */,
 				B668E3A8261645850099C3AB /* PersistenceController.swift in Sources */,
 				B683B27826069F7800F7F347 /* BudgetList.swift in Sources */,
+				B6BC697E279C3783003EAA81 /* CategoryCreator.swift in Sources */,
 				B6C78A802606AB6D007B2CC5 /* TotalBalance.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

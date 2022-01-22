@@ -5,8 +5,15 @@
         <attribute name="colorRaw" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
+        <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="budgets" inverseEntity="Category"/>
+    </entity>
+    <entity name="Category" representedClassName="Category" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String"/>
+        <relationship name="budgets" toMany="YES" deletionRule="Cascade" destinationEntity="Budget" inverseName="category" inverseEntity="Budget"/>
     </entity>
     <elements>
-        <element name="Budget" positionX="-306.0841674804688" positionY="-538.729248046875" width="128" height="89"/>
+        <element name="Budget" positionX="-306.0841674804688" positionY="-538.729248046875" width="128" height="118"/>
+        <element name="Category" positionX="-308.3245849609375" positionY="-669.95263671875" width="128" height="88"/>
     </elements>
 </model>

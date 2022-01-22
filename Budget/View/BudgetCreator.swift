@@ -3,6 +3,8 @@ import SwiftUI
 struct BudgetCreator: View {
     @Environment(\.presentationMode) var presentationMode
     
+    let category: Category
+    
     @State var budgetName = ""
     @State var color = BudgetColor.allCases.randomElement()!
     
@@ -35,6 +37,7 @@ struct BudgetCreator: View {
                         budget.id = UUID()
                         budget.name = budgetName.trimmingCharacters(in: .whitespaces)
                         budget.color = color
+                        budget.category = category
                         PersistenceController.shared.save()
                         
                         presentationMode.wrappedValue.dismiss()
@@ -49,6 +52,10 @@ struct BudgetCreator: View {
 
 struct BudgetCreator_Previews: PreviewProvider {
     static var previews: some View {
-        BudgetCreator()
+        let category = Category(context: PersistenceController.preview.container.viewContext)
+        category.id = UUID()
+        category.name = "Regularly"
+        
+        return BudgetCreator(category: category)
     }
 }

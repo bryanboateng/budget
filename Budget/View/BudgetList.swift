@@ -4,11 +4,14 @@ struct BudgetList: View {
     private static let spacing: CGFloat = 4
 
     @FetchRequest(
-        entity: Budget.entity(),
+        entity: Category.entity(),
         sortDescriptors: [
-            NSSortDescriptor(keyPath: \Budget.balance, ascending: false),
+            NSSortDescriptor(keyPath: \Category.name, ascending: true),
         ]
-    ) var budgets: FetchedResults<Budget>
+    ) var categories: FetchedResults<Category>
+    
+    @State private var isCreatingCategory = false
+    @State private var categoryBeingExtended: Category?
     
     @State private var isCreatingBudget = false
     @State private var budgetBeingEdited: Budget?
@@ -19,43 +22,81 @@ struct BudgetList: View {
             VStack(alignment: .leading){
                 TotalBalance(
                     amount:
-                        budgets.reduce(0, { x, budget  in
-                            budget.balance!.adding(x)
+                        categories.reduce(0, { partialResult, category in
+                            (category.budgets! as! Set<Budget>).reduce(0, { partialResult, budget in
+                                budget.balance!.adding(partialResult)
+                            }).adding(partialResult)
                         })
                 )
                     .frame(maxWidth: .infinity, alignment: .leading)
-                VStack(spacing: BudgetList.spacing) {
-                    ForEach(budgets, id: \.id!) { budget in
-                        Menu {
-                            Button {
-                                budgetChangingBalance = budget
-                            } label: {
-                                Label("Bewegen", systemImage: "arrow.left.arrow.right")
-                            }
-
-                            Button {
-                                budgetBeingEdited = budget
-                            } label: {
-                                Label("Bearbeiten", systemImage: "pencil")
-                            }
+                
+                ForEach(categories, id: \.id!) { category in
+                    HStack {
+                        Text(category.name!)
+                            .bold()
+                        Spacer()
+                        Button {
+                            categoryBeingExtended = category
                         } label: {
-                            BudgetRow(budget: budget)
+                            Label("Neues Budget", systemImage: "plus")
+                                .labelStyle(.iconOnly)
                         }
                     }
+                    .font(.title3)
+                    .padding(.vertical, 4)
+                    
+                    Group {
+                        if category.budgets!.count == 0 {
+                            Text("In dieser Kategorie gibt es keine Budgets.")
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                                .frame(maxWidth: .infinity, minHeight: 100, alignment: .center)
+                        } else {
+                            VStack(spacing: BudgetList.spacing) {
+                                ForEach(
+                                    (category.budgets! as! Set<Budget>).sorted { lhs, rhs in
+                                        lhs.balance!.compare(rhs.balance!) == .orderedAscending
+                                    }, id: \Budget.id!
+                                ) { budget in
+                                    Menu {
+                                        Button {
+                                            budgetChangingBalance = budget
+                                        } label: {
+                                            Label("Bewegen", systemImage: "arrow.left.arrow.right")
+                                        }
+            
+                                        Button {
+                                            budgetBeingEdited = budget
+                                        } label: {
+                                            Label("Bearbeiten", systemImage: "pencil")
+                                        }
+                                    } label: {
+                                        BudgetRow(budget: budget)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .padding(.bottom, 20)
                 }
             }
             .padding(.horizontal)
         }
         .navigationTitle("Budgets")
         .toolbar {
-            Button {
-                isCreatingBudget = true
-            } label: {
-                Label("Neues Budget", systemImage: "plus")
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    isCreatingCategory = true
+                } label: {
+                    Label("Neue Kategorie", systemImage: "folder.badge.plus")
+                }
             }
         }
-        .sheet(isPresented: $isCreatingBudget) {
-            BudgetCreator()
+        .sheet(isPresented: $isCreatingCategory) {
+            CategoryCreator()
+        }
+        .sheet(item: $categoryBeingExtended) { category in
+            BudgetCreator(category: category)
         }
         .sheet(item: $budgetBeingEdited) { budget in
             BudgetEditor(budget: budget)
