@@ -44,7 +44,7 @@ struct CategoryCreator: View {
     }
 }
 
-struct CategoryCreatory_Previews: PreviewProvider {
+struct CategoryCreator_Previews: PreviewProvider {
     static var previews: some View {
         CategoryCreator()
     }
