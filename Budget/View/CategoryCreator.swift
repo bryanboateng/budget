@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CategoryCreator: View {
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     
     @State var name = ""
     
@@ -21,7 +21,7 @@ struct CategoryCreator: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Abbrechen") {
-                        presentationMode.wrappedValue.dismiss()
+                        dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
@@ -38,7 +38,7 @@ struct CategoryCreator: View {
             category.name = name.trimmingCharacters(in: .whitespaces)
             PersistenceController.shared.save()
             
-            presentationMode.wrappedValue.dismiss()
+            dismiss()
         }
         .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
     }

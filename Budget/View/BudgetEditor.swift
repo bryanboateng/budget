@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct BudgetEditor: View {
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     
     @State private var budgetName = ""
     @State private var color = BudgetColor.green
@@ -35,7 +35,7 @@ struct BudgetEditor: View {
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Abbrechen") {
-                            presentationMode.wrappedValue.dismiss()
+                            dismiss()
                         }
                     }
                     ToolbarItem(placement: .confirmationAction) {
@@ -44,7 +44,7 @@ struct BudgetEditor: View {
                             budget.color = color
                             PersistenceController.shared.save()
                             
-                            presentationMode.wrappedValue.dismiss()
+                            dismiss()
                         }
                         .disabled(budgetName.trimmingCharacters(in: .whitespaces).isEmpty)
                     }
@@ -61,7 +61,7 @@ struct BudgetEditor: View {
                             .destructive(Text("Budget löschen")) {
                                 PersistenceController.shared.container.viewContext.delete(budget)
                                 PersistenceController.shared.save()
-                                presentationMode.wrappedValue.dismiss()
+                                dismiss()
                             },
                             .cancel()
                         ]

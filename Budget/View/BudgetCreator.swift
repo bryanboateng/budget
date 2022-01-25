@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct BudgetCreator: View {
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     
     let category: Category
     
@@ -28,7 +28,7 @@ struct BudgetCreator: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Abbrechen") {
-                        presentationMode.wrappedValue.dismiss()
+                        dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
@@ -40,7 +40,7 @@ struct BudgetCreator: View {
                         budget.category = category
                         PersistenceController.shared.save()
                         
-                        presentationMode.wrappedValue.dismiss()
+                        dismiss()
                     }
                     .disabled(budgetName.trimmingCharacters(in: .whitespaces).isEmpty)
                 }

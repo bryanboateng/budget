@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct BalanceChanger: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) var dismiss
     
     @State private var amount: Decimal = 0
     // TODO: change to Enum
@@ -26,7 +26,7 @@ struct BalanceChanger: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Abbrechen") {
-                        presentationMode.wrappedValue.dismiss()
+                        dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
@@ -45,7 +45,7 @@ struct BalanceChanger: View {
             }
             PersistenceController.shared.save()
             
-            presentationMode.wrappedValue.dismiss()
+            dismiss()
         }
         .disabled(amount == 0.0)
     }
