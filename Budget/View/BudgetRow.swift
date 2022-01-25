@@ -1,4 +1,5 @@
 import SwiftUI
+
 struct BudgetRow: View {
     @Environment(\.colorScheme) var colorScheme
     
@@ -8,20 +9,18 @@ struct BudgetRow: View {
         if (budget.isFault) {
             EmptyView()
         } else {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(budget.name!)
-                    .bold()
-                    .lineLimit(1)
+            HStack {
+                Image(systemName: budget.symbol!)
+                    .symbolRenderingMode(.hierarchical)
                     .foregroundColor(budget.color.swiftUIColor)
-                    .brightness(colorScheme == .light ? -0.2 : 0)
+                    .font(.largeTitle)
+                Text(budget.name!)
+                    .foregroundColor(.primary)
+                    .font(.headline)
+                Spacer()
                 Text(budget.balance!.decimalValue.formatted(.eur()))
-                    .font(.system(.body, design: .rounded))
-                    .foregroundColor(.primary) // !!!: Should not be used but .buttonStyle(PlainButtonStyle()) is not working currently
+                    .foregroundColor(.secondary)
             }
-            .padding(10)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(budget.color.swiftUIColor.opacity(0.35))
-            .cornerRadius(16)
         }
     }
 }

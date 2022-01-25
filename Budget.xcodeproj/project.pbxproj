@@ -3,17 +3,20 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA5D126299259008CADBF /* CurrencyField.swift */; };
 		B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */; };
+		B663DF3427A08E140022E546 /* BudgetCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = B663DF3327A08E140022E546 /* BudgetCanvas.swift */; };
 		B668E3A5261644F50099C3AB /* Budget.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B668E3A3261644F50099C3AB /* Budget.xcdatamodeld */; };
 		B668E3A8261645850099C3AB /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668E3A7261645850099C3AB /* PersistenceController.swift */; };
+		B66C9EF327A03BCD00218C89 /* SymbolPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66C9EF227A03BCD00218C89 /* SymbolPicker.swift */; };
+		B66C9EF527A03CEF00218C89 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66C9EF427A03CEF00218C89 /* Symbols.swift */; };
+		B66C9EF827A0470000218C89 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = B66C9EF727A0470000218C89 /* Collections */; };
 		B683B27826069F7800F7F347 /* BudgetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683B27726069F7800F7F347 /* BudgetList.swift */; };
 		B6BC697E279C3783003EAA81 /* CategoryCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BC697D279C3783003EAA81 /* CategoryCreator.swift */; };
-		B6C78A802606AB6D007B2CC5 /* TotalBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A7F2606AB6D007B2CC5 /* TotalBalance.swift */; };
 		B6C78A892606BDC7007B2CC5 /* BudgetCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */; };
 		B6C78A8C2607619E007B2CC5 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */; };
 		B6E093172628D8DD0091F9A6 /* BalanceChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E093162628D8DD0091F9A6 /* BalanceChanger.swift */; };
@@ -29,11 +32,13 @@
 /* Begin PBXFileReference section */
 		B61DA5D126299259008CADBF /* CurrencyField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyField.swift; sourceTree = "<group>"; };
 		B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormatStyle+Euro.swift"; sourceTree = "<group>"; };
+		B663DF3327A08E140022E546 /* BudgetCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCanvas.swift; sourceTree = "<group>"; };
 		B668E3A4261644F50099C3AB /* Budget.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Budget.xcdatamodel; sourceTree = "<group>"; };
 		B668E3A7261645850099C3AB /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		B66C9EF227A03BCD00218C89 /* SymbolPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolPicker.swift; sourceTree = "<group>"; };
+		B66C9EF427A03CEF00218C89 /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
 		B683B27726069F7800F7F347 /* BudgetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetList.swift; sourceTree = "<group>"; };
 		B6BC697D279C3783003EAA81 /* CategoryCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCreator.swift; sourceTree = "<group>"; };
-		B6C78A7F2606AB6D007B2CC5 /* TotalBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalBalance.swift; sourceTree = "<group>"; };
 		B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCreator.swift; sourceTree = "<group>"; };
 		B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
 		B6E093162628D8DD0091F9A6 /* BalanceChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceChanger.swift; sourceTree = "<group>"; };
@@ -53,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B66C9EF827A0470000218C89 /* Collections in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,20 +72,38 @@
 				B668E3A7261645850099C3AB /* PersistenceController.swift */,
 				B6E4DD0726169286004C3D3C /* Budget+BudgetColor.swift */,
 				B6E4DD0A261692EA004C3D3C /* BudgetColor.swift */,
+				B66C9EF427A03CEF00218C89 /* Symbols.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		B663DF3127A08DE10022E546 /* Budget CRUD */ = {
+			isa = PBXGroup;
+			children = (
+				B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */,
+				B6E4DD13261726DF004C3D3C /* BudgetEditor.swift */,
+				B663DF3327A08E140022E546 /* BudgetCanvas.swift */,
+				B663DF3527A08E460022E546 /* Picker */,
+			);
+			path = "Budget CRUD";
+			sourceTree = "<group>";
+		};
+		B663DF3527A08E460022E546 /* Picker */ = {
+			isa = PBXGroup;
+			children = (
+				B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */,
+				B66C9EF227A03BCD00218C89 /* SymbolPicker.swift */,
+			);
+			path = Picker;
 			sourceTree = "<group>";
 		};
 		B67A913C2659AF96003AADD8 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				B683B27726069F7800F7F347 /* BudgetList.swift */,
-				B6BC697D279C3783003EAA81 /* CategoryCreator.swift */,
 				B6F504BD260695E5005E20A5 /* BudgetRow.swift */,
-				B6C78A7F2606AB6D007B2CC5 /* TotalBalance.swift */,
-				B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */,
-				B6E4DD13261726DF004C3D3C /* BudgetEditor.swift */,
-				B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */,
+				B6BC697D279C3783003EAA81 /* CategoryCreator.swift */,
+				B663DF3127A08DE10022E546 /* Budget CRUD */,
 				B67A913D2659AFC1003AADD8 /* BalanceChanger */,
 			);
 			path = View;
@@ -148,6 +172,9 @@
 			dependencies = (
 			);
 			name = Budget;
+			packageProductDependencies = (
+				B66C9EF727A0470000218C89 /* Collections */,
+			);
 			productName = Budget;
 			productReference = B6F504B8260695E5005E20A5 /* Budget.app */;
 			productType = "com.apple.product-type.application";
@@ -175,6 +202,9 @@
 				Base,
 			);
 			mainGroup = B6F504AF260695E5005E20A5;
+			packageReferences = (
+				B66C9EF627A0470000218C89 /* XCRemoteSwiftPackageReference "swift-collections" */,
+			);
 			productRefGroup = B6F504B9260695E5005E20A5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -202,11 +232,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6F504BE260695E5005E20A5 /* BudgetRow.swift in Sources */,
+				B66C9EF527A03CEF00218C89 /* Symbols.swift in Sources */,
 				B6E4DD0B261692EA004C3D3C /* BudgetColor.swift in Sources */,
 				B668E3A5261644F50099C3AB /* Budget.xcdatamodeld in Sources */,
 				B6F504BC260695E5005E20A5 /* BudgetApp.swift in Sources */,
 				B6E4DD0826169287004C3D3C /* Budget+BudgetColor.swift in Sources */,
 				B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */,
+				B66C9EF327A03BCD00218C89 /* SymbolPicker.swift in Sources */,
 				B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */,
 				B6E093172628D8DD0091F9A6 /* BalanceChanger.swift in Sources */,
 				B6C78A8C2607619E007B2CC5 /* ColorPicker.swift in Sources */,
@@ -215,7 +247,7 @@
 				B668E3A8261645850099C3AB /* PersistenceController.swift in Sources */,
 				B683B27826069F7800F7F347 /* BudgetList.swift in Sources */,
 				B6BC697E279C3783003EAA81 /* CategoryCreator.swift in Sources */,
-				B6C78A802606AB6D007B2CC5 /* TotalBalance.swift in Sources */,
+				B663DF3427A08E140022E546 /* BudgetCanvas.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +440,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B66C9EF627A0470000218C89 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B66C9EF727A0470000218C89 /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B66C9EF627A0470000218C89 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = Collections;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		B668E3A3261644F50099C3AB /* Budget.xcdatamodeld */ = {
