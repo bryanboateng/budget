@@ -15,11 +15,15 @@ struct BudgetRow: View {
                     .foregroundColor(budget.color.swiftUIColor)
                     .font(.largeTitle)
                 Text(budget.name!)
+                    .multilineTextAlignment(.leading)
                     .foregroundColor(.primary)
                     .font(.headline)
                 Spacer()
                 Text(budget.balance!.decimalValue.formatted(.eur()))
                     .foregroundColor(.secondary)
+                    .minimumScaleFactor(0.7)
+                    .lineLimit(nil)
+                    .multilineTextAlignment(.trailing)
             }
         }
     }
