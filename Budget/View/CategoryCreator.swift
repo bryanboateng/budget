@@ -16,7 +16,7 @@ struct CategoryCreator: View {
                     doneButton
                 }
             }
-            .navigationTitle("Neue Zahlung")
+            .navigationTitle("Neue Kategorie")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
