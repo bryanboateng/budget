@@ -5,17 +5,34 @@ struct BalanceChanger: View {
     
     @State private var amount: Decimal = 0
     // TODO: change to Enum
-    @State private var isOutgoingTransaction = false
+    @State private var isOutgoingTransaction = true
     
     @ObservedObject var budget: Budget
+    
+    // !!!: Not used, but necessary for the department view to be refreshed upon employee updates
+    var budgetCount: Int
     
     var body: some View {
         NavigationView {
             Form {
-                CurrencyField(amount: $amount)
-                    .listRowBackground(Color(UIColor.systemGroupedBackground))
+                HStack(alignment: .firstTextBaseline) {
+                    Button {
+                        isOutgoingTransaction.toggle()
+                    } label: {
+                        Image(systemName: isOutgoingTransaction ? "minus.square.fill" : "plus.square.fill")
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundColor(isOutgoingTransaction ? .red : .green)
+                            .font(.system(size: 50, weight: .medium))
+                            .animation(.default, value: isOutgoingTransaction)
+                    }
+                    CurrencyField(amount: $amount)
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+                .listRowBackground(Color(UIColor.systemGroupedBackground))
                 
-                Toggle("Show welcome message", isOn: $isOutgoingTransaction)
+                Section(header: Text("Budget")) {
+                    BudgetRow(budget: budget)
+                }
                 
                 Section {
                     doneButton
@@ -39,9 +56,9 @@ struct BalanceChanger: View {
     var doneButton: some View {
         Button("Fertig") {
             if isOutgoingTransaction {
-                budget.balance = budget.balance!.adding(NSDecimalNumber(decimal: amount))
-            } else {
                 budget.balance = budget.balance!.subtracting(NSDecimalNumber(decimal: amount))
+            } else {
+                budget.balance = budget.balance!.adding(NSDecimalNumber(decimal: amount))
             }
             PersistenceController.shared.save()
             
@@ -58,7 +75,7 @@ struct PaymentCreator_Previews: PreviewProvider {
         budget.name = "Lebensmittel"
         budget.color = .pink
         
-        return BalanceChanger(budget: budget)
+        return BalanceChanger(budget: budget, budgetCount: 0)
             .preferredColorScheme(.dark)
     }
 }

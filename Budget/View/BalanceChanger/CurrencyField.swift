@@ -15,12 +15,16 @@ struct CurrencyField: UIViewRepresentable {
         
         let systemFont = UIFont.systemFont(ofSize: fontSize, weight: .semibold)
         currencyField.font = UIFont(descriptor: systemFont.fontDescriptor.withDesign(.rounded)!, size: fontSize)
+        currencyField.adjustsFontSizeToFitWidth = true
+        currencyField.numberOfLines = 2
+        currencyField.minimumScaleFactor = 0.5
         currencyField.isUserInteractionEnabled = true
         
         let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.handleTap(_:)))
         currencyField.addGestureRecognizer(tapGesture)
         
         currencyField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        currencyField.setContentHuggingPriority(.required, for: .horizontal)
         
         return currencyField
     }

@@ -10,6 +10,13 @@ struct BudgetList: View {
         ]
     ) var categories: FetchedResults<Category>
     
+    // The following is only used to capture department relationship changes
+    @FetchRequest(
+        entity: Budget.entity(),
+        sortDescriptors: [
+        ]
+    ) var budgets: FetchedResults<Budget>
+    
     @State private var isCreatingCategory = false
     @State private var categoryBeingExtended: Category?
     
@@ -97,7 +104,11 @@ struct BudgetList: View {
             BudgetEditor(budget: budget)
         }
         .sheet(item: $budgetChangingBalance) { budget in
-            BalanceChanger(budget: budget)
+            BalanceChanger(
+                budget: budget,
+                // !!!: Required: pass some dependency on employees to trigger view updates
+                budgetCount: budgets.count
+            )
         }
     }
 }
