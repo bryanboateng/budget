@@ -109,7 +109,9 @@ struct Symbols {
             "wave.3.backward.circle.fill",
             "wave.3.right.circle.fill",
             "wave.3.forward.circle.fill",
-            "antenna.radiowaves.left.and.right.circle.fill"
+            "antenna.radiowaves.left.and.right.circle.fill",
+            "airplayvideo.circle.fill",
+            "airplayaudio.circle.fill"
         ],
         "Transport": [
             "airplane.circle.fill",
@@ -369,8 +371,6 @@ struct Symbols {
             "gear.circle.fill",
             "gearshape.circle.fill",
             "ellipsis.circle.fill",
-            "airplayvideo.circle.fill",
-            "airplayaudio.circle.fill",
             "parkingsign.circle.fill",
             "viewfinder.circle.fill",
             "photo.circle.fill",
