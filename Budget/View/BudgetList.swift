@@ -59,7 +59,11 @@ struct BudgetList: View {
                 ) {
                     ForEach(
                         (category.budgets! as! Set<Budget>).sorted { lhs, rhs in
-                            lhs.balance!.compare(rhs.balance!) == .orderedDescending
+                            let balanceComparisonResult = lhs.balance!.compare(rhs.balance!)
+                            if balanceComparisonResult == .orderedSame {
+                                return lhs.name! < rhs.name!
+                            }
+                            return lhs.balance!.compare(rhs.balance!) == .orderedDescending
                         }, id: \Budget.id!
                     ) { budget in
                         Menu {
