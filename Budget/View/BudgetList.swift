@@ -23,6 +23,7 @@ struct BudgetList: View {
     @State private var isCreatingBudget = false
     @State private var budgetBeingEdited: Budget?
     @State private var budgetChangingBalance: Budget?
+    @State private var budgetBeingDeleted: Budget?
     
     private var totalBalance: NSDecimalNumber {
         return categories.reduce(0, { partialResult, category in
@@ -78,6 +79,12 @@ struct BudgetList: View {
                             } label: {
                                 Label("Bearbeiten", systemImage: "pencil")
                             }
+                            
+                            Button(role: .destructive) {
+                                budgetBeingDeleted = budget
+                            } label: {
+                                Label("Löschen", systemImage: "trash")
+                            }
                         } label: {
                             HStack {
                                 BudgetRow(budget: budget)
@@ -112,6 +119,19 @@ struct BudgetList: View {
                 budget: budget,
                 // !!!: Required: pass some dependency on employees to trigger view updates
                 budgetCount: budgets.count
+            )
+        }
+        .actionSheet(item: $budgetBeingDeleted) { budget in
+            ActionSheet(
+                title: Text("\(budget.name!) löschen"),
+                message: Text("Soll das Budget \(budget.name!) wirklich gelöscht werden?"),
+                buttons: [
+                    .destructive(Text("Budget löschen")) {
+                        PersistenceController.shared.container.viewContext.delete(budget)
+                        PersistenceController.shared.save()
+                    },
+                    .cancel()
+                ]
             )
         }
     }
