@@ -3,6 +3,8 @@ import SwiftUI
 struct BalanceChanger: View {
     @Environment(\.dismiss) var dismiss
     
+    @ScaledMetric private var fontSize: CGFloat = 50
+
     @State private var amount: Decimal = 0
     // TODO: change to Enum
     @State private var isOutgoingTransaction = true
@@ -22,10 +24,10 @@ struct BalanceChanger: View {
                         Image(systemName: isOutgoingTransaction ? "minus.square.fill" : "plus.square.fill")
                             .symbolRenderingMode(.hierarchical)
                             .foregroundColor(isOutgoingTransaction ? .red : .green)
-                            .font(.system(size: 50, weight: .medium))
-                            .animation(.default, value: isOutgoingTransaction)
+                            .font(.system(size: fontSize, weight: .medium))
+                            .minimumScaleFactor(0.5)
                     }
-                    CurrencyField(amount: $amount)
+                    CurrencyField(amount: $amount, fontSize: fontSize)
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
                 .listRowBackground(Color(UIColor.systemGroupedBackground))

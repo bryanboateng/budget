@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct CurrencyField: UIViewRepresentable {
-    @ScaledMetric private var fontSize: CGFloat = 50
     @Binding var amount: Decimal
+    let fontSize: CGFloat
     
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
