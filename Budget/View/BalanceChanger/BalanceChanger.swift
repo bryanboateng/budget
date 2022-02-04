@@ -8,6 +8,7 @@ struct BalanceChanger: View {
     @State private var amount: Decimal = 0
     // TODO: change to Enum
     @State private var isOutgoingTransaction = true
+    @State private var isAskingForConfirmation = false
     
     @ObservedObject var budget: Budget
     
@@ -52,19 +53,33 @@ struct BalanceChanger: View {
                     doneButton
                 }
             }
+            .actionSheet(isPresented: $isAskingForConfirmation) {
+                let sign = isOutgoingTransaction ? "-" : "+"
+                let preposition = isOutgoingTransaction ? "vom" : "in das"
+                return ActionSheet(
+                    title: Text("Zahlung bestätigen"),
+                    message: Text("Soll die Zahlung von \(sign)\(amount.formatted(.eur())) \(preposition) Budget \(budget.name!) wirklich durchgeführt werden?"),
+                    buttons: [
+                        .default(Text("Zahlung bestätigen")) {
+                            if isOutgoingTransaction {
+                                budget.balance = budget.balance!.subtracting(NSDecimalNumber(decimal: amount))
+                            } else {
+                                budget.balance = budget.balance!.adding(NSDecimalNumber(decimal: amount))
+                            }
+                            PersistenceController.shared.save()
+                            
+                            dismiss()
+                        },
+                        .cancel()
+                    ]
+                )
+            }
         }
     }
     
     var doneButton: some View {
         Button("Fertig") {
-            if isOutgoingTransaction {
-                budget.balance = budget.balance!.subtracting(NSDecimalNumber(decimal: amount))
-            } else {
-                budget.balance = budget.balance!.adding(NSDecimalNumber(decimal: amount))
-            }
-            PersistenceController.shared.save()
-            
-            dismiss()
+            isAskingForConfirmation = true
         }
         .disabled(amount == 0.0)
     }
