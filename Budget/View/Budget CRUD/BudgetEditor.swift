@@ -6,7 +6,6 @@ struct BudgetEditor: View {
     @State private var budgetName = ""
     @State private var color = BudgetColor.green
     @State private var symbol = ""
-    @State private var isAskingForDeletionConformation = false
     
     @ObservedObject var budget: Budget
     
@@ -38,20 +37,6 @@ struct BudgetEditor: View {
                         budgetName = budget.name!
                         color = budget.color
                         symbol = budget.symbol!
-                    }
-                    .actionSheet(isPresented: $isAskingForDeletionConformation) {
-                        ActionSheet(
-                            title: Text("\(budget.name!) löschen"),
-                            message: Text("Soll das Budget \(budget.name!) wirklich gelöscht werden?"),
-                            buttons: [
-                                .destructive(Text("Budget löschen")) {
-                                    PersistenceController.shared.container.viewContext.delete(budget)
-                                    PersistenceController.shared.save()
-                                    dismiss()
-                                },
-                                .cancel()
-                            ]
-                        )
                     }
             }
         }
