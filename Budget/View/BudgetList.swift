@@ -37,7 +37,6 @@ struct BudgetList: View {
         List {
             HStack {
                 Text("Gesamter Stand")
-                    .foregroundColor(.primary)
                     .font(.headline)
                 Spacer()
                 Text(totalBalance.decimalValue.formatted(.eur()))
