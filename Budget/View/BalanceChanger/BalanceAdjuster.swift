@@ -65,6 +65,9 @@ struct BalanceAdjuster: View {
                             } else {
                                 budget.balance = budget.balance!.adding(NSDecimalNumber(decimal: amount))
                             }
+                            
+                            budget.lastBalanceAdjustment = NSDecimalNumber(decimal: (isOutgoingTransaction ? -1 : 1) * amount)
+                            
                             PersistenceController.shared.save()
                             
                             dismiss()

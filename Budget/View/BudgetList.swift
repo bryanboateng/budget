@@ -24,6 +24,7 @@ struct BudgetList: View {
     @State private var budgetBeingEdited: Budget?
     @State private var budgetAdjustingBalance: Budget?
     @State private var budgetBeingDeleted: Budget?
+    @State private var budgetWhosLastBalanceAdjustmentIsBeingShown: Budget?
     
     private var totalBalance: NSDecimalNumber {
         return categories.reduce(0, { partialResult, category in
@@ -70,6 +71,12 @@ struct BudgetList: View {
                                 budgetAdjustingBalance = budget
                             } label: {
                                 Label("Saldo anpassen", systemImage: "arrow.left.arrow.right")
+                            }
+                            
+                            Button {
+                                budgetWhosLastBalanceAdjustmentIsBeingShown = budget
+                            } label: {
+                                Label("Letzte Saldoanpassung", systemImage: "clock")
                             }
                             
                             Button {
@@ -132,6 +139,7 @@ struct BudgetList: View {
                 ]
             )
         }
+        .lastBalanceAdjustmentOverlay(budget: $budgetWhosLastBalanceAdjustmentIsBeingShown)
     }
 }
 

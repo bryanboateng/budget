@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B60CD58227B0108F00C9ECA0 /* LastBalanceAdjustmentOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60CD58127B0108F00C9ECA0 /* LastBalanceAdjustmentOverlay.swift */; };
 		B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA5D126299259008CADBF /* CurrencyField.swift */; };
 		B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */; };
 		B663DF3427A08E140022E546 /* BudgetCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = B663DF3327A08E140022E546 /* BudgetCanvas.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B60CD58127B0108F00C9ECA0 /* LastBalanceAdjustmentOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastBalanceAdjustmentOverlay.swift; sourceTree = "<group>"; };
 		B61DA5D126299259008CADBF /* CurrencyField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyField.swift; sourceTree = "<group>"; };
 		B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormatStyle+Euro.swift"; sourceTree = "<group>"; };
 		B663DF3327A08E140022E546 /* BudgetCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCanvas.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				B683B27726069F7800F7F347 /* BudgetList.swift */,
 				B6F504BD260695E5005E20A5 /* BudgetRow.swift */,
 				B6BC697D279C3783003EAA81 /* CategoryCreator.swift */,
+				B60CD58127B0108F00C9ECA0 /* LastBalanceAdjustmentOverlay.swift */,
 				B663DF3127A08DE10022E546 /* Budget CRUD */,
 				B67A913D2659AFC1003AADD8 /* BalanceChanger */,
 			);
@@ -231,6 +234,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B60CD58227B0108F00C9ECA0 /* LastBalanceAdjustmentOverlay.swift in Sources */,
 				B6F504BE260695E5005E20A5 /* BudgetRow.swift in Sources */,
 				B66C9EF527A03CEF00218C89 /* Symbols.swift in Sources */,
 				B6E4DD0B261692EA004C3D3C /* BudgetColor.swift in Sources */,

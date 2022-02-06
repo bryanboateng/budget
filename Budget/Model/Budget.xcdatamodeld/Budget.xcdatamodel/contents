@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21D49" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Budget" representedClassName="Budget" syncable="YES" codeGenerationType="class">
         <attribute name="balance" attributeType="Decimal" defaultValueString="0.0"/>
         <attribute name="colorRaw" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="lastBalanceAdjustment" optional="YES" attributeType="Decimal" defaultValueString="0"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="symbol" attributeType="String"/>
         <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="budgets" inverseEntity="Category"/>
@@ -14,7 +15,7 @@
         <relationship name="budgets" toMany="YES" deletionRule="Cascade" destinationEntity="Budget" inverseName="category" inverseEntity="Budget"/>
     </entity>
     <elements>
-        <element name="Budget" positionX="-306.0841674804688" positionY="-538.729248046875" width="128" height="119"/>
-        <element name="Category" positionX="-308.3245849609375" positionY="-669.95263671875" width="128" height="74"/>
+        <element name="Budget" positionX="-306.0841674804688" positionY="-538.729248046875" width="128" height="148"/>
+        <element name="Category" positionX="-308.3245849609375" positionY="-669.95263671875" width="128" height="88"/>
     </elements>
 </model>
