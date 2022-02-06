@@ -10,14 +10,17 @@ struct BudgetRow: View {
             EmptyView()
         } else {
             HStack {
-                Image(systemName: budget.symbol!)
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundColor(budget.color.swiftUIColor)
-                    .font(.largeTitle)
-                Text(budget.name!)
-                    .multilineTextAlignment(.leading)
-                    .foregroundColor(.primary)
-                    .font(.headline)
+                Label {
+                    Text(budget.name!)
+                        .multilineTextAlignment(.leading)
+                        .foregroundColor(.primary)
+                        .font(.headline)
+                } icon: {
+                    Image(systemName: budget.symbol!)
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundColor(budget.color.swiftUIColor)
+                        .font(.largeTitle)
+                }
                 Spacer()
                 Text(budget.balance!.decimalValue.formatted(.eur()))
                     .foregroundColor(.primary)
