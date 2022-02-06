@@ -19,7 +19,7 @@
 		B6BC697E279C3783003EAA81 /* CategoryCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BC697D279C3783003EAA81 /* CategoryCreator.swift */; };
 		B6C78A892606BDC7007B2CC5 /* BudgetCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */; };
 		B6C78A8C2607619E007B2CC5 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */; };
-		B6E093172628D8DD0091F9A6 /* BalanceChanger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E093162628D8DD0091F9A6 /* BalanceChanger.swift */; };
+		B6E093172628D8DD0091F9A6 /* BalanceAdjuster.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E093162628D8DD0091F9A6 /* BalanceAdjuster.swift */; };
 		B6E4DD0826169287004C3D3C /* Budget+BudgetColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E4DD0726169286004C3D3C /* Budget+BudgetColor.swift */; };
 		B6E4DD0B261692EA004C3D3C /* BudgetColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E4DD0A261692EA004C3D3C /* BudgetColor.swift */; };
 		B6E4DD14261726DF004C3D3C /* BudgetEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E4DD13261726DF004C3D3C /* BudgetEditor.swift */; };
@@ -41,7 +41,7 @@
 		B6BC697D279C3783003EAA81 /* CategoryCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCreator.swift; sourceTree = "<group>"; };
 		B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCreator.swift; sourceTree = "<group>"; };
 		B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
-		B6E093162628D8DD0091F9A6 /* BalanceChanger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceChanger.swift; sourceTree = "<group>"; };
+		B6E093162628D8DD0091F9A6 /* BalanceAdjuster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceAdjuster.swift; sourceTree = "<group>"; };
 		B6E4DD0726169286004C3D3C /* Budget+BudgetColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Budget+BudgetColor.swift"; sourceTree = "<group>"; };
 		B6E4DD0A261692EA004C3D3C /* BudgetColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetColor.swift; sourceTree = "<group>"; };
 		B6E4DD13261726DF004C3D3C /* BudgetEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetEditor.swift; sourceTree = "<group>"; };
@@ -112,7 +112,7 @@
 		B67A913D2659AFC1003AADD8 /* BalanceChanger */ = {
 			isa = PBXGroup;
 			children = (
-				B6E093162628D8DD0091F9A6 /* BalanceChanger.swift */,
+				B6E093162628D8DD0091F9A6 /* BalanceAdjuster.swift */,
 				B61DA5D126299259008CADBF /* CurrencyField.swift */,
 			);
 			path = BalanceChanger;
@@ -240,7 +240,7 @@
 				B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */,
 				B66C9EF327A03BCD00218C89 /* SymbolPicker.swift in Sources */,
 				B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */,
-				B6E093172628D8DD0091F9A6 /* BalanceChanger.swift in Sources */,
+				B6E093172628D8DD0091F9A6 /* BalanceAdjuster.swift in Sources */,
 				B6C78A8C2607619E007B2CC5 /* ColorPicker.swift in Sources */,
 				B6E4DD14261726DF004C3D3C /* BudgetEditor.swift in Sources */,
 				B6C78A892606BDC7007B2CC5 /* BudgetCreator.swift in Sources */,

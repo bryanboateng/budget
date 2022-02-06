@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct BalanceChanger: View {
+struct BalanceAdjuster: View {
     @Environment(\.dismiss) var dismiss
     
     @ScaledMetric private var fontSize: CGFloat = 50
@@ -92,7 +92,7 @@ struct PaymentCreator_Previews: PreviewProvider {
         budget.name = "Lebensmittel"
         budget.color = .pink
         
-        return BalanceChanger(budget: budget, budgetCount: 0)
+        return BalanceAdjuster(budget: budget, budgetCount: 0)
             .preferredColorScheme(.dark)
     }
 }

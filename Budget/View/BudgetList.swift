@@ -22,7 +22,7 @@ struct BudgetList: View {
     
     @State private var isCreatingBudget = false
     @State private var budgetBeingEdited: Budget?
-    @State private var budgetChangingBalance: Budget?
+    @State private var budgetAdjustingBalance: Budget?
     @State private var budgetBeingDeleted: Budget?
     
     private var totalBalance: NSDecimalNumber {
@@ -67,7 +67,7 @@ struct BudgetList: View {
                     ) { budget in
                         Menu {
                             Button {
-                                budgetChangingBalance = budget
+                                budgetAdjustingBalance = budget
                             } label: {
                                 Label("Bewegen", systemImage: "arrow.left.arrow.right")
                             }
@@ -112,8 +112,8 @@ struct BudgetList: View {
         .sheet(item: $budgetBeingEdited) { budget in
             BudgetEditor(budget: budget)
         }
-        .sheet(item: $budgetChangingBalance) { budget in
-            BalanceChanger(
+        .sheet(item: $budgetAdjustingBalance) { budget in
+            BalanceAdjuster(
                 budget: budget,
                 // !!!: Required: pass some dependency on employees to trigger view updates
                 budgetCount: budgets.count
