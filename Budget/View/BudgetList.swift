@@ -41,7 +41,7 @@ struct BudgetList: View {
                     .font(.headline)
                 Spacer()
                 Text(totalBalance.decimalValue.formatted(.eur()))
-                    .font(.headline)
+                    .font(.system(.headline, design: .rounded))
             }
             ForEach(categories, id: \.id!) { category in
                 Section(

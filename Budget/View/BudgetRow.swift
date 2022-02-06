@@ -21,6 +21,7 @@ struct BudgetRow: View {
                 Spacer()
                 Text(budget.balance!.decimalValue.formatted(.eur()))
                     .foregroundColor(.primary)
+                    .font(.system(.body, design: .rounded))
                     .minimumScaleFactor(0.7)
                     .lineLimit(nil)
                     .multilineTextAlignment(.trailing)
