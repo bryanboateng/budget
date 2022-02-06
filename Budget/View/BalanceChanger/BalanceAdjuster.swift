@@ -41,7 +41,7 @@ struct BalanceAdjuster: View {
                     doneButton
                 }
             }
-            .navigationTitle("Neue Zahlung")
+            .navigationTitle("Saldo anpassen")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -55,12 +55,11 @@ struct BalanceAdjuster: View {
             }
             .actionSheet(isPresented: $isAskingForConfirmation) {
                 let sign = isOutgoingTransaction ? "-" : "+"
-                let preposition = isOutgoingTransaction ? "vom" : "in das"
                 return ActionSheet(
-                    title: Text("Zahlung bestätigen"),
-                    message: Text("Soll die Zahlung von \(sign)\(amount.formatted(.eur())) \(preposition) Budget \(budget.name!) wirklich durchgeführt werden?"),
+                    title: Text("Saldo anpassen"),
+                    message: Text("Soll die Anpasung von \(sign)\(amount.formatted(.eur())) im Budget \(budget.name!) wirklich durchgeführt werden?"),
                     buttons: [
-                        .default(Text("Zahlung bestätigen")) {
+                        .default(Text("Saldoanpassung bestätigen")) {
                             if isOutgoingTransaction {
                                 budget.balance = budget.balance!.subtracting(NSDecimalNumber(decimal: amount))
                             } else {

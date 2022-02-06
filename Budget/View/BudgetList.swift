@@ -69,7 +69,7 @@ struct BudgetList: View {
                             Button {
                                 budgetAdjustingBalance = budget
                             } label: {
-                                Label("Bewegen", systemImage: "arrow.left.arrow.right")
+                                Label("Saldo anpassen", systemImage: "arrow.left.arrow.right")
                             }
                             
                             Button {
