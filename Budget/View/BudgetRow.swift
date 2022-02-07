@@ -9,25 +9,18 @@ struct BudgetRow: View {
         if (budget.isFault) {
             EmptyView()
         } else {
-            HStack {
-                Label {
-                    Text(budget.name!)
-                        .multilineTextAlignment(.leading)
-                        .foregroundColor(.primary)
-                        .font(.headline)
-                } icon: {
-                    Image(systemName: budget.symbol!)
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundColor(budget.color.swiftUIColor)
-                        .font(.largeTitle)
-                }
-                Spacer()
-                Text(budget.balance!.decimalValue.formatted(.eur()))
-                    .foregroundColor(.primary)
-                    .minimumScaleFactor(0.7)
-                    .lineLimit(nil)
-                    .multilineTextAlignment(.trailing)
+            Label {
+                Text(budget.name!)
+                    .multilineTextAlignment(.leading)
+                    .font(.headline)
+            } icon: {
+                Image(systemName: budget.symbol!)
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundColor(budget.color.swiftUIColor)
+                    .font(.largeTitle)
             }
+            .badge(budget.balance!.decimalValue.formatted(.eur()))
+            .foregroundColor(.primary)
         }
     }
 }

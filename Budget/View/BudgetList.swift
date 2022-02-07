@@ -36,13 +36,9 @@ struct BudgetList: View {
     
     var body: some View {
         List {
-            HStack {
-                Text("Gesamter Stand")
-                    .font(.headline)
-                Spacer()
-                Text(totalBalance.decimalValue.formatted(.eur()))
-                    .bold()
-            }
+            Text("Gesamter Stand")
+                .font(.headline)
+                .badge(totalBalance.decimalValue.formatted(.eur()))
             ForEach(categories, id: \.id!) { category in
                 Section(
                     header:
