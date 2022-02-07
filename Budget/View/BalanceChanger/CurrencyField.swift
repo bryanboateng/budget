@@ -13,8 +13,7 @@ struct CurrencyField: UIViewRepresentable {
         currencyField.delegate = context.coordinator
         currencyField.textAlignment = .center
         
-        let systemFont = UIFont.systemFont(ofSize: fontSize, weight: .semibold)
-        currencyField.font = UIFont(descriptor: systemFont.fontDescriptor.withDesign(.rounded)!, size: fontSize)
+        currencyField.font = UIFont.systemFont(ofSize: fontSize, weight: .semibold)
         currencyField.adjustsFontSizeToFitWidth = true
         currencyField.numberOfLines = 2
         currencyField.minimumScaleFactor = 0.5
