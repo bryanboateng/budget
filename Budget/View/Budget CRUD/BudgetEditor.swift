@@ -3,7 +3,7 @@ import SwiftUI
 struct BudgetEditor: View {
     @Environment(\.dismiss) var dismiss
     
-    @State private var budgetName = ""
+    @State private var name = ""
     @State private var color = BudgetColor.green
     @State private var symbol = ""
     
@@ -14,7 +14,7 @@ struct BudgetEditor: View {
             EmptyView()
         } else {
             NavigationView {
-                BudgetCanvas(name: $budgetName, color: $color, symbol: $symbol)
+                BudgetCanvas(name: $name, color: $color, symbol: $symbol)
                     .navigationTitle("Budget bearbeiten")
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
@@ -24,17 +24,17 @@ struct BudgetEditor: View {
                         }
                         ToolbarItem(placement: .confirmationAction) {
                             Button("Fertig") {
-                                budget.name = budgetName.trimmingCharacters(in: .whitespaces)
+                                budget.name = name.trimmingCharacters(in: .whitespaces)
                                 budget.color = color
                                 budget.symbol = symbol
                                 PersistenceController.shared.save()
                                 dismiss()
                             }
-                            .disabled(budgetName.trimmingCharacters(in: .whitespaces).isEmpty)
+                            .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
                         }
                     }
                     .onAppear {
-                        budgetName = budget.name!
+                        name = budget.name!
                         color = budget.color
                         symbol = budget.symbol!
                     }

@@ -6,13 +6,13 @@ struct BudgetCreator: View {
     
     let category: Category
     
-    @State var budgetName = ""
+    @State var name = ""
     @State var color = BudgetColor.allCases.randomElement()!
     @State var symbol = Symbols.symbols.values.randomElement()!.randomElement()!
     
     var body: some View {
         NavigationView {
-            BudgetCanvas(name: $budgetName, color: $color, symbol: $symbol)
+            BudgetCanvas(name: $name, color: $color, symbol: $symbol)
                 .navigationTitle("Neues Budget")
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
@@ -24,7 +24,7 @@ struct BudgetCreator: View {
                         Button("Fertig") {
                             let budget = Budget(context: PersistenceController.shared.container.viewContext)
                             budget.id = UUID()
-                            budget.name = budgetName.trimmingCharacters(in: .whitespaces)
+                            budget.name = name.trimmingCharacters(in: .whitespaces)
                             budget.color = color
                             budget.category = category
                             budget.symbol = symbol
@@ -32,7 +32,7 @@ struct BudgetCreator: View {
                             
                             dismiss()
                         }
-                        .disabled(budgetName.trimmingCharacters(in: .whitespaces).isEmpty)
+                        .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
                     }
                 }
         }
