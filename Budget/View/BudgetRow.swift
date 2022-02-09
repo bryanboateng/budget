@@ -12,12 +12,10 @@ struct BudgetRow: View {
             Label {
                 Text(budget.name!)
                     .multilineTextAlignment(.leading)
-                    .font(.headline)
             } icon: {
                 Image(systemName: budget.symbol!)
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundColor(budget.color.swiftUIColor)
-                    .font(.largeTitle)
+                    .font(.title2)
+                    .foregroundColor(budget.category!.color.swiftUIColor)
             }
             .badge(budget.balance!.decimalValue.formatted(.eur()))
             .foregroundColor(.primary)
@@ -30,7 +28,6 @@ struct ContentView_Previews: PreviewProvider {
         
         let budget = Budget(context: PersistenceController.preview.container.viewContext)
         budget.name = "Lebensmittel"
-        budget.color = .pink
         
         return BudgetRow(budget: budget)
             .previewLayout(.sizeThatFits)

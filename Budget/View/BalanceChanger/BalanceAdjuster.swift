@@ -92,7 +92,6 @@ struct PaymentCreator_Previews: PreviewProvider {
         
         let budget = Budget(context: PersistenceController.preview.container.viewContext)
         budget.name = "Lebensmittel"
-        budget.color = .pink
         
         return BalanceAdjuster(budget: budget, budgetCount: 0)
             .preferredColorScheme(.dark)

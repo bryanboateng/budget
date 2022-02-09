@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum BudgetColor: Int16, CaseIterable  {
+enum CategoryColor: Int16, CaseIterable  {
     case red = 1
     case orange = 2
     case yellow = 3

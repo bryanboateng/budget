@@ -4,7 +4,6 @@ struct BudgetEditor: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var name = ""
-    @State private var color = BudgetColor.green
     @State private var symbol = ""
     
     @ObservedObject var budget: Budget
@@ -14,7 +13,7 @@ struct BudgetEditor: View {
             EmptyView()
         } else {
             NavigationView {
-                BudgetCanvas(name: $name, color: $color, symbol: $symbol)
+                BudgetCanvas(name: $name, symbol: $symbol, color: budget.category!.color)
                     .navigationTitle("Budget bearbeiten")
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
@@ -25,7 +24,6 @@ struct BudgetEditor: View {
                         ToolbarItem(placement: .confirmationAction) {
                             Button("Fertig") {
                                 budget.name = name.trimmingCharacters(in: .whitespaces)
-                                budget.color = color
                                 budget.symbol = symbol
                                 PersistenceController.shared.save()
                                 dismiss()
@@ -35,7 +33,6 @@ struct BudgetEditor: View {
                     }
                     .onAppear {
                         name = budget.name!
-                        color = budget.color
                         symbol = budget.symbol!
                     }
             }
@@ -48,7 +45,6 @@ struct BudgetEditor_Previews: PreviewProvider {
         
         let budget = Budget(context: PersistenceController.preview.container.viewContext)
         budget.name = "Lebensmittel"
-        budget.color = .pink
         
         return BudgetEditor(budget: budget)
     }

@@ -1,19 +1,16 @@
 import SwiftUI
 
-
-struct BudgetCreator: View {
+struct CategoryCreator: View {
     @Environment(\.dismiss) var dismiss
     
-    let category: Category
-    
     @State var name = ""
-    @State var color = BudgetColor.allCases.randomElement()!
+    @State var color = CategoryColor.allCases.randomElement()!
     @State var symbol = Symbols.symbols.values.randomElement()!.randomElement()!
     
     var body: some View {
         NavigationView {
-            BudgetCanvas(name: $name, color: $color, symbol: $symbol)
-                .navigationTitle("Neues Budget")
+            CategoryCanvas(name: $name, color: $color)
+                .navigationTitle("Neue Kategorie")
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Abbrechen") {
@@ -22,12 +19,10 @@ struct BudgetCreator: View {
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Fertig") {
-                            let budget = Budget(context: PersistenceController.shared.container.viewContext)
-                            budget.id = UUID()
-                            budget.name = name.trimmingCharacters(in: .whitespaces)
-                            budget.color = color
-                            budget.category = category
-                            budget.symbol = symbol
+                            let category = Category(context: PersistenceController.shared.container.viewContext)
+                            category.id = UUID()
+                            category.name = name.trimmingCharacters(in: .whitespaces)
+                            category.color = color
                             PersistenceController.shared.save()
                             
                             dismiss()
@@ -39,12 +34,8 @@ struct BudgetCreator: View {
     }
 }
 
-struct BudgetCreator_Previews: PreviewProvider {
+struct CategoryCreator_Previews: PreviewProvider {
     static var previews: some View {
-        let category = Category(context: PersistenceController.preview.container.viewContext)
-        category.id = UUID()
-        category.name = "Regularly"
-        
-        return BudgetCreator(category: category)
+        CategoryCreator()
     }
 }
