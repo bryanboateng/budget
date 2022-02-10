@@ -36,7 +36,7 @@ struct SymbolPicker: View {
                     }
                 }
                 .padding()
-                .navigationTitle("Contacts")
+                .navigationTitle("Symbols")
                 .searchable(text: $searchText)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
