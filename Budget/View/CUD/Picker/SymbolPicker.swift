@@ -11,18 +11,16 @@ struct SymbolPicker: View {
         NavigationView {
             ScrollView {
                 ForEach(searchResult.keys, id: \.self) { category in
-                    VStack(alignment: .leading) {
-                        Text(category)
-                            .font(.headline)
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100), spacing: 10)], spacing: 10) {
+                    DisclosureGroup {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 75), spacing: 10)], spacing: 10) {
                             ForEach(searchResult[category]!, id: \.self) { symbol in
                                 Button {
                                     self.selectedSymbol = symbol
                                     dismiss()
                                 } label: {
                                     Image(systemName: symbol)
-                                        .font(.system(size: 35, weight: .regular))
-                                        .frame(height: 70)
+                                        .font(.system(size: 26, weight: .regular))
+                                        .frame(height: 50)
                                         .frame(maxWidth: .infinity, alignment: .center)
                                         .background(
                                             RoundedRectangle(cornerRadius: 6)
@@ -33,6 +31,10 @@ struct SymbolPicker: View {
                                 .buttonStyle(RoundedRectangleButton())
                             }
                         }
+                    } label: {
+                        Text(category)
+                            .font(.headline)
+                            .foregroundColor(.primary)
                     }
                 }
                 .padding()
