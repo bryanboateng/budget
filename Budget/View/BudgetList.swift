@@ -1,21 +1,9 @@
 import SwiftUI
 
 struct BudgetList: View {
+    @EnvironmentObject private var model: Model
+    
     private static let spacing: CGFloat = 4
-    
-    @FetchRequest(
-        entity: Category.entity(),
-        sortDescriptors: [
-            NSSortDescriptor(keyPath: \Category.name, ascending: true),
-        ]
-    ) var categories: FetchedResults<Category>
-    
-    // The following is only used to capture department relationship changes
-    @FetchRequest(
-        entity: Budget.entity(),
-        sortDescriptors: [
-        ]
-    ) var budgets: FetchedResults<Budget>
     
     @State private var isCreatingCategory = false
     @State private var categoryBeingExtended: Category?
@@ -26,24 +14,24 @@ struct BudgetList: View {
     @State private var budgetBeingDeleted: Budget?
     @State private var budgetWhosLastBalanceAdjustmentIsBeingShown: Budget?
     
-    private var totalBalance: NSDecimalNumber {
-        return categories.reduce(0, { partialResult, category in
-            (category.budgets! as! Set<Budget>).reduce(0, { partialResult, budget in
-                budget.balance!.adding(partialResult)
-            }).adding(partialResult)
-        })
+    private var totalBalance: Decimal {
+        model.categories.reduce(0) { partialResult, category in
+            partialResult + category.budgets.reduce(0) { partialResult, budget in
+                partialResult + budget.balance
+            }
+        }
     }
     
     var body: some View {
         List {
             Text("Gesamter Stand")
                 .font(.headline)
-                .badge(totalBalance.decimalValue.formatted(.eur()))
-            ForEach(categories, id: \.id!) { category in
+                .badge(totalBalance.formatted(.eur()))
+            ForEach(model.categories) { category in
                 Section(
                     header:
                         HStack {
-                            Text(category.name!)
+                            Text(category.name)
                             Spacer()
                             Button {
                                 categoryBeingExtended = category
@@ -54,13 +42,12 @@ struct BudgetList: View {
                         }
                 ) {
                     ForEach(
-                        (category.budgets! as! Set<Budget>).sorted { lhs, rhs in
-                            let balanceComparisonResult = lhs.balance!.compare(rhs.balance!)
-                            if balanceComparisonResult == .orderedSame {
-                                return lhs.name! < rhs.name!
+                        category.budgets.sorted { lhs, rhs in
+                            if lhs.balance == rhs.balance {
+                                return lhs.name < rhs.name
                             }
-                            return lhs.balance!.compare(rhs.balance!) == .orderedDescending
-                        }, id: \Budget.id!
+                            return lhs.balance < rhs.balance
+                        }
                     ) { budget in
                         Menu {
                             Button {
@@ -88,12 +75,30 @@ struct BudgetList: View {
                             }
                         } label: {
                             HStack {
-                                BudgetRow(budget: budget)
+                                BudgetRow(budget: budget, color: category.color)
                             }
                         }
                     }
                 }
                 .headerProminence(.increased)
+                .sheet(item: $budgetBeingEdited) { budget in
+                    BudgetEditor(budget: budget, category: category)
+                }
+                .sheet(item: $budgetAdjustingBalance) { budget in
+                    BalanceAdjuster(budget: budget, category: category)
+                }
+                .actionSheet(item: $budgetBeingDeleted) { budget in
+                    ActionSheet(
+                        title: Text("\(budget.name) löschen"),
+                        message: Text("Soll das Budget \(budget.name) wirklich gelöscht werden?"),
+                        buttons: [
+                            .destructive(Text("Budget löschen")) {
+                                model.delete(budget, inCategory: category)
+                            },
+                            .cancel()
+                        ]
+                    )
+                }
             }
         }
         .navigationTitle("Budgets")
@@ -112,43 +117,6 @@ struct BudgetList: View {
         .sheet(item: $categoryBeingExtended) { category in
             BudgetCreator(category: category)
         }
-        .sheet(item: $budgetBeingEdited) { budget in
-            BudgetEditor(budget: budget)
-        }
-        .sheet(item: $budgetAdjustingBalance) { budget in
-            BalanceAdjuster(
-                budget: budget,
-                // !!!: Required: pass some dependency on employees to trigger view updates
-                budgetCount: budgets.count
-            )
-        }
-        .actionSheet(item: $budgetBeingDeleted) { budget in
-            ActionSheet(
-                title: Text("\(budget.name!) löschen"),
-                message: Text("Soll das Budget \(budget.name!) wirklich gelöscht werden?"),
-                buttons: [
-                    .destructive(Text("Budget löschen")) {
-                        PersistenceController.shared.container.viewContext.delete(budget)
-                        PersistenceController.shared.save()
-                    },
-                    .cancel()
-                ]
-            )
-        }
         .lastBalanceAdjustmentOverlay(budget: $budgetWhosLastBalanceAdjustmentIsBeingShown)
-    }
-}
-
-struct BudgetList_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            NavigationView {
-                BudgetList()
-            }
-            NavigationView {
-                BudgetList()
-            }
-            .preferredColorScheme(.dark)
-        }
     }
 }

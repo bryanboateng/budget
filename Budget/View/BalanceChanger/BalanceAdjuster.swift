@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct BalanceAdjuster: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var model: Model
     
     @ScaledMetric private var fontSize: CGFloat = 50
 
@@ -10,10 +11,8 @@ struct BalanceAdjuster: View {
     @State private var isOutgoingTransaction = true
     @State private var isAskingForConfirmation = false
     
-    @ObservedObject var budget: Budget
-    
-    // !!!: Not used, but necessary for the department view to be refreshed upon employee updates
-    var budgetCount: Int
+    let budget: Budget
+    let category: Category
     
     var body: some View {
         NavigationView {
@@ -34,7 +33,7 @@ struct BalanceAdjuster: View {
                 .listRowBackground(Color(UIColor.systemGroupedBackground))
                 
                 Section(header: Text("Budget")) {
-                    BudgetRow(budget: budget)
+                    BudgetRow(budget: budget, color: category.color)
                 }
                 
                 Section {
@@ -57,19 +56,10 @@ struct BalanceAdjuster: View {
                 let sign = isOutgoingTransaction ? "-" : "+"
                 return ActionSheet(
                     title: Text("Saldo anpassen"),
-                    message: Text("Soll die Anpasung von \(sign)\(amount.formatted(.eur())) im Budget \(budget.name!) wirklich durchgeführt werden?"),
+                    message: Text("Soll die Anpasung von \(sign)\(amount.formatted(.eur())) im Budget \(budget.name) wirklich durchgeführt werden?"),
                     buttons: [
                         .default(Text("Saldoanpassung bestätigen")) {
-                            if isOutgoingTransaction {
-                                budget.balance = budget.balance!.subtracting(NSDecimalNumber(decimal: amount))
-                            } else {
-                                budget.balance = budget.balance!.adding(NSDecimalNumber(decimal: amount))
-                            }
-                            
-                            budget.lastBalanceAdjustment = NSDecimalNumber(decimal: (isOutgoingTransaction ? -1 : 1) * amount)
-                            
-                            PersistenceController.shared.save()
-                            
+                            model.adjustBalance(of: budget, inCategory: category, by: isOutgoingTransaction ? -1 : 1 * amount)
                             dismiss()
                         },
                         .cancel()
@@ -84,16 +74,5 @@ struct BalanceAdjuster: View {
             isAskingForConfirmation = true
         }
         .disabled(amount == 0.0)
-    }
-}
-
-struct PaymentCreator_Previews: PreviewProvider {
-    static var previews: some View {
-        
-        let budget = Budget(context: PersistenceController.preview.container.viewContext)
-        budget.name = "Lebensmittel"
-        
-        return BalanceAdjuster(budget: budget, budgetCount: 0)
-            .preferredColorScheme(.dark)
     }
 }

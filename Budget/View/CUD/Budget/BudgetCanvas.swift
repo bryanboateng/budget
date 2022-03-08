@@ -5,7 +5,7 @@ struct BudgetCanvas: View {
 
     @Binding var name: String
     @Binding var symbol: String
-    let color: CategoryColor
+    let color: Category.Color
 
     var body: some View {
         Form {

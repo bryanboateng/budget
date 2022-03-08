@@ -8,7 +8,7 @@ struct LastBalanceAdjustmentOverlay: ViewModifier {
             .overlay(
                 Group {
                     if let lastBalanceAdjustment = budget?.lastBalanceAdjustment {
-                        Text(lastBalanceAdjustment.decimalValue.formatted(.eur().sign(strategy: .always())))
+                        Text(lastBalanceAdjustment.formatted(.eur().sign(strategy: .always())))
                             .font(.system(size: 80, weight: .semibold))
                             .lineLimit(1)
                             .minimumScaleFactor(0.1)

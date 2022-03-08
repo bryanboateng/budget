@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ColorPicker: View {
-    @Binding var selectedColor: CategoryColor
+    @Binding var selectedColor: Category.Color
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -9,7 +9,7 @@ struct ColorPicker: View {
                 .font(.title2)
                 .bold()
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 45), spacing: 10)], spacing: 10) {
-                ForEach(CategoryColor.allCases, id: \.self) { color in
+                ForEach(Category.Color.allCases, id: \.self) { color in
                     Circle()
                         .foregroundColor(color.swiftUIColor)
                         .aspectRatio(contentMode: .fill)

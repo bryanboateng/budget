@@ -1,11 +1,13 @@
 import SwiftUI
 
 struct CategoryCreator: View {
+    @EnvironmentObject private var model: Model
     @Environment(\.dismiss) var dismiss
-    
+
     @State var name = ""
-    @State var color = CategoryColor.allCases.randomElement()!
+    @State var color = Category.Color.allCases.randomElement()!
     @State var symbol = Symbols.symbols.values.randomElement()!.randomElement()!
+
     
     var body: some View {
         NavigationView {
@@ -19,23 +21,12 @@ struct CategoryCreator: View {
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Fertig") {
-                            let category = Category(context: PersistenceController.shared.container.viewContext)
-                            category.id = UUID()
-                            category.name = name.trimmingCharacters(in: .whitespaces)
-                            category.color = color
-                            PersistenceController.shared.save()
-                            
+                            model.add(category: Category(id: UUID(), name: name.trimmingCharacters(in: .whitespaces), color: color))
                             dismiss()
                         }
                         .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
                     }
                 }
         }
-    }
-}
-
-struct CategoryCreator_Previews: PreviewProvider {
-    static var previews: some View {
-        CategoryCreator()
     }
 }

@@ -2,7 +2,8 @@ import SwiftUI
 
 
 struct BudgetCreator: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var model: Model
     
     let category: Category
     
@@ -21,28 +22,13 @@ struct BudgetCreator: View {
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Fertig") {
-                            let budget = Budget(context: PersistenceController.shared.container.viewContext)
-                            budget.id = UUID()
-                            budget.name = name.trimmingCharacters(in: .whitespaces)
-                            budget.category = category
-                            budget.symbol = symbol
-                            PersistenceController.shared.save()
-                            
+                            let budget = Budget(id: UUID(), name: name.trimmingCharacters(in: .whitespaces), symbol: symbol)
+                            model.add(budget: budget, toCategory: category)
                             dismiss()
                         }
                         .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
                     }
                 }
         }
-    }
-}
-
-struct BudgetCreator_Previews: PreviewProvider {
-    static var previews: some View {
-        let category = Category(context: PersistenceController.preview.container.viewContext)
-        category.id = UUID()
-        category.name = "Regularly"
-        
-        return BudgetCreator(category: category)
     }
 }

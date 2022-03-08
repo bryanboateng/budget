@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CategoryCanvas: View {
     @Binding var name: String
-    @Binding var color: CategoryColor
+    @Binding var color: Category.Color
     
     var body: some View {
         ScrollView {
