@@ -7,7 +7,7 @@ struct BudgetApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                BudgetList()
+                Budgets()
                     .environmentObject(model)
             }
         }
