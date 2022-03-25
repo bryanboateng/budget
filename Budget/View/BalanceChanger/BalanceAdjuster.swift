@@ -59,7 +59,7 @@ struct BalanceAdjuster: View {
                     message: Text("Soll die Anpasung von \(sign)\(amount.formatted(.eur())) im Budget \(budget.name) wirklich durchgeführt werden?"),
                     buttons: [
                         .default(Text("Saldoanpassung bestätigen")) {
-                            model.adjustBalance(of: budget, inCategory: category, by: isOutgoingTransaction ? -1 : 1 * amount)
+                            model.adjustBalance(of: budget, inCategory: category, by: (isOutgoingTransaction ? -1 : 1) * amount)
                             dismiss()
                         },
                         .cancel()
