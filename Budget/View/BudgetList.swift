@@ -3,8 +3,6 @@ import SwiftUI
 struct BudgetList: View {
     @EnvironmentObject private var model: Model
     
-    private static let spacing: CGFloat = 4
-    
     @State private var isCreatingCategory = false
     @State private var categoryBeingExtended: Category?
     
