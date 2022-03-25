@@ -34,15 +34,13 @@ struct Budgets: View {
                                     }
                                 }
                         ) {
-                            Group {
-                                if !category.budgets.isEmpty {
-                                    BudgetList(category: category)
-                                } else {
-                                    Text("In dieser Kategorie gibt es keine Budgets.")
-                                        .foregroundStyle(.secondary)
-                                        .multilineTextAlignment(.center)
-                                        .frame(maxWidth: .infinity)
-                                }
+                            if !category.budgets.isEmpty {
+                                BudgetList(category: category)
+                            } else {
+                                Text("In dieser Kategorie gibt es keine Budgets.")
+                                    .foregroundStyle(.secondary)
+                                    .multilineTextAlignment(.center)
+                                    .frame(maxWidth: .infinity)
                             }
                         }
                         .headerProminence(.increased)
