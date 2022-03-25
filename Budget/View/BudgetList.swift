@@ -46,7 +46,7 @@ struct BudgetList: View {
                             if lhs.balance == rhs.balance {
                                 return lhs.name < rhs.name
                             }
-                            return lhs.balance < rhs.balance
+                            return lhs.balance > rhs.balance
                         }
                     ) { budget in
                         Menu {
