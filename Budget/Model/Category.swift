@@ -3,8 +3,14 @@ import SwiftUI
 struct Category: Codable, Identifiable {
     let id: UUID
     let name: String
-    var budgets: Set<Budget> = []
     let color: Color
+    var budgets: Set<Budget> = []
+    
+    init(name: String, color: Color) {
+        self.id = UUID()
+        self.name = name
+        self.color = color
+    }
     
     subscript(budgetID: Budget.ID) -> Budget {
         get {
@@ -13,6 +19,12 @@ struct Category: Codable, Identifiable {
         
         set(newValue) {
             budgets.update(with: newValue)
+        }
+    }
+    
+    var totalBalance: Decimal {
+        return budgets.reduce(0) { partialResult, budget in
+            partialResult + budget.balance
         }
     }
 }

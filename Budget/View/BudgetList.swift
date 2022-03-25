@@ -12,13 +12,11 @@ struct BudgetList: View {
     @State private var budgetBeingEdited: Budget?
     @State private var budgetAdjustingBalance: Budget?
     @State private var budgetBeingDeleted: Budget?
-    @State private var budgetWhosLastBalanceAdjustmentIsBeingShown: Budget?
+    @State private var budgetWhosHistoryIsShown: Budget?
     
     private var totalBalance: Decimal {
         model.categories.reduce(0) { partialResult, category in
-            partialResult + category.budgets.reduce(0) { partialResult, budget in
-                partialResult + budget.balance
-            }
+            partialResult + category.totalBalance
         }
     }
     
@@ -57,9 +55,9 @@ struct BudgetList: View {
                             }
                             
                             Button {
-                                budgetWhosLastBalanceAdjustmentIsBeingShown = budget
+                                budgetWhosHistoryIsShown = budget
                             } label: {
-                                Label("Letzte Saldoanpassung", systemImage: "clock")
+                                Label("Historie", systemImage: "clock")
                             }
                             
                             Button {
@@ -117,6 +115,8 @@ struct BudgetList: View {
         .sheet(item: $categoryBeingExtended) { category in
             BudgetCreator(category: category)
         }
-        .lastBalanceAdjustmentOverlay(budget: $budgetWhosLastBalanceAdjustmentIsBeingShown)
+        .sheet(item: $budgetWhosHistoryIsShown) { budget in
+            BalanceHistory(budget: budget)
+        }
     }
 }

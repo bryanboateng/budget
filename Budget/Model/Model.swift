@@ -49,8 +49,7 @@ import Foundation
     
     func adjustBalance(of budget: Budget, inCategory category: Category, by amount: Decimal) {
         var budget = self[category.id][budget.id]
-        budget.balance = budget.balance + amount
-        budget.lastBalanceAdjustment = amount
+        budget.balanceAdjustments.insert(BalanceAdjustment(date: .now, amount: amount))
         self[category.id][budget.id] = budget
         save()
     }

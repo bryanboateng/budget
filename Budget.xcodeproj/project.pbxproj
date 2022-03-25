@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B60CD58227B0108F00C9ECA0 /* LastBalanceAdjustmentOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60CD58127B0108F00C9ECA0 /* LastBalanceAdjustmentOverlay.swift */; };
+		B605B78D27EDD092008DA364 /* BalanceHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605B78C27EDD092008DA364 /* BalanceHistory.swift */; };
+		B605B78F27EDF5C8008DA364 /* BalanceAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605B78E27EDF5C8008DA364 /* BalanceAdjustment.swift */; };
 		B615245527D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B615245427D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift */; };
 		B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA5D126299259008CADBF /* CurrencyField.swift */; };
 		B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */; };
@@ -32,7 +33,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B60CD58127B0108F00C9ECA0 /* LastBalanceAdjustmentOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastBalanceAdjustmentOverlay.swift; sourceTree = "<group>"; };
+		B605B78C27EDD092008DA364 /* BalanceHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceHistory.swift; sourceTree = "<group>"; };
+		B605B78E27EDF5C8008DA364 /* BalanceAdjustment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceAdjustment.swift; sourceTree = "<group>"; };
 		B615245427D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+DocumentsDirectory.swift"; sourceTree = "<group>"; };
 		B61DA5D126299259008CADBF /* CurrencyField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyField.swift; sourceTree = "<group>"; };
 		B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormatStyle+Euro.swift"; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				B6C1F9FE27C6370F00758BE4 /* Category.swift */,
 				B6C1FA0027C638DD00758BE4 /* Budget.swift */,
 				B66C9EF427A03CEF00218C89 /* Symbols.swift */,
+				B605B78E27EDF5C8008DA364 /* BalanceAdjustment.swift */,
 				B615245427D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift */,
 			);
 			path = Model;
@@ -105,7 +108,7 @@
 			children = (
 				B683B27726069F7800F7F347 /* BudgetList.swift */,
 				B6F504BD260695E5005E20A5 /* BudgetRow.swift */,
-				B60CD58127B0108F00C9ECA0 /* LastBalanceAdjustmentOverlay.swift */,
+				B605B78C27EDD092008DA364 /* BalanceHistory.swift */,
 				B69EE4EA27B153EF0070DEBA /* CUD */,
 				B67A913D2659AFC1003AADD8 /* BalanceChanger */,
 			);
@@ -253,7 +256,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B60CD58227B0108F00C9ECA0 /* LastBalanceAdjustmentOverlay.swift in Sources */,
 				B6F504BE260695E5005E20A5 /* BudgetRow.swift in Sources */,
 				B66C9EF527A03CEF00218C89 /* Symbols.swift in Sources */,
 				B6F504BC260695E5005E20A5 /* BudgetApp.swift in Sources */,
@@ -263,6 +265,7 @@
 				B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */,
 				B615245527D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift in Sources */,
 				B69EE4E627B151090070DEBA /* CategoryCreator.swift in Sources */,
+				B605B78D27EDD092008DA364 /* BalanceHistory.swift in Sources */,
 				B6E093172628D8DD0091F9A6 /* BalanceAdjuster.swift in Sources */,
 				B6C78A8C2607619E007B2CC5 /* ColorPicker.swift in Sources */,
 				B6E4DD14261726DF004C3D3C /* BudgetEditor.swift in Sources */,
@@ -272,6 +275,7 @@
 				B6C1FA0127C638DE00758BE4 /* Budget.swift in Sources */,
 				B69EE4E927B151890070DEBA /* CategoryCanvas.swift in Sources */,
 				B663DF3427A08E140022E546 /* BudgetCanvas.swift in Sources */,
+				B605B78F27EDF5C8008DA364 /* BalanceAdjustment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

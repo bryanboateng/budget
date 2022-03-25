@@ -21,7 +21,7 @@ struct CategoryCreator: View {
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Fertig") {
-                            model.add(category: Category(id: UUID(), name: name.trimmingCharacters(in: .whitespaces), color: color))
+                            model.add(category: Category(name: name.trimmingCharacters(in: .whitespaces), color: color))
                             dismiss()
                         }
                         .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
