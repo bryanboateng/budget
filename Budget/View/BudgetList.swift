@@ -44,9 +44,7 @@ struct BudgetList: View {
                     Label("Löschen", systemImage: "trash")
                 }
             } label: {
-                HStack {
-                    BudgetRow(budget: budget, color: category.color)
-                }
+                BudgetRow(budget: budget, color: category.color)
             }
         }
         .sheet(item: $budgetBeingEdited) { budget in
