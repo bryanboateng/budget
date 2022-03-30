@@ -62,7 +62,7 @@ struct BudgetList: View {
                 message: Text("Soll das Budget \(budget.name) wirklich gelöscht werden?"),
                 buttons: [
                     .destructive(Text("Budget löschen")) {
-                        model.delete(budget, inCategory: category)
+                        model.delete(budget, of: category)
                     },
                     .cancel()
                 ]

@@ -23,7 +23,7 @@ struct BudgetCreator: View {
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Fertig") {
                             let budget = Budget(name: name.trimmingCharacters(in: .whitespaces), symbol: symbol)
-                            model.add(budget: budget, toCategory: category)
+                            model.insert(budget, into: category)
                             dismiss()
                         }
                         .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)

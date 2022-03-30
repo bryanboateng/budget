@@ -32,14 +32,14 @@ import Foundation
         save()
     }
     
-    func add(budget: Budget, toCategory category: Category) {
+    func insert(_ budget: Budget, into category: Category) {
         var category = self[category.id]
         category.budgets.insert(budget)
         categories.updateOrAppend(category)
         save()
     }
     
-    func update(_ budget: Budget, inCategory category: Category, withName name: String, andSymbol symbol: String) {
+    func update(_ budget: Budget, of category: Category, withName name: String, andSymbol symbol: String) {
         var budget = self[category.id][budget.id]
         budget.name = name
         budget.symbol = symbol
@@ -47,14 +47,14 @@ import Foundation
         save()
     }
     
-    func adjustBalance(of budget: Budget, inCategory category: Category, by amount: Decimal) {
+    func adjustBalance(of budget: Budget, of category: Category, by amount: Decimal) {
         var budget = self[category.id][budget.id]
         budget.balanceAdjustments.insert(BalanceAdjustment(date: .now, amount: amount))
         self[category.id][budget.id] = budget
         save()
     }
     
-    func delete(_ budget: Budget, inCategory category: Category) {
+    func delete(_ budget: Budget, of category: Category) {
         var category = self[category.id]
         category.budgets.remove(budget)
         self[category.id] = category

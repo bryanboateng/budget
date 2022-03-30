@@ -30,7 +30,7 @@ struct BudgetEditor: View {
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Fertig") {
-                            model.update(budget, inCategory: category, withName: name.trimmingCharacters(in: .whitespaces), andSymbol: symbol)
+                            model.update(budget, of: category, withName: name.trimmingCharacters(in: .whitespaces), andSymbol: symbol)
                             dismiss()
                         }
                         .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
