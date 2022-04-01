@@ -2,8 +2,8 @@ import SwiftUI
 
 struct Category: Codable, Identifiable {
     let id: UUID
-    let name: String
-    let color: Color
+    var name: String
+    var color: Color
     var budgets: Set<Budget> = []
     
     init(name: String, color: Color) {

@@ -27,8 +27,16 @@ import Foundation
         }
     }
     
-    func add(category: Category) {
-        categories.append(category)
+    func set(categories: OrderedSet<Category>) {
+        self.categories = OrderedSet(categories.map { category in
+            var category = category
+            if self.categories.contains(category) {
+                category.budgets = self[category.id].budgets
+            } else {
+                category.budgets = []
+            }
+            return category
+        })
         save()
     }
     

@@ -1,17 +1,23 @@
 import SwiftUI
 
-struct CategoryCreator: View {
+struct CategoryEditor: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var name = ""
-    @State private var color = Category.Color.allCases.randomElement()!
     
-    var completion: (Category) -> Void
-
+    @State private var name: String
+    @State private var color: Category.Color
+    
+    var completion: (String, Category.Color) -> Void
+    
+    init(category: Category, completion: @escaping (String, Category.Color) -> Void) {
+        _name = State(initialValue: category.name)
+        _color = State(initialValue: category.color)
+        self.completion = completion
+    }
     
     var body: some View {
         NavigationView {
             CategoryCanvas(name: $name, color: $color)
-                .navigationTitle("Neue Kategorie")
+                .navigationTitle("Kategorie bearbeiten")
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Abbrechen") {
@@ -20,7 +26,7 @@ struct CategoryCreator: View {
                     }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Fertig") {
-                            completion(Category(name: name.trimmingCharacters(in: .whitespaces), color: color))
+                            completion(name, color)
                             dismiss()
                         }
                         .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)

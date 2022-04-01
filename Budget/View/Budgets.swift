@@ -3,7 +3,7 @@ import SwiftUI
 struct Budgets: View {
     @EnvironmentObject private var model: Model
     
-    @State private var isCreatingCategory = false
+    @State private var isManagingCategories = false
     @State private var categoryBeingExtended: Category?
     @State private var isCreatingBudget = false
     
@@ -55,14 +55,14 @@ struct Budgets: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    isCreatingCategory = true
+                    isManagingCategories = true
                 } label: {
-                    Label("Neue Kategorie", systemImage: "folder.badge.plus")
+                    Label("Kategorien", systemImage: "folder")
                 }
             }
         }
-        .sheet(isPresented: $isCreatingCategory) {
-            CategoryCreator()
+        .sheet(isPresented: $isManagingCategories) {
+            CategoryManager(categories: model.categories)
         }
         .sheet(item: $categoryBeingExtended) { category in
             BudgetCreator(category: category)
