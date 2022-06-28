@@ -60,6 +60,22 @@ class UIKitCurrencyField: UILabel, UIKeyInput {
 }
 
 struct CurrencyField: UIViewRepresentable {
+	class Coordinator: NSObject, UIKitCurrencyFieldDelegate {
+		private var parent: CurrencyField
+
+		init(_ parent: CurrencyField) {
+			self.parent = parent
+		}
+
+		func didChangeAmount(amount: Decimal, currencyField: UIKitCurrencyField) {
+			parent.amount = amount
+		}
+
+		@objc func handleTap(_ sender: UITapGestureRecognizer) {
+			sender.view?.becomeFirstResponder()
+		}
+	}
+
 	@Binding var amount: Decimal
 	let fontSize: CGFloat
 
@@ -92,21 +108,5 @@ struct CurrencyField: UIViewRepresentable {
 
 	func updateUIView(_ currencyField: UIKitCurrencyField, context: Context) {
 		currencyField.amount = amount
-	}
-
-	class Coordinator: NSObject, UIKitCurrencyFieldDelegate {
-		private var parent: CurrencyField
-
-		init(_ parent: CurrencyField) {
-			self.parent = parent
-		}
-
-		func didChangeAmount(amount: Decimal, currencyField: UIKitCurrencyField) {
-			parent.amount = amount
-		}
-
-		@objc func handleTap(_ sender: UITapGestureRecognizer) {
-			sender.view?.becomeFirstResponder()
-		}
 	}
 }
