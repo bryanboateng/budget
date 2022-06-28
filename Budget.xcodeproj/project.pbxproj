@@ -16,9 +16,6 @@
 		B64337CD27F3A71400A31D2D /* CategoryEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64337CC27F3A71300A31D2D /* CategoryEditor.swift */; };
 		B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */; };
 		B663DF3427A08E140022E546 /* BudgetCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = B663DF3327A08E140022E546 /* BudgetCanvas.swift */; };
-		B66C9EF327A03BCD00218C89 /* SymbolPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66C9EF227A03BCD00218C89 /* SymbolPicker.swift */; };
-		B66C9EF527A03CEF00218C89 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66C9EF427A03CEF00218C89 /* Symbols.swift */; };
-		B66C9EF827A0470000218C89 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = B66C9EF727A0470000218C89 /* Collections */; };
 		B683B27826069F7800F7F347 /* Budgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683B27726069F7800F7F347 /* Budgets.swift */; };
 		B69EE4E627B151090070DEBA /* CategoryCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69EE4E527B151090070DEBA /* CategoryCreator.swift */; };
 		B69EE4E927B151890070DEBA /* CategoryCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69EE4E827B151890070DEBA /* CategoryCanvas.swift */; };
@@ -46,8 +43,6 @@
 		B64337CC27F3A71300A31D2D /* CategoryEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEditor.swift; sourceTree = "<group>"; };
 		B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormatStyle+Euro.swift"; sourceTree = "<group>"; };
 		B663DF3327A08E140022E546 /* BudgetCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCanvas.swift; sourceTree = "<group>"; };
-		B66C9EF227A03BCD00218C89 /* SymbolPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolPicker.swift; sourceTree = "<group>"; };
-		B66C9EF427A03CEF00218C89 /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
 		B683B27726069F7800F7F347 /* Budgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budgets.swift; sourceTree = "<group>"; };
 		B69EE4E527B151090070DEBA /* CategoryCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCreator.swift; sourceTree = "<group>"; };
 		B69EE4E827B151890070DEBA /* CategoryCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCanvas.swift; sourceTree = "<group>"; };
@@ -72,7 +67,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B66C9EF827A0470000218C89 /* Collections in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,7 +79,6 @@
 				B6C1FA0227C6390700758BE4 /* Model.swift */,
 				B6C1F9FE27C6370F00758BE4 /* Category.swift */,
 				B6C1FA0027C638DD00758BE4 /* Budget.swift */,
-				B66C9EF427A03CEF00218C89 /* Symbols.swift */,
 				B605B78E27EDF5C8008DA364 /* BalanceAdjustment.swift */,
 				B615245427D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift */,
 			);
@@ -100,15 +93,6 @@
 				B663DF3327A08E140022E546 /* BudgetCanvas.swift */,
 			);
 			path = Budget;
-			sourceTree = "<group>";
-		};
-		B663DF3527A08E460022E546 /* Picker */ = {
-			isa = PBXGroup;
-			children = (
-				B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */,
-				B66C9EF227A03BCD00218C89 /* SymbolPicker.swift */,
-			);
-			path = Picker;
 			sourceTree = "<group>";
 		};
 		B67A913C2659AF96003AADD8 /* View */ = {
@@ -140,6 +124,7 @@
 				B64337CC27F3A71300A31D2D /* CategoryEditor.swift */,
 				B69EE4E827B151890070DEBA /* CategoryCanvas.swift */,
 				B64337CA27F3073400A31D2D /* CategoryManager.swift */,
+				B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -149,7 +134,6 @@
 			children = (
 				B69EE4E727B151130070DEBA /* Category */,
 				B663DF3127A08DE10022E546 /* Budget */,
-				B663DF3527A08E460022E546 /* Picker */,
 			);
 			path = CUD;
 			sourceTree = "<group>";
@@ -211,7 +195,6 @@
 			);
 			name = Budget;
 			packageProductDependencies = (
-				B66C9EF727A0470000218C89 /* Collections */,
 			);
 			productName = Budget;
 			productReference = B6F504B8260695E5005E20A5 /* Budget.app */;
@@ -292,11 +275,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6F504BE260695E5005E20A5 /* BudgetRow.swift in Sources */,
-				B66C9EF527A03CEF00218C89 /* Symbols.swift in Sources */,
 				B64337CD27F3A71400A31D2D /* CategoryEditor.swift in Sources */,
 				B6F504BC260695E5005E20A5 /* BudgetApp.swift in Sources */,
 				B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */,
-				B66C9EF327A03BCD00218C89 /* SymbolPicker.swift in Sources */,
 				B6C1FA0327C6390700758BE4 /* Model.swift in Sources */,
 				B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */,
 				B64337CB27F3073400A31D2D /* CategoryManager.swift in Sources */,
@@ -519,14 +500,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		B66C9EF727A0470000218C89 /* Collections */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B66C9EF627A0470000218C89 /* XCRemoteSwiftPackageReference "swift-collections" */;
-			productName = Collections;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B6F504B0260695E5005E20A5 /* Project object */;
 }

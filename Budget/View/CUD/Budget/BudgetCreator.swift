@@ -7,7 +7,7 @@ struct BudgetCreator: View {
 	let category: Category
 
 	@State var name = ""
-	@State var symbol = Symbols.symbols.values.randomElement()!.randomElement()!
+	@State var symbol = ""
 
 	var body: some View {
 		NavigationView {
