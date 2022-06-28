@@ -224,7 +224,6 @@
 			);
 			mainGroup = B6F504AF260695E5005E20A5;
 			packageReferences = (
-				B66C9EF627A0470000218C89 /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			productRefGroup = B6F504B9260695E5005E20A5 /* Products */;
 			projectDirPath = "";
@@ -489,17 +488,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		B66C9EF627A0470000218C89 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-collections.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.3;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = B6F504B0260695E5005E20A5 /* Project object */;
 }
