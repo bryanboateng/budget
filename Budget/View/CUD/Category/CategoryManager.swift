@@ -1,20 +1,19 @@
-import Collections
 import SwiftUI
 
 protocol CategoryManagerControllerDelegate: AnyObject {
 	@MainActor func categoryManagerController(
 		_ categoryManagerController: CategoryManagerController,
-		didFinishManagingCategories categories: OrderedSet<Category>
+		didFinishManagingCategories categories: [Category]
 	)
 
 	func categoryManagerControllerDidCancel(_ categoryManagerController: CategoryManagerController)
 }
 
 class CategoryManagerController: UITableViewController {
-	var categories: OrderedSet<Category>
+	var categories: [Category]
 	weak var delegate: CategoryManagerControllerDelegate?
 
-	init(categories: OrderedSet<Category>) {
+	init(categories: [Category]) {
 		self.categories = categories
 		super.init(style: .insetGrouped)
 	}
@@ -73,7 +72,7 @@ class CategoryManagerController: UITableViewController {
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "category", for: indexPath)
 		var content = cell.defaultContentConfiguration()
-		let category = categories.elements[indexPath.row]
+		let category = categories[indexPath.row]
 		content.text = category.name
 		content.image = UIImage(systemName: "circle.fill")
 		content.imageProperties.tintColor = UIColor(category.color.swiftUIColor)
@@ -102,9 +101,9 @@ class CategoryManagerController: UITableViewController {
 	override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
 		present(
 			UIHostingController(
-				rootView: CategoryEditor(category: categories.elements[indexPath.row]) { name, color in
-					self.categories.elements[indexPath.row].name = name
-					self.categories.elements[indexPath.row].color = color
+				rootView: CategoryEditor(category: categories[indexPath.row]) { name, color in
+					self.categories[indexPath.row].name = name
+					self.categories[indexPath.row].color = color
 					self.tableView.reloadData()
 				}
 			), animated: true
@@ -122,9 +121,13 @@ struct CategoryManager: UIViewControllerRepresentable {
 
 		@MainActor func categoryManagerController(
 			_ categoryManagerController: CategoryManagerController,
-			didFinishManagingCategories categories: OrderedSet<Category>
+			didFinishManagingCategories categories: [Category]
 		) {
-			parent.model.set(categories: categories)
+			parent.model.reorganizeCategories(
+				categories.map { category in
+					(id: category.id, name: category.name, color: category.color)
+				}
+			)
 			parent.dismiss()
 		}
 
@@ -135,9 +138,9 @@ struct CategoryManager: UIViewControllerRepresentable {
 
 	@Environment(\.dismiss) private var dismiss
 	@EnvironmentObject private var model: Model
-	@State private var categories: OrderedSet<Category>
+	@State private var categories: [Category]
 
-	init(categories: OrderedSet<Category>) {
+	init(categories: [Category]) {
 		_categories = State(initialValue: categories)
 	}
 

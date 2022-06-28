@@ -1,6 +1,6 @@
 import Foundation
 
-struct Budget: Codable, Identifiable {
+struct Budget: Codable, Identifiable, Hashable {
 	let id: UUID
 	var name: String
 	var symbol: String
@@ -16,15 +16,5 @@ struct Budget: Codable, Identifiable {
 		self.id = UUID()
 		self.name = name
 		self.symbol = symbol
-	}
-}
-
-extension Budget: Hashable {
-	static func == (lhs: Budget, rhs: Budget) -> Bool {
-		lhs.id == rhs.id
-	}
-
-	func hash(into hasher: inout Hasher) {
-		hasher.combine(id)
 	}
 }

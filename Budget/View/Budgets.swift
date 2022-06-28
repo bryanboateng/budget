@@ -20,7 +20,7 @@ struct Budgets: View {
 					Text("Gesamter Stand")
 						.font(.headline)
 						.badge(totalBalance.formatted(.eur()))
-					ForEach(model.categories) { category in
+					ForEach(model.categories, id: \.self) { category in
 						Section(
 							header:
 								HStack {

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct Category: Codable, Identifiable {
+struct Category: Codable, Identifiable, Hashable {
 	let id: UUID
 	var name: String
 	var color: Color
@@ -10,6 +10,12 @@ struct Category: Codable, Identifiable {
 		budgets.reduce(0) { partialResult, budget in
 			partialResult + budget.balance
 		}
+	}
+
+	init(id: Category.ID, name: String, color: Color) {
+		self.id = id
+		self.name = name
+		self.color = color
 	}
 
 	init(name: String, color: Color) {
@@ -24,18 +30,9 @@ struct Category: Codable, Identifiable {
 		}
 
 		set(newValue) {
-			budgets.update(with: newValue)
+			budgets.remove(at: budgets.firstIndex { $0.id == budgetID }!)
+			budgets.insert(newValue)
 		}
-	}
-}
-
-extension Category: Hashable {
-	static func == (lhs: Category, rhs: Category) -> Bool {
-		lhs.id == rhs.id
-	}
-
-	func hash(into hasher: inout Hasher) {
-		hasher.combine(id)
 	}
 }
 

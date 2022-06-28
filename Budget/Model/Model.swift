@@ -1,8 +1,7 @@
-import Collections
 import Foundation
 
 @MainActor class Model: ObservableObject {
-	@Published private(set) var categories: OrderedSet<Category>
+	@Published private(set) var categories: [Category]
 
 	private let savePath = FileManager.documentsDirectory
 		.appendingPathComponent("categories")
@@ -10,29 +9,29 @@ import Foundation
 	init() {
 		do {
 			let data = try Data(contentsOf: savePath)
-			categories = try JSONDecoder().decode(OrderedSet<Category>.self, from: data)
+			categories = try JSONDecoder().decode([Category].self, from: data)
 		} catch {
 			categories = []
 		}
 	}
 
-	func set(categories: OrderedSet<Category>) {
-		self.categories = OrderedSet(categories.map { category in
-			var category = category
-			if self.categories.contains(category) {
-				category.budgets = self[category.id].budgets
-			} else {
-				category.budgets = []
+	func reorganizeCategories(_ newCategoryInfo: [(id: Category.ID, name: String, color: Category.Color)]) {
+		categories = newCategoryInfo.map { categoryInfo  -> Category in
+			var category = Category(id: categoryInfo.id, name: categoryInfo.name, color: categoryInfo.color)
+			if let existingCategory = categories.first(where: { category in
+				category.id == categoryInfo.id
+			}) {
+				category.budgets = existingCategory.budgets
 			}
 			return category
-		})
+		}
 		save()
 	}
 
 	func insert(_ budget: Budget, into category: Category) {
 		var category = self[category.id]
 		category.budgets.insert(budget)
-		categories.updateOrAppend(category)
+		self[category.id] = category
 		save()
 	}
 
@@ -73,7 +72,7 @@ import Foundation
 		}
 
 		set(newValue) {
-			categories.update(newValue, at: categories.firstIndex(where: { $0.id == categoryID })!)
+			categories[categories.firstIndex(where: { $0.id == categoryID })!] = newValue
 		}
 	}
 }
