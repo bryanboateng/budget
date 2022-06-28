@@ -1,6 +1,8 @@
+// swiftlint:disable type_body_length file_length
+
 import Collections
 
-struct Symbols {
+enum Symbols {
 	static let symbols: OrderedDictionary = [
 		"Kommunikation": [
 			"mic",

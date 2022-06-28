@@ -8,12 +8,6 @@ struct CategoryEditor: View {
 
 	var completion: (String, Category.Color) -> Void
 
-	init(category: Category, completion: @escaping (String, Category.Color) -> Void) {
-		_name = State(initialValue: category.name)
-		_color = State(initialValue: category.color)
-		self.completion = completion
-	}
-
 	var body: some View {
 		NavigationView {
 			CategoryCanvas(name: $name, color: $color)
@@ -33,5 +27,11 @@ struct CategoryEditor: View {
 					}
 				}
 		}
+	}
+
+	init(category: Category, completion: @escaping (String, Category.Color) -> Void) {
+		_name = State(initialValue: category.name)
+		_color = State(initialValue: category.color)
+		self.completion = completion
 	}
 }

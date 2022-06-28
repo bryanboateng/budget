@@ -1,7 +1,6 @@
 import Collections
 import Foundation
 
-
 @MainActor class Model: ObservableObject {
 	@Published private(set) var categories: OrderedSet<Category>
 
@@ -14,16 +13,6 @@ import Foundation
 			categories = try JSONDecoder().decode(OrderedSet<Category>.self, from: data)
 		} catch {
 			categories = []
-		}
-	}
-
-	subscript(categoryID: Category.ID) -> Category {
-		get {
-			return categories.first(where: { $0.id == categoryID })!
-		}
-
-		set(newValue) {
-			categories.update(newValue, at: categories.firstIndex(where: { $0.id == categoryID })!)
 		}
 	}
 
@@ -75,6 +64,16 @@ import Foundation
 			try data.write(to: savePath, options: [.atomic, .completeFileProtection])
 		} catch {
 			print("Unable to save data.")
+		}
+	}
+
+	subscript(categoryID: Category.ID) -> Category {
+		get {
+			return categories.first(where: { $0.id == categoryID })!
+		}
+
+		set(newValue) {
+			categories.update(newValue, at: categories.firstIndex(where: { $0.id == categoryID })!)
 		}
 	}
 }

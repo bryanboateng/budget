@@ -13,7 +13,7 @@ struct BalanceHistory: View {
 						.foregroundStyle(.secondary)
 				} else {
 					List {
-						ForEach(budget.balanceAdjustments.sorted(by: { $0.date > $1.date })) { adjustment in
+						ForEach(budget.balanceAdjustments.sorted { $0.date > $1.date }) { adjustment in
 							HStack {
 								Text(adjustment.date.formatted(.dateTime.day().month().hour().minute()))
 									.foregroundStyle(.secondary)
@@ -24,7 +24,7 @@ struct BalanceHistory: View {
 					}
 				}
 			}
-			.toolbar{
+			.toolbar {
 				ToolbarItem(placement: .confirmationAction) {
 					Button("Fertig") {
 						dismiss()

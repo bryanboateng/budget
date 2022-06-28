@@ -1,5 +1,17 @@
-import SwiftUI
 import Collections
+import SwiftUI
+
+struct RoundedRectangleButton: ButtonStyle {
+	func makeBody(configuration: Configuration) -> some View {
+		configuration.label
+			.background(
+				RoundedRectangle(cornerRadius: 6)
+					.foregroundColor(.secondary.opacity(0.2))
+					.opacity(configuration.isPressed ? 1 : 0)
+			)
+			.animation(.easeOut(duration: 0.2), value: configuration.isPressed)
+	}
+}
 
 struct SymbolPicker: View {
 	@Environment(\.dismiss) private var dismiss
@@ -59,8 +71,8 @@ struct SymbolPicker: View {
 			var searchResult = OrderedDictionary<String, [String]>()
 			for categorySymbolsPair in Symbols.symbols {
 				let matchingSymbols = categorySymbolsPair.value
-					.filter{
-						$0.contains(lowercasedSearchText)
+					.filter { symbols in
+						symbols.contains(lowercasedSearchText)
 					}
 				if !matchingSymbols.isEmpty {
 					searchResult[categorySymbolsPair.key] = matchingSymbols
@@ -68,18 +80,6 @@ struct SymbolPicker: View {
 			}
 			return searchResult
 		}
-	}
-}
-
-struct RoundedRectangleButton: ButtonStyle {
-	func makeBody(configuration: Configuration) -> some View {
-		configuration.label
-			.background(
-				RoundedRectangle(cornerRadius: 6)
-					.foregroundColor(.secondary.opacity(0.2))
-					.opacity(configuration.isPressed ? 1 : 0)
-			)
-			.animation(.easeOut(duration: 0.2), value: configuration.isPressed)
 	}
 }
 

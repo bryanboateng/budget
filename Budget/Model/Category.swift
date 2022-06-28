@@ -6,6 +6,12 @@ struct Category: Codable, Identifiable {
 	var color: Color
 	var budgets: Set<Budget> = []
 
+	var totalBalance: Decimal {
+		budgets.reduce(0) { partialResult, budget in
+			partialResult + budget.balance
+		}
+	}
+
 	init(name: String, color: Color) {
 		self.id = UUID()
 		self.name = name
@@ -14,24 +20,18 @@ struct Category: Codable, Identifiable {
 
 	subscript(budgetID: Budget.ID) -> Budget {
 		get {
-			return budgets.first(where: { $0.id == budgetID })!
+			budgets.first { $0.id == budgetID }!
 		}
 
 		set(newValue) {
 			budgets.update(with: newValue)
 		}
 	}
-
-	var totalBalance: Decimal {
-		return budgets.reduce(0) { partialResult, budget in
-			partialResult + budget.balance
-		}
-	}
 }
 
 extension Category: Hashable {
 	static func == (lhs: Category, rhs: Category) -> Bool {
-		return lhs.id == rhs.id
+		lhs.id == rhs.id
 	}
 
 	func hash(into hasher: inout Hasher) {
@@ -40,7 +40,7 @@ extension Category: Hashable {
 }
 
 extension Category {
-	enum Color: CaseIterable, Codable  {
+	enum Color: CaseIterable, Codable {
 		case red
 		case orange
 		case yellow

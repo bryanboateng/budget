@@ -10,14 +10,6 @@ struct BudgetEditor: View {
 	@State private var name: String
 	@State private var symbol: String
 
-	init(budget: Budget, category: Category) {
-		self.budget = budget
-		self.category = category
-
-		_name = State(initialValue: budget.name)
-		_symbol = State(initialValue: budget.symbol)
-	}
-
 	var body: some View {
 		NavigationView {
 			BudgetCanvas(name: $name, symbol: $symbol, color: category.color)
@@ -37,5 +29,13 @@ struct BudgetEditor: View {
 					}
 				}
 		}
+	}
+
+	init(budget: Budget, category: Category) {
+		self.budget = budget
+		self.category = category
+
+		_name = State(initialValue: budget.name)
+		_symbol = State(initialValue: budget.symbol)
 	}
 }

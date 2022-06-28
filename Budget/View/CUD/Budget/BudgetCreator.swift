@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 struct BudgetCreator: View {
 	@Environment(\.dismiss) private var dismiss
 	@EnvironmentObject private var model: Model

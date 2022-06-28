@@ -14,7 +14,7 @@ struct BalanceAdjustment: Codable, Identifiable {
 
 extension BalanceAdjustment: Hashable {
 	static func == (lhs: BalanceAdjustment, rhs: BalanceAdjustment) -> Bool {
-		return lhs.id == rhs.id
+		lhs.id == rhs.id
 	}
 
 	func hash(into hasher: inout Hasher) {

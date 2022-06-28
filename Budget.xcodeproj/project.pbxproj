@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,7 +12,7 @@
 		B615245527D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B615245427D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift */; };
 		B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA5D126299259008CADBF /* CurrencyField.swift */; };
 		B640C0C627EE686300271B9E /* BudgetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640C0C527EE686300271B9E /* BudgetList.swift */; };
-		B64337CB27F3073400A31D2D /* CategoryManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64337CA27F3073400A31D2D /* CategoryManagerController.swift */; };
+		B64337CB27F3073400A31D2D /* CategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64337CA27F3073400A31D2D /* CategoryManager.swift */; };
 		B64337CD27F3A71400A31D2D /* CategoryEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64337CC27F3A71300A31D2D /* CategoryEditor.swift */; };
 		B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */; };
 		B663DF3427A08E140022E546 /* BudgetCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = B663DF3327A08E140022E546 /* BudgetCanvas.swift */; };
@@ -27,6 +27,7 @@
 		B6C1FA0327C6390700758BE4 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C1FA0227C6390700758BE4 /* Model.swift */; };
 		B6C78A892606BDC7007B2CC5 /* BudgetCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */; };
 		B6C78A8C2607619E007B2CC5 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */; };
+		B6CFEAE0286B4C820011B82E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B6CFEADF286B4C820011B82E /* .swiftlint.yml */; };
 		B6E093172628D8DD0091F9A6 /* BalanceAdjuster.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E093162628D8DD0091F9A6 /* BalanceAdjuster.swift */; };
 		B6E4DD14261726DF004C3D3C /* BudgetEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E4DD13261726DF004C3D3C /* BudgetEditor.swift */; };
 		B6F504BC260695E5005E20A5 /* BudgetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F504BB260695E5005E20A5 /* BudgetApp.swift */; };
@@ -41,7 +42,7 @@
 		B615245427D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+DocumentsDirectory.swift"; sourceTree = "<group>"; };
 		B61DA5D126299259008CADBF /* CurrencyField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyField.swift; sourceTree = "<group>"; };
 		B640C0C527EE686300271B9E /* BudgetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetList.swift; sourceTree = "<group>"; };
-		B64337CA27F3073400A31D2D /* CategoryManagerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryManagerController.swift; sourceTree = "<group>"; };
+		B64337CA27F3073400A31D2D /* CategoryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryManager.swift; sourceTree = "<group>"; };
 		B64337CC27F3A71300A31D2D /* CategoryEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEditor.swift; sourceTree = "<group>"; };
 		B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormatStyle+Euro.swift"; sourceTree = "<group>"; };
 		B663DF3327A08E140022E546 /* BudgetCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCanvas.swift; sourceTree = "<group>"; };
@@ -55,6 +56,7 @@
 		B6C1FA0227C6390700758BE4 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCreator.swift; sourceTree = "<group>"; };
 		B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
+		B6CFEADF286B4C820011B82E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B6E093162628D8DD0091F9A6 /* BalanceAdjuster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceAdjuster.swift; sourceTree = "<group>"; };
 		B6E4DD13261726DF004C3D3C /* BudgetEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetEditor.swift; sourceTree = "<group>"; };
 		B6F504B8260695E5005E20A5 /* Budget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Budget.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,7 +139,7 @@
 				B69EE4E527B151090070DEBA /* CategoryCreator.swift */,
 				B64337CC27F3A71300A31D2D /* CategoryEditor.swift */,
 				B69EE4E827B151890070DEBA /* CategoryCanvas.swift */,
-				B64337CA27F3073400A31D2D /* CategoryManagerController.swift */,
+				B64337CA27F3073400A31D2D /* CategoryManager.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -155,6 +157,7 @@
 		B6F504AF260695E5005E20A5 = {
 			isa = PBXGroup;
 			children = (
+				B6CFEADF286B4C820011B82E /* .swiftlint.yml */,
 				B6F504BA260695E5005E20A5 /* Budget */,
 				B6F504B9260695E5005E20A5 /* Products */,
 			);
@@ -200,6 +203,7 @@
 				B6F504B4260695E5005E20A5 /* Sources */,
 				B6F504B5260695E5005E20A5 /* Frameworks */,
 				B6F504B6260695E5005E20A5 /* Resources */,
+				B62F9E4A286B3B930075850C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -253,12 +257,34 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6CFEAE0286B4C820011B82E /* .swiftlint.yml in Resources */,
 				B6F504C3260695E7005E20A5 /* Preview Assets.xcassets in Resources */,
 				B6F504C0260695E7005E20A5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B62F9E4A286B3B930075850C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint > /dev/null; then\n\tswiftlint --no-cache\nelse\n\techo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B6F504B4260695E5005E20A5 /* Sources */ = {
@@ -273,7 +299,7 @@
 				B66C9EF327A03BCD00218C89 /* SymbolPicker.swift in Sources */,
 				B6C1FA0327C6390700758BE4 /* Model.swift in Sources */,
 				B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */,
-				B64337CB27F3073400A31D2D /* CategoryManagerController.swift in Sources */,
+				B64337CB27F3073400A31D2D /* CategoryManager.swift in Sources */,
 				B615245527D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift in Sources */,
 				B69EE4E627B151090070DEBA /* CategoryCreator.swift in Sources */,
 				B605B78D27EDD092008DA364 /* BalanceHistory.swift in Sources */,

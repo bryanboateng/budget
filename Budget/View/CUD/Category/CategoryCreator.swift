@@ -7,7 +7,6 @@ struct CategoryCreator: View {
 
 	var completion: (Category) -> Void
 
-
 	var body: some View {
 		NavigationView {
 			CategoryCanvas(name: $name, color: $color)
