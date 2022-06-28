@@ -9,7 +9,7 @@ class UIKitCurrencyField: UILabel, UIKeyInput {
 
 	var amount: Decimal = 0.0 {
 		didSet(oldAmount) {
-			let amountString = String(Int(truncating: NSDecimalNumber(decimal: (amount * 100))))
+			let amountString = amount.formatted(.number.grouping(.never).scale(100))
 
 			if self.amountString != amountString {
 				self.amountString = amountString
@@ -23,7 +23,7 @@ class UIKitCurrencyField: UILabel, UIKeyInput {
 
 	private var amountString = "" {
 		didSet(oldAmountString) {
-			if amountString == "" {
+			if amountString.isEmpty {
 				amountString = "0"
 			}
 
