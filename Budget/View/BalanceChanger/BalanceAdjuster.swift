@@ -6,10 +6,8 @@ struct BalanceAdjuster: View {
 
 	@ScaledMetric private var fontSize: CGFloat = 50
 
-	@State private var amount: Decimal = 0
-	// TODO: change to Enum
-	@State private var isOutgoingTransaction = true
-	@State private var isAskingForConfirmation = false
+	@State private var absoluteAmount: Decimal = 0
+	@State private var sign = FloatingPointSign.minus
 
 	let budget: Budget
 	let category: Category
@@ -19,15 +17,36 @@ struct BalanceAdjuster: View {
 			Form {
 				HStack(alignment: .firstTextBaseline) {
 					Button {
-						isOutgoingTransaction.toggle()
+						switch sign {
+						case .minus:
+							sign = .plus
+						case .plus:
+							sign = .minus
+						}
 					} label: {
-						Image(systemName: isOutgoingTransaction ? "minus.square.fill" : "plus.square.fill")
+						let symbol: String = {
+							switch sign {
+							case .minus:
+								return "minus.square.fill"
+							case .plus:
+								return "plus.square.fill"
+							}
+						}()
+						let symbolColor: Color = {
+							switch sign {
+							case .minus:
+								return .red
+							case .plus:
+								return .green
+							}
+						}()
+						Image(systemName: symbol)
 							.symbolRenderingMode(.hierarchical)
-							.foregroundColor(isOutgoingTransaction ? .red : .green)
+							.foregroundColor(symbolColor)
 							.font(.system(size: fontSize, weight: .medium))
 							.minimumScaleFactor(0.5)
 					}
-					CurrencyField(amount: $amount, fontSize: fontSize)
+					CurrencyField(amount: $absoluteAmount, fontSize: fontSize)
 				}
 				.frame(maxWidth: .infinity, alignment: .center)
 				.listRowBackground(Color(UIColor.systemGroupedBackground))
@@ -57,9 +76,18 @@ struct BalanceAdjuster: View {
 
 	var doneButton: some View {
 		Button("Fertig") {
-			model.adjustBalance(of: budget, of: category, by: (isOutgoingTransaction ? -1 : 1) * amount)
+
+			let amount: Decimal = {
+				switch sign {
+				case .minus:
+					return -1 * absoluteAmount
+				case .plus:
+					return absoluteAmount
+				}
+			}()
+			model.adjustBalance(of: budget, of: category, by: amount)
 			dismiss()
 		}
-		.disabled(amount == 0.0)
+		.disabled(absoluteAmount == 0.0)
 	}
 }
