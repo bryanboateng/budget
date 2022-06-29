@@ -76,7 +76,6 @@ struct BalanceAdjuster: View {
 
 	var doneButton: some View {
 		Button("Fertig") {
-
 			let amount: Decimal = {
 				switch sign {
 				case .minus:
