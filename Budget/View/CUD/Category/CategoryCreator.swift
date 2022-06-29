@@ -8,7 +8,7 @@ struct CategoryCreator: View {
 	var completion: (Category) -> Void
 
 	var body: some View {
-		NavigationView {
+		NavigationStack {
 			CategoryCanvas(name: $name, color: $color)
 				.navigationTitle("Neue Kategorie")
 				.navigationBarTitleDisplayMode(.inline)

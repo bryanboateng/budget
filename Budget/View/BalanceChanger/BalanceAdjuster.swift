@@ -15,7 +15,7 @@ struct BalanceAdjuster: View {
 	let category: Category
 
 	var body: some View {
-		NavigationView {
+		NavigationStack {
 			Form {
 				HStack(alignment: .firstTextBaseline) {
 					Button {

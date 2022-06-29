@@ -11,7 +11,7 @@ struct BudgetEditor: View {
 	@State private var symbol: String
 
 	var body: some View {
-		NavigationView {
+		NavigationStack {
 			BudgetCanvas(name: $name, symbol: $symbol, color: category.color)
 				.navigationTitle("Budget bearbeiten")
 				.navigationBarTitleDisplayMode(.inline)

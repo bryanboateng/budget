@@ -10,7 +10,7 @@ struct BudgetCreator: View {
 	@State var symbol = ""
 
 	var body: some View {
-		NavigationView {
+		NavigationStack {
 			BudgetCanvas(name: $name, symbol: $symbol, color: category.color)
 				.navigationTitle("Neues Budget")
 				.navigationBarTitleDisplayMode(.inline)

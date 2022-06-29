@@ -6,7 +6,7 @@ struct BalanceHistory: View {
 	let budget: Budget
 
 	var body: some View {
-		NavigationView {
+		NavigationStack {
 			Group {
 				if budget.balanceAdjustments.isEmpty {
 					Text("Keine Historie.")

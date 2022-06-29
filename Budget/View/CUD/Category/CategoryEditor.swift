@@ -9,7 +9,7 @@ struct CategoryEditor: View {
 	var completion: (String, Category.Color) -> Void
 
 	var body: some View {
-		NavigationView {
+		NavigationStack {
 			CategoryCanvas(name: $name, color: $color)
 				.navigationTitle("Kategorie bearbeiten")
 				.navigationBarTitleDisplayMode(.inline)
