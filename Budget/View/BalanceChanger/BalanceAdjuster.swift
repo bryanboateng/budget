@@ -42,7 +42,7 @@ struct BalanceAdjuster: View {
 						}()
 						Image(systemName: symbol)
 							.symbolRenderingMode(.hierarchical)
-							.foregroundColor(symbolColor)
+							.foregroundStyle(symbolColor)
 							.font(.system(size: fontSize, weight: .medium))
 							.minimumScaleFactor(0.5)
 					}

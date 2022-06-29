@@ -8,7 +8,7 @@ struct CategoryCanvas: View {
 		ScrollView {
 			VStack(spacing: 25) {
 				Circle()
-					.foregroundColor(color.swiftUIColor)
+					.foregroundStyle(color.swiftUIColor)
 					.frame(width: 120, height: 120)
 				TextField("Name", text: $name)
 					.font(.title)

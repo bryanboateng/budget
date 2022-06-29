@@ -11,7 +11,7 @@ struct ColorPicker: View {
 			LazyVGrid(columns: [GridItem(.adaptive(minimum: 45), spacing: 10)], spacing: 10) {
 				ForEach(Category.Color.allCases, id: \.self) { color in
 					Circle()
-						.foregroundColor(color.swiftUIColor)
+						.foregroundStyle(color.swiftUIColor)
 						.aspectRatio(contentMode: .fill)
 						.onTapGesture {
 							self.selectedColor = color

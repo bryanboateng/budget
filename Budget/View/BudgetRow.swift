@@ -12,7 +12,7 @@ struct BudgetRow: View {
 		} icon: {
 			Image(systemName: budget.symbol)
 				.font(.title2)
-				.foregroundColor(color.swiftUIColor)
+				.foregroundStyle(color.swiftUIColor)
 		}
 		.badge(budget.balance.formatted(.eur()))
 		.foregroundColor(.primary)
