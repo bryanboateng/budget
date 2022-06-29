@@ -11,6 +11,7 @@ struct CategoryCreator: View {
 		NavigationView {
 			CategoryCanvas(name: $name, color: $color)
 				.navigationTitle("Neue Kategorie")
+				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
 					ToolbarItem(placement: .cancellationAction) {
 						Button("Abbrechen") {

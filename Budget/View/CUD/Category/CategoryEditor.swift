@@ -12,6 +12,7 @@ struct CategoryEditor: View {
 		NavigationView {
 			CategoryCanvas(name: $name, color: $color)
 				.navigationTitle("Kategorie bearbeiten")
+				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
 					ToolbarItem(placement: .cancellationAction) {
 						Button("Abbrechen") {

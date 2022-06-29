@@ -13,6 +13,7 @@ struct BudgetCreator: View {
 		NavigationView {
 			BudgetCanvas(name: $name, symbol: $symbol, color: category.color)
 				.navigationTitle("Neues Budget")
+				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
 					ToolbarItem(placement: .cancellationAction) {
 						Button("Abbrechen") {
