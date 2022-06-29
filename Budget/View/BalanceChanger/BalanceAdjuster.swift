@@ -52,26 +52,13 @@ struct BalanceAdjuster: View {
 					doneButton
 				}
 			}
-			.actionSheet(isPresented: $isAskingForConfirmation) {
-				let sign = isOutgoingTransaction ? "-" : "+"
-				return ActionSheet(
-					title: Text("Saldo anpassen"),
-					message: Text("Soll die Anpasung von \(sign)\(amount.formatted(.eur())) im Budget \(budget.name) wirklich durchgeführt werden?"),
-					buttons: [
-						.default(Text("Saldoanpassung bestätigen")) {
-							model.adjustBalance(of: budget, of: category, by: (isOutgoingTransaction ? -1 : 1) * amount)
-							dismiss()
-						},
-						.cancel()
-					]
-				)
-			}
 		}
 	}
 
 	var doneButton: some View {
 		Button("Fertig") {
-			isAskingForConfirmation = true
+			model.adjustBalance(of: budget, of: category, by: (isOutgoingTransaction ? -1 : 1) * amount)
+			dismiss()
 		}
 		.disabled(amount == 0.0)
 	}
