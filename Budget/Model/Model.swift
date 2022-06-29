@@ -16,7 +16,7 @@ import Foundation
 	}
 
 	func reorganizeCategories(_ newCategoryInfo: [(id: Category.ID, name: String, color: Category.Color)]) {
-		categories = newCategoryInfo.map { categoryInfo  -> Category in
+		categories = newCategoryInfo.map { categoryInfo -> Category in
 			var category = Category(id: categoryInfo.id, name: categoryInfo.name, color: categoryInfo.color)
 			if let existingCategory = categories.first(where: { category in
 				category.id == categoryInfo.id
@@ -68,11 +68,11 @@ import Foundation
 
 	subscript(categoryID: Category.ID) -> Category {
 		get {
-			return categories.first(where: { $0.id == categoryID })!
+			categories.first { $0.id == categoryID }!
 		}
 
 		set(newValue) {
-			categories[categories.firstIndex(where: { $0.id == categoryID })!] = newValue
+			categories[categories.firstIndex { $0.id == categoryID }!] = newValue
 		}
 	}
 }
