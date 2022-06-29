@@ -103,18 +103,18 @@
 				B6F504BD260695E5005E20A5 /* BudgetRow.swift */,
 				B605B78C27EDD092008DA364 /* BalanceHistory.swift */,
 				B69EE4EA27B153EF0070DEBA /* CUD */,
-				B67A913D2659AFC1003AADD8 /* BalanceChanger */,
+				B67A913D2659AFC1003AADD8 /* BalanceAdjuster */,
 			);
 			path = View;
 			sourceTree = "<group>";
 		};
-		B67A913D2659AFC1003AADD8 /* BalanceChanger */ = {
+		B67A913D2659AFC1003AADD8 /* BalanceAdjuster */ = {
 			isa = PBXGroup;
 			children = (
 				B6E093162628D8DD0091F9A6 /* BalanceAdjuster.swift */,
 				B61DA5D126299259008CADBF /* CurrencyField.swift */,
 			);
-			path = BalanceChanger;
+			path = BalanceAdjuster;
 			sourceTree = "<group>";
 		};
 		B69EE4E727B151130070DEBA /* Category */ = {
