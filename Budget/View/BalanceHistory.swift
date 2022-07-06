@@ -18,7 +18,7 @@ struct BalanceHistory: View {
 								Text(adjustment.date.formatted(.dateTime.day().month().hour().minute().second()))
 									.foregroundStyle(.secondary)
 								Spacer()
-								Text(adjustment.amount.formatted(.eur()))
+								Text(adjustment.amount.formatted(.eur().sign(strategy: .accountingAlways())))
 							}
 						}
 					}
