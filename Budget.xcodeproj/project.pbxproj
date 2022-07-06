@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		B605B78D27EDD092008DA364 /* BalanceHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605B78C27EDD092008DA364 /* BalanceHistory.swift */; };
 		B605B78F27EDF5C8008DA364 /* BalanceAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605B78E27EDF5C8008DA364 /* BalanceAdjustment.swift */; };
-		B615245527D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B615245427D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift */; };
 		B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA5D126299259008CADBF /* CurrencyField.swift */; };
 		B640C0C627EE686300271B9E /* BudgetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640C0C527EE686300271B9E /* BudgetList.swift */; };
 		B64337CB27F3073400A31D2D /* CategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64337CA27F3073400A31D2D /* CategoryManager.swift */; };
@@ -36,7 +35,6 @@
 /* Begin PBXFileReference section */
 		B605B78C27EDD092008DA364 /* BalanceHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceHistory.swift; sourceTree = "<group>"; };
 		B605B78E27EDF5C8008DA364 /* BalanceAdjustment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceAdjustment.swift; sourceTree = "<group>"; };
-		B615245427D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+DocumentsDirectory.swift"; sourceTree = "<group>"; };
 		B61DA5D126299259008CADBF /* CurrencyField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyField.swift; sourceTree = "<group>"; };
 		B640C0C527EE686300271B9E /* BudgetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetList.swift; sourceTree = "<group>"; };
 		B64337CA27F3073400A31D2D /* CategoryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryManager.swift; sourceTree = "<group>"; };
@@ -80,7 +78,6 @@
 				B6C1F9FE27C6370F00758BE4 /* Category.swift */,
 				B6C1FA0027C638DD00758BE4 /* Budget.swift */,
 				B605B78E27EDF5C8008DA364 /* BalanceAdjustment.swift */,
-				B615245427D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -280,7 +277,6 @@
 				B6C1FA0327C6390700758BE4 /* Model.swift in Sources */,
 				B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */,
 				B64337CB27F3073400A31D2D /* CategoryManager.swift in Sources */,
-				B615245527D7AF5B008D5EE3 /* FileManager+DocumentsDirectory.swift in Sources */,
 				B69EE4E627B151090070DEBA /* CategoryCreator.swift in Sources */,
 				B605B78D27EDD092008DA364 /* BalanceHistory.swift in Sources */,
 				B6E093172628D8DD0091F9A6 /* BalanceAdjuster.swift in Sources */,

@@ -3,7 +3,7 @@ import Foundation
 @MainActor class Model: ObservableObject {
 	@Published private(set) var categories: [Category]
 
-	private let savePath = FileManager.documentsDirectory
+	private let savePath = URL.documentsDirectory
 		.appendingPathComponent("categories")
 
 	init() {
