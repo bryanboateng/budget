@@ -22,11 +22,11 @@ struct BudgetCreator: View {
 					}
 					ToolbarItem(placement: .confirmationAction) {
 						Button("Fertig") {
-							let budget = Budget(name: name.trimmingCharacters(in: .whitespaces), symbol: symbol)
+							let budget = Budget(name: name.trimmingCharacters(in: .whitespacesAndNewlines), symbol: symbol)
 							model.insert(budget, into: category)
 							dismiss()
 						}
-						.disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
+						.disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 					}
 				}
 		}

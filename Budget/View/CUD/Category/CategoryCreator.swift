@@ -20,10 +20,10 @@ struct CategoryCreator: View {
 					}
 					ToolbarItem(placement: .confirmationAction) {
 						Button("Fertig") {
-							completion(Category(name: name.trimmingCharacters(in: .whitespaces), color: color))
+							completion(Category(name: name.trimmingCharacters(in: .whitespacesAndNewlines), color: color))
 							dismiss()
 						}
-						.disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
+						.disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 					}
 				}
 		}

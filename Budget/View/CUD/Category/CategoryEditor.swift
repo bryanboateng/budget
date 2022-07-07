@@ -24,7 +24,7 @@ struct CategoryEditor: View {
 							completion(name, color)
 							dismiss()
 						}
-						.disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
+						.disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 					}
 				}
 		}
