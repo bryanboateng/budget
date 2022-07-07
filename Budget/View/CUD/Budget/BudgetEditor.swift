@@ -10,6 +10,10 @@ struct BudgetEditor: View {
 	@State private var name: String
 	@State private var symbol: String
 
+	private var changesArePresent: Bool {
+		budget.name != name || budget.symbol != symbol
+	}
+
 	var body: some View {
 		NavigationStack {
 			BudgetCanvas(name: $name, symbol: $symbol, color: category.color)
@@ -26,7 +30,11 @@ struct BudgetEditor: View {
 							model.update(budget, of: category, withName: name.trimmingCharacters(in: .whitespacesAndNewlines), andSymbol: symbol)
 							dismiss()
 						}
-						.disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+						.disabled(
+							name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+							symbol.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+							!changesArePresent
+						)
 					}
 				}
 		}
