@@ -28,10 +28,10 @@ class CategoryManagerController: UITableViewController {
 		tableView.isEditing = true
 		tableView.register(UITableViewCell.self, forCellReuseIdentifier: "category")
 
-		navigationItem.title = String(localized: "Kategorien")
+		navigationItem.title = String(localized: "Categories")
 
 		navigationItem.setLeftBarButton(
-			UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction(title: "Abbrechen") {_ in
+			UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction(title: String(localized: "Cancel")) {_ in
 				self.delegate?.categoryManagerControllerDidCancel(self)
 			}),
 			animated: true
@@ -39,13 +39,13 @@ class CategoryManagerController: UITableViewController {
 
 		navigationItem.setRightBarButtonItems(
 			[
-				UIBarButtonItem(systemItem: .done, primaryAction: UIAction(title: "Fertig") {_ in
+				UIBarButtonItem(systemItem: .done, primaryAction: UIAction(title: String(localized: "Done")) {_ in
 					self.delegate?.categoryManagerController(self, didFinishManagingCategories: self.categories)
 				}),
 				UIBarButtonItem(
-					title: String(localized: "Neue Kategorie"),
+					title: String(localized: "New Category"),
 					image: UIImage(systemName: "folder.badge.plus"),
-					primaryAction: UIAction(title: "Neue Kategorie") {_ in
+					primaryAction: UIAction(title: String(localized: "New Category")) {_ in
 						self.present(
 							UIHostingController(
 								rootView: CategoryCreator { category in

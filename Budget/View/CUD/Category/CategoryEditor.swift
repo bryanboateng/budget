@@ -11,16 +11,16 @@ struct CategoryEditor: View {
 	var body: some View {
 		NavigationStack {
 			CategoryCanvas(name: $name, color: $color)
-				.navigationTitle("Kategorie bearbeiten")
+				.navigationTitle("Edit Category")
 				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
 					ToolbarItem(placement: .cancellationAction) {
-						Button("Abbrechen") {
+						Button("Cancel") {
 							dismiss()
 						}
 					}
 					ToolbarItem(placement: .confirmationAction) {
-						Button("Fertig") {
+						Button("Done") {
 							completion(name, color)
 							dismiss()
 						}

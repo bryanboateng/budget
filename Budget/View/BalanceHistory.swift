@@ -9,7 +9,7 @@ struct BalanceHistory: View {
 		NavigationStack {
 			Group {
 				if budget.balanceAdjustments.isEmpty {
-					Text("Keine Historie.")
+					Text("No history.")
 						.foregroundStyle(.secondary)
 				} else {
 					List {
@@ -26,7 +26,7 @@ struct BalanceHistory: View {
 			}
 			.toolbar {
 				ToolbarItem(placement: .confirmationAction) {
-					Button("Fertig") {
+					Button("Done") {
 						dismiss()
 					}
 				}

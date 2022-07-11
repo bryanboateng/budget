@@ -17,16 +17,16 @@ struct BudgetEditor: View {
 	var body: some View {
 		NavigationStack {
 			BudgetCanvas(name: $name, symbol: $symbol, color: category.color)
-				.navigationTitle("Budget bearbeiten")
+				.navigationTitle("Edit Budget")
 				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
 					ToolbarItem(placement: .cancellationAction) {
-						Button("Abbrechen") {
+						Button("Cancel") {
 							dismiss()
 						}
 					}
 					ToolbarItem(placement: .confirmationAction) {
-						Button("Fertig") {
+						Button("Done") {
 							model.update(budget, of: category, withName: name.trimmingCharacters(in: .whitespacesAndNewlines), andSymbol: symbol)
 							dismiss()
 						}

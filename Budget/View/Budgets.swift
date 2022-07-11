@@ -17,7 +17,7 @@ struct Budgets: View {
 		Group {
 			if !model.categories.isEmpty {
 				List {
-					Text("Gesamter Stand")
+					Text("Total Balance")
 						.font(.headline)
 						.badge(totalBalance.formatted(.eur()))
 					ForEach(model.categories, id: \.self) { category in
@@ -29,7 +29,7 @@ struct Budgets: View {
 									Button {
 										categoryBeingExtended = category
 									} label: {
-										Label("Neues Budget", systemImage: "plus")
+										Label("New Budget", systemImage: "plus")
 											.labelStyle(.iconOnly)
 									}
 								}
@@ -37,7 +37,7 @@ struct Budgets: View {
 							if !category.budgets.isEmpty {
 								BudgetList(category: category)
 							} else {
-								Text("In dieser Kategorie gibt es keine Budgets.")
+								Text("No budgets.")
 									.foregroundStyle(.secondary)
 									.multilineTextAlignment(.center)
 									.frame(maxWidth: .infinity)
@@ -47,7 +47,7 @@ struct Budgets: View {
 					}
 				}
 			} else {
-				Text("Keine Kategorien.")
+				Text("No categories.")
 					.foregroundStyle(.secondary)
 			}
 		}
@@ -57,7 +57,7 @@ struct Budgets: View {
 				Button {
 					isManagingCategories = true
 				} label: {
-					Label("Kategorien", systemImage: "folder")
+					Label("Categories", systemImage: "folder")
 				}
 			}
 		}

@@ -23,25 +23,25 @@ struct BudgetList: View {
 				Button {
 					budgetAdjustingBalance = budget
 				} label: {
-					Label("Saldo anpassen", systemImage: "arrow.left.arrow.right")
+					Label("Adjust Balance", systemImage: "arrow.left.arrow.right")
 				}
 
 				Button {
 					budgetWhosHistoryIsShown = budget
 				} label: {
-					Label("Historie", systemImage: "clock")
+					Label("History", systemImage: "clock")
 				}
 
 				Button {
 					budgetBeingEdited = budget
 				} label: {
-					Label("Bearbeiten", systemImage: "pencil")
+					Label("Edit", systemImage: "pencil")
 				}
 
 				Button(role: .destructive) {
 					budgetBeingDeleted = budget
 				} label: {
-					Label("Löschen", systemImage: "trash")
+					Label("Delete", systemImage: "trash")
 				}
 			} label: {
 				BudgetRow(budget: budget, color: category.color)
@@ -58,10 +58,10 @@ struct BudgetList: View {
 		}
 		.actionSheet(item: $budgetBeingDeleted) { budget in
 			ActionSheet(
-				title: Text("\(budget.name) löschen"),
-				message: Text("Soll das Budget \(budget.name) wirklich gelöscht werden?"),
+				title: Text("Delete \(budget.name)"),
+				message: Text("Are you sure you want to delete the budget \(budget.name)? You can’t undo this action."),
 				buttons: [
-					.destructive(Text("Budget löschen")) {
+					.destructive(Text("Delete Budget")) {
 						model.delete(budget, of: category)
 					},
 					.cancel()

@@ -10,16 +10,16 @@ struct CategoryCreator: View {
 	var body: some View {
 		NavigationStack {
 			CategoryCanvas(name: $name, color: $color)
-				.navigationTitle("Neue Kategorie")
+				.navigationTitle("New Category")
 				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
 					ToolbarItem(placement: .cancellationAction) {
-						Button("Abbrechen") {
+						Button("Cancel") {
 							dismiss()
 						}
 					}
 					ToolbarItem(placement: .confirmationAction) {
-						Button("Fertig") {
+						Button("Done") {
 							completion(Category(name: name.trimmingCharacters(in: .whitespacesAndNewlines), color: color))
 							dismiss()
 						}

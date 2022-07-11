@@ -59,11 +59,11 @@ struct BalanceAdjuster: View {
 					doneButton
 				}
 			}
-			.navigationTitle("Saldo anpassen")
+			.navigationTitle("Adjust Balance")
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
 				ToolbarItem(placement: .cancellationAction) {
-					Button("Abbrechen") {
+					Button("Cancel") {
 						dismiss()
 					}
 				}
@@ -75,7 +75,7 @@ struct BalanceAdjuster: View {
 	}
 
 	var doneButton: some View {
-		Button("Fertig") {
+		Button("Done") {
 			let amount: Decimal = {
 				switch sign {
 				case .minus:
