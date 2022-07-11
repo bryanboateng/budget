@@ -28,7 +28,7 @@ class CategoryManagerController: UITableViewController {
 		tableView.isEditing = true
 		tableView.register(UITableViewCell.self, forCellReuseIdentifier: "category")
 
-		navigationItem.title = "Kategorien"
+		navigationItem.title = String(localized: "Kategorien")
 
 		navigationItem.setLeftBarButton(
 			UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction(title: "Abbrechen") {_ in
@@ -43,7 +43,7 @@ class CategoryManagerController: UITableViewController {
 					self.delegate?.categoryManagerController(self, didFinishManagingCategories: self.categories)
 				}),
 				UIBarButtonItem(
-					title: "Neue Kategorie",
+					title: String(localized: "Neue Kategorie"),
 					image: UIImage(systemName: "folder.badge.plus"),
 					primaryAction: UIAction(title: "Neue Kategorie") {_ in
 						self.present(

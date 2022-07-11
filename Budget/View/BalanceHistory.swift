@@ -15,10 +15,10 @@ struct BalanceHistory: View {
 					List {
 						ForEach(budget.balanceAdjustments.sorted { $0.date > $1.date }) { adjustment in
 							HStack {
-								Text(adjustment.date.formatted(.dateTime.day().month().hour().minute().second()))
+								Text(adjustment.date, format: .dateTime.day().month().hour().minute().second())
 									.foregroundStyle(.secondary)
 								Spacer()
-								Text(adjustment.amount.formatted(.eur().sign(strategy: .accountingAlways())))
+								Text(adjustment.amount, format: .eur().sign(strategy: .accountingAlways()))
 							}
 						}
 					}
