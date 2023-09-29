@@ -1,6 +1,7 @@
 import Foundation
 
-@MainActor class Model: ObservableObject {
+@MainActor
+class Model: ObservableObject {
 	@Published private(set) var categories: [Category]
 
 	private let savePath = URL.documentsDirectory

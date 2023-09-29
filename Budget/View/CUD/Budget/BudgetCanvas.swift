@@ -7,10 +7,30 @@ struct BudgetCanvas: View {
 
 	var body: some View {
 		Form {
+			Label(name, systemImage: symbol)
+				.foregroundStyle(color.swiftUIColor)
+				.font(.system(size: 100))
+				.labelStyle(.iconOnly)
+				.frame(maxWidth: .infinity, alignment: .center)
+				.listRowBackground(Color(UIColor.systemGroupedBackground))
 			Section {
-				TextField("Name", text: $name)
-				TextField("Symbol", text: $symbol)
+				TextField("Symbol", text: $symbol, axis: .vertical)
+			} header: {
+				Text("Symbol")
+			}
+			Section {
+				TextField("Name", text: $name, axis: .vertical)
+			} header: {
+				Text("Name")
 			}
 		}
+	}
+}
+
+#Preview {
+	@State var name = "Wasserflaschen"
+	@State var symbol = "waterbottle"
+	return NavigationStack {
+		BudgetCanvas(name: $name, symbol: $symbol, color: .green)
 	}
 }

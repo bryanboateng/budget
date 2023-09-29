@@ -10,16 +10,16 @@ struct CategoryCreator: View {
 	var body: some View {
 		NavigationStack {
 			CategoryCanvas(name: $name, color: $color)
-				.navigationTitle("New Category")
+				.navigationTitle("Neue Kategorie")
 				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
 					ToolbarItem(placement: .cancellationAction) {
-						Button("Cancel") {
+						Button("Abbrechen") {
 							dismiss()
 						}
 					}
 					ToolbarItem(placement: .confirmationAction) {
-						Button("Done") {
+						Button("Fertig") {
 							completion(Category(name: name.trimmingCharacters(in: .whitespacesAndNewlines), color: color))
 							dismiss()
 						}
@@ -28,4 +28,8 @@ struct CategoryCreator: View {
 				}
 		}
 	}
+}
+
+#Preview {
+	CategoryCreator { _ in }
 }

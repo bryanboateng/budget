@@ -54,7 +54,7 @@ class UIKitCurrencyField: UILabel, UIKeyInput {
 		_ = amountString.popLast()
 	}
 
-	func updateText() {
+	private func updateText() {
 		text = amount.formatted(.eur())
 	}
 }
@@ -71,7 +71,8 @@ struct CurrencyField: UIViewRepresentable {
 			parent.amount = amount
 		}
 
-		@objc func handleTap(_ sender: UITapGestureRecognizer) {
+		@objc
+		func handleTap(_ sender: UITapGestureRecognizer) {
 			sender.view?.becomeFirstResponder()
 		}
 	}
@@ -90,7 +91,6 @@ struct CurrencyField: UIViewRepresentable {
 
 		currencyField.font = UIFont.systemFont(ofSize: fontSize, weight: .semibold)
 		currencyField.adjustsFontSizeToFitWidth = true
-		currencyField.numberOfLines = 2
 		currencyField.minimumScaleFactor = 0.5
 		currencyField.isUserInteractionEnabled = true
 
@@ -109,4 +109,9 @@ struct CurrencyField: UIViewRepresentable {
 	func updateUIView(_ currencyField: UIKitCurrencyField, context: Context) {
 		currencyField.amount = amount
 	}
+}
+
+#Preview {
+	@State var absoluteAmount: Decimal = 0.0
+	return CurrencyField(amount: $absoluteAmount, fontSize: 65)
 }

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct Budgets: View {
+struct Overview: View {
 	@EnvironmentObject private var model: Model
 
 	@State private var isManagingCategories = false
@@ -15,11 +15,13 @@ struct Budgets: View {
 
 	var body: some View {
 		Group {
-			if !model.categories.isEmpty {
+			if model.categories.isEmpty {
+				ContentUnavailableView {
+					Label("Keine Kategorien", systemImage: "folder.fill")
+				}
+			} else {
 				List {
-					Text("Total Balance")
-						.font(.headline)
-						.badge(totalBalance.formatted(.eur()))
+					BalanceDisplay(balance: totalBalance)
 					ForEach(model.categories, id: \.self) { category in
 						Section(
 							header:
@@ -29,35 +31,37 @@ struct Budgets: View {
 									Button {
 										categoryBeingExtended = category
 									} label: {
-										Label("New Budget", systemImage: "plus")
+										Label("Neues Budget", systemImage: "plus")
 											.labelStyle(.iconOnly)
 									}
 								}
+								.headerProminence(.increased)
 						) {
 							if !category.budgets.isEmpty {
-								BudgetList(category: category)
+								CategoryRow(category: category)
+									.environmentObject(model)
 							} else {
-								Text("No budgets.")
-									.foregroundStyle(.secondary)
-									.multilineTextAlignment(.center)
-									.frame(maxWidth: .infinity)
+								ContentUnavailableView {
+									Label("Keine Budgets", systemImage: "basket.fill")
+								}
 							}
 						}
-						.headerProminence(.increased)
 					}
 				}
-			} else {
-				Text("No categories.")
-					.foregroundStyle(.secondary)
 			}
 		}
-		.navigationTitle("Budgets")
+		.navigationTitle("Konto")
 		.toolbar {
 			ToolbarItem(placement: .navigationBarTrailing) {
 				Button {
 					isManagingCategories = true
 				} label: {
-					Label("Categories", systemImage: "folder")
+					Label("Kategorien", systemImage: "folder")
+				}
+			}
+			ToolbarItemGroup(placement: .bottomBar) {
+				Spacer()
+				Button("Saldo anpassen", systemImage: "arrow.left.arrow.right") {
 				}
 			}
 		}
@@ -66,6 +70,21 @@ struct Budgets: View {
 		}
 		.sheet(item: $categoryBeingExtended) { category in
 			BudgetCreator(category: category)
+		}
+	}
+}
+
+private struct BalanceDisplay: View {
+	let balance: Decimal
+
+	var body: some View {
+		VStack(alignment: .leading) {
+			Text("Kontostand")
+				.foregroundStyle(.secondary)
+				.font(.subheadline)
+			Text(balance, format: .eur())
+				.font(.title)
+				.fontWeight(.semibold)
 		}
 	}
 }

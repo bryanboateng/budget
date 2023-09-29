@@ -12,16 +12,16 @@ struct BudgetCreator: View {
 	var body: some View {
 		NavigationStack {
 			BudgetCanvas(name: $name, symbol: $symbol, color: category.color)
-				.navigationTitle("New Budget")
+				.navigationTitle("Neues Budget")
 				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
 					ToolbarItem(placement: .cancellationAction) {
-						Button("Cancel") {
+						Button("Abbrechen") {
 							dismiss()
 						}
 					}
 					ToolbarItem(placement: .confirmationAction) {
-						Button("Done") {
+						Button("Fertig") {
 							let budget = Budget(name: name.trimmingCharacters(in: .whitespacesAndNewlines), symbol: symbol)
 							model.insert(budget, into: category)
 							dismiss()

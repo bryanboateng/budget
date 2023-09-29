@@ -8,7 +8,7 @@ struct Category: Codable, Identifiable, Hashable {
 
 	var totalBalance: Decimal {
 		budgets.reduce(0) { partialResult, budget in
-			partialResult + budget.balance
+			partialResult + budget.currentBalance
 		}
 	}
 
@@ -49,22 +49,14 @@ extension Category {
 
 		var swiftUIColor: SwiftUI.Color {
 			switch self {
-			case .red:
-				return SwiftUI.Color.red
-			case .orange:
-				return SwiftUI.Color.orange
-			case .yellow:
-				return SwiftUI.Color.yellow
-			case .green:
-				return SwiftUI.Color.green
-			case .teal:
-				return SwiftUI.Color(UIColor.systemTeal)
-			case .blue:
-				return SwiftUI.Color.blue
-			case .purple:
-				return SwiftUI.Color.purple
-			case .pink:
-				return SwiftUI.Color("pink")
+			case .red: .red
+			case .orange: .orange
+			case .yellow: .yellow
+			case .green: .green
+			case .teal: SwiftUI.Color(UIColor.systemTeal)
+			case .blue: .blue
+			case .purple: .purple
+			case .pink: SwiftUI.Color("CustomPink")
 			}
 		}
 	}
