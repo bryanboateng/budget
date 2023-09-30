@@ -12,8 +12,40 @@ struct BudgetEditor: View {
 	@State private var grenze: Decimal
 	@State private var color: Budget.Color
 
+	private var strategyHasChanged: Bool {
+		switch budget.strategy {
+		case .noMonthlyAllocation(_):
+			return showGreeting
+		case .withMonthlyAllocation(let allocatedFinance):
+			if showGreeting {
+				return allocatedFinance.monthlyAllocation != grenze
+			} else {
+				return true
+			}
+		}
+	}
 	private var changesArePresent: Bool {
-		budget.name != name || budget.symbol != symbol || budget.color != color
+		budget.name != name || budget.symbol != symbol || budget.color != color || strategyHasChanged
+	}
+	func bieoinsen() -> Budget.Change.Oewo? {
+		switch budget.strategy {
+		case .noMonthlyAllocation(_):
+			if showGreeting {
+				return .activate(grenze)
+			} else {
+				return nil
+			}
+		case .withMonthlyAllocation(let allocatedFinance):
+			if showGreeting {
+				if allocatedFinance.monthlyAllocation != grenze {
+					return .activate(grenze)
+				} else {
+					return nil
+				}
+			} else {
+				return .deactivate
+			}
+		}
 	}
 
 	var body: some View {
@@ -56,10 +88,6 @@ struct BudgetEditor: View {
 					}
 				}
 		}
-	}
-
-	func bieoinsen() -> Budget.Change.Oewo {
-		.activate(grenze)
 	}
 
 	init(budget: Budget) {
