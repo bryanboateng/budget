@@ -10,8 +10,9 @@ struct BalanceAdjuster: View {
 	@EnvironmentObject private var model: Model
 
 	@ScaledMetric private var fontSize: CGFloat = 65
+	@FocusState private var currencyFieldIsFocused: Bool
 
-	@State private var absoluteAmount: Decimal = 4.45
+	@State private var absoluteAmount: Decimal = 0
 	@State private var direction = Direction.outgoing
 
 	let budget: Budget
@@ -48,6 +49,7 @@ struct BalanceAdjuster: View {
 						.foregroundStyle(directionImageColor)
 						.font(.system(size: 24, weight: .semibold))
 					CurrencyField(amount: $absoluteAmount, fontSize: fontSize)
+						.focused($currencyFieldIsFocused)
 					Text("EUR")
 						.fontWeight(.semibold)
 				}
@@ -68,6 +70,9 @@ struct BalanceAdjuster: View {
 				Section {
 					doneButton
 				}
+			}
+			.onAppear {
+				currencyFieldIsFocused = true
 			}
 			.navigationTitle("Saldo anpassen")
 			.navigationBarTitleDisplayMode(.inline)
