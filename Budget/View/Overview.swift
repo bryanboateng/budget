@@ -17,7 +17,7 @@ struct Overview: View {
 		Group {
 			if model.categories.isEmpty {
 				ContentUnavailableView {
-					Label("Keine Kategorien", systemImage: "folder.fill")
+					Label("Keine Kategorien", systemImage: "folder")
 				}
 			} else {
 				List {
@@ -42,7 +42,7 @@ struct Overview: View {
 									.environmentObject(model)
 							} else {
 								ContentUnavailableView {
-									Label("Keine Budgets", systemImage: "basket.fill")
+									Label("Keine Budgets", systemImage: "basket")
 								}
 							}
 						}

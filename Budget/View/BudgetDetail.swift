@@ -86,8 +86,9 @@ struct BudgetDetail: View {
 
 #Preview {
 	var budget = Budget(name: "Urlaub", symbol: "globe.europe.africa")
+	budget.owefn(monthlyAllocation: 4.5)
 	budget.balanceAdjustments = [
-		BalanceAdjustment(date: .now, amount: budget.monthlyAllocation),
+		BalanceAdjustment(date: .now, amount: 4.5),
 		BalanceAdjustment(date: .now.addingTimeInterval(1_000), amount: -10)
 	]
 	return BudgetDetail(
@@ -100,23 +101,27 @@ private struct BudgetView: View {
 	let budget: Budget
 
 	var body: some View {
-		Section {
-			HStack {
-				Text("Ausgabefähiger Betrag")
-					.foregroundStyle(.secondary)
-				Spacer()
-				Text(budget.spendableBalance, format: .eur())
+		let reality = budget.weofnopwe
+
+		if let reality {
+			Section {
+				HStack {
+					Text("Ausgabefähiger Betrag")
+						.foregroundStyle(.secondary)
+					Spacer()
+					Text(reality.spendableBalance, format: .eur())
+				}
+				HStack {
+					Text("Ausgabefähige Tage")
+						.foregroundStyle(.secondary)
+					Spacer()
+					Text(
+						"\(reality.spendableDays.formatted(.number.precision(.fractionLength(1)))) d"
+					)
+				}
+			} header: {
+				Text("Verfügbar")
 			}
-			HStack {
-				Text("Ausgabefähige Tage")
-					.foregroundStyle(.secondary)
-				Spacer()
-				Text(
-					"\(budget.spendableDays.formatted(.number.precision(.fractionLength(1)))) d"
-				)
-			}
-		} header: {
-			Text("Verfügbar")
 		}
 		Section {
 			Group {
@@ -126,17 +131,19 @@ private struct BudgetView: View {
 					Spacer()
 					Text(budget.currentBalance, format: .eur())
 				}
-				HStack {
-					Text("Geplanter Betrag")
-						.foregroundStyle(.secondary)
-					Spacer()
-					Text(budget.plannedBalance, format: .eur())
-				}
-				HStack {
-					Text("Monatliche Zuweisung")
-						.foregroundStyle(.secondary)
-					Spacer()
-					Text(budget.monthlyAllocation, format: .eur())
+				if let reality {
+					HStack {
+						Text("Geplanter Betrag")
+							.foregroundStyle(.secondary)
+						Spacer()
+						Text(reality.plannedBalance, format: .eur())
+					}
+					HStack {
+						Text("Monatliche Zuweisung")
+							.foregroundStyle(.secondary)
+						Spacer()
+						Text(reality.monthlyAllocation, format: .eur())
+					}
 				}
 			}
 			.monospacedDigit()

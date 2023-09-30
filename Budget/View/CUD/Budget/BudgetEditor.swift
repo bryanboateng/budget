@@ -9,6 +9,8 @@ struct BudgetEditor: View {
 
 	@State private var name: String
 	@State private var symbol: String
+	@State private var showGreeting: Bool
+	@State private var grenze: Decimal
 
 	private var changesArePresent: Bool {
 		budget.name != name || budget.symbol != symbol
@@ -16,8 +18,14 @@ struct BudgetEditor: View {
 
 	var body: some View {
 		NavigationStack {
-			BudgetCanvas(name: $name, symbol: $symbol, color: category.color)
-				.navigationTitle("Budget bearbeiten")
+			BudgetCanvas(
+				name: $name,
+				symbol: $symbol,
+				showGreeting: $showGreeting,
+				grenze: $grenze,
+				color: category.color
+			)		
+			.navigationTitle("Budget bearbeiten")
 				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
 					ToolbarItem(placement: .cancellationAction) {
@@ -51,5 +59,13 @@ struct BudgetEditor: View {
 
 		_name = State(initialValue: budget.name)
 		_symbol = State(initialValue: budget.symbol)
+
+		if let reality = budget.weofnopwe {
+			_showGreeting = State(initialValue: true)
+			_grenze = State(initialValue: reality.monthlyAllocation)
+		} else {
+			_showGreeting = State(initialValue: false)
+			_grenze = State(initialValue: 0)
+		}
 	}
 }
