@@ -3,48 +3,45 @@ import SwiftUI
 struct Overview: View {
 	@EnvironmentObject private var model: Model
 
-	@State private var isManagingCategories = false
-	@State private var categoryBeingExtended: Category?
 	@State private var isCreatingBudget = false
 
 	private var totalBalance: Decimal {
-		model.categories.reduce(0) { partialResult, category in
-			partialResult + category.totalBalance
+		model.budgets.reduce(0) { partialResult, budget in
+			let amount = switch budget.strategy {
+			case .noMonthlyAllocation(let finance):
+				finance.balance
+			case .withMonthlyAllocation(let finance):
+				finance.currentBalance
+			}
+			return partialResult + amount
+		}
+	}
+
+	private var groupedBudgets: Dictionary<Budget.Color, [Budget]> {
+		.init(grouping: model.budgets) { budget in
+			budget.color
 		}
 	}
 
 	var body: some View {
 		Group {
-			if model.categories.isEmpty {
+			if model.budgets.isEmpty {
 				ContentUnavailableView {
-					Label("Keine Kategorien", systemImage: "folder")
+					Label("Keine Budgets", systemImage: "circle")
 				}
 			} else {
 				List {
 					BalanceDisplay(balance: totalBalance)
-					ForEach(model.categories, id: \.self) { category in
-						Section(
-							header:
-								HStack {
-									Text(category.name)
-									Spacer()
-									Button {
-										categoryBeingExtended = category
-									} label: {
-										Label("Neues Budget", systemImage: "plus")
-											.labelStyle(.iconOnly)
-									}
-								}
-								.headerProminence(.increased)
-						) {
-							if !category.budgets.isEmpty {
-								CategoryRow(category: category)
-									.environmentObject(model)
-							} else {
-								ContentUnavailableView {
-									Label("Keine Budgets", systemImage: "basket")
-								}
-							}
+					ForEach(
+						Budget.Color.allCases.filter { color in
+							groupedBudgets.keys.contains(color)
+						}
+						, id: \.self
+					){ color in
+						Section {
+							BudgetGroupRow(budgets: Set<Budget>(groupedBudgets[color]!))
+						} header: {
+							Text(color.localizedName)
 						}
 					}
 				}
@@ -54,9 +51,9 @@ struct Overview: View {
 		.toolbar {
 			ToolbarItem(placement: .navigationBarTrailing) {
 				Button {
-					isManagingCategories = true
+					isCreatingBudget = true
 				} label: {
-					Label("Kategorien", systemImage: "folder")
+					Label("Kategorien", systemImage: "circle.badge.plus")
 				}
 			}
 			ToolbarItemGroup(placement: .bottomBar) {
@@ -65,15 +62,11 @@ struct Overview: View {
 				}
 			}
 		}
-		.sheet(isPresented: $isManagingCategories) {
-			CategoryManager(categories: model.categories)
-		}
-		.sheet(item: $categoryBeingExtended) { category in
-			BudgetCreator(category: category)
+		.sheet(isPresented: $isCreatingBudget) {
+			BudgetCreator()
 		}
 	}
 }
-
 private struct BalanceDisplay: View {
 	let balance: Decimal
 

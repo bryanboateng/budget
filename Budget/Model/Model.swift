@@ -2,78 +2,94 @@ import Foundation
 
 @MainActor
 class Model: ObservableObject {
-	@Published private(set) var categories: [Category]
+	@Published private(set) var budgets: Set<Budget>
 
 	private let savePath = URL.documentsDirectory
-		.appendingPathComponent("categories")
+		.appendingPathComponent("budgets")
 
 	init() {
 		do {
 			let data = try Data(contentsOf: savePath)
-			categories = try JSONDecoder().decode([Category].self, from: data)
+			budgets = try JSONDecoder().decode(Set<Budget>.self, from: data)
 		} catch {
-			categories = []
+			budgets = []
 		}
 	}
 
-	func reorganizeCategories(_ newCategoryInfo: [(id: Category.ID, name: String, color: Category.Color)]) {
-		categories = newCategoryInfo.map { categoryInfo -> Category in
-			var category = Category(id: categoryInfo.id, name: categoryInfo.name, color: categoryInfo.color)
-			if let existingCategory = categories.first(where: { category in
-				category.id == categoryInfo.id
-			}) {
-				category.budgets = existingCategory.budgets
+	func insert(_ budget: Budget) {
+		budgets.insert(budget)
+		save()
+	}
+
+	func update(budget id: Budget.ID, change: Budget.Change) {
+		var budget = self[id]
+		if let name = change.name {
+			budget.name = name
+		}
+		if let symbol = change.symbol {
+			budget.symbol = symbol
+		}
+		if let color = change.color {
+			budget.color = color
+		}
+		if let mwe = change.monthlyAllocation {
+			let adjustments = switch budget.strategy {
+			case .noMonthlyAllocation(let finance):
+				finance.balanceAdjustments
+			case .withMonthlyAllocation(let finance):
+				finance.balanceAdjustments
 			}
-			return category
+			switch mwe {
+			case .deactivate: budget.strategy = .noMonthlyAllocation(.init(balanceAdjustments: adjustments))
+			case .activate(let money): budget.strategy = .withMonthlyAllocation(.init(balanceAdjustments: adjustments, monthlyAllocation: money))
+			}
 		}
+		self[budget.id] = budget
 		save()
 	}
 
-	func insert(_ budget: Budget, into category: Category) {
-		var category = self[category.id]
-		category.budgets.insert(budget)
-		self[category.id] = category
+	func adjustBalance(ofBudget id: Budget.ID, by amount: Decimal) {
+		var budget = self[id]
+		switch budget.strategy {
+		case .noMonthlyAllocation(let finance):
+			var balanceAdjustments = finance.balanceAdjustments
+			balanceAdjustments.insert(BalanceAdjustment(date: .now, amount: amount))
+			budget.strategy = .noMonthlyAllocation(.init(balanceAdjustments: balanceAdjustments))
+		case .withMonthlyAllocation(let finance):
+			var balanceAdjustments = finance.balanceAdjustments
+			balanceAdjustments.insert(BalanceAdjustment(date: .now, amount: amount))
+			budget.strategy = .withMonthlyAllocation(.init(
+				balanceAdjustments: balanceAdjustments,
+				monthlyAllocation: finance.monthlyAllocation
+			))
+		}
+		self[budget.id] = budget
 		save()
 	}
 
-	func update(_ budget: Budget, of category: Category, withName name: String, andSymbol symbol: String) {
-		var budget = self[category.id][budget.id]
-		budget.name = name
-		budget.symbol = symbol
-		self[category.id][budget.id] = budget
-		save()
-	}
-
-	func adjustBalance(of budget: Budget, of category: Category, by amount: Decimal) {
-		var budget = self[category.id][budget.id]
-		budget.balanceAdjustments.insert(BalanceAdjustment(date: .now, amount: amount))
-		self[category.id][budget.id] = budget
-		save()
-	}
-
-	func delete(_ budget: Budget, of category: Category) {
-		var category = self[category.id]
-		category.budgets.remove(budget)
-		self[category.id] = category
+	func delete(_ budget: Budget) {
+		budgets.remove(budget)
 		save()
 	}
 
 	private func save() {
 		do {
-			let data = try JSONEncoder().encode(categories)
+			let data = try JSONEncoder().encode(budgets)
 			try data.write(to: savePath, options: [.atomic, .completeFileProtection])
 		} catch {
 			print("Unable to save data.")
 		}
 	}
 
-	subscript(categoryID: Category.ID) -> Category {
+	subscript(budgetID: Budget.ID) -> Budget {
 		get {
-			categories.first { $0.id == categoryID }!
+			budgets.first { $0.id == budgetID }!
 		}
 
 		set(newValue) {
-			categories[categories.firstIndex { $0.id == categoryID }!] = newValue
+			let index = budgets.firstIndex { $0.id == budgetID }!
+			budgets.remove(at: index)
+			budgets.insert(newValue)
 		}
 	}
 }

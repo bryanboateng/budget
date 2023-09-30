@@ -16,7 +16,6 @@ struct BalanceAdjuster: View {
 	@State private var direction = Direction.outgoing
 
 	let budget: Budget
-	let category: Category
 
 	private var directionImageName: String {
 		switch direction {
@@ -57,7 +56,7 @@ struct BalanceAdjuster: View {
 				.listRowBackground(Color(UIColor.systemGroupedBackground))
 
 				Section(header: Text("Budget")) {
-					BudgetRow(budget: budget, color: category.color)
+					BudgetRow(budget: budget)
 				}
 
 				Picker("Richtung", selection: $direction) {
@@ -97,7 +96,7 @@ struct BalanceAdjuster: View {
 				case .incoming: absoluteAmount
 				}
 			}()
-			model.adjustBalance(of: budget, of: category, by: amount)
+			model.adjustBalance(ofBudget: budget.id, by: amount)
 			dismiss()
 		}
 		.disabled(absoluteAmount == 0.0)
@@ -106,7 +105,11 @@ struct BalanceAdjuster: View {
 
 #Preview {
 	BalanceAdjuster(
-		budget: Budget(name: "fe", symbol: "gear"),
-		category: Category(name: "Employee", color: .green)
+		budget: Budget(
+			name: "fe",
+			symbol: "gear",
+			color: .green,
+			strategy: .noMonthlyAllocation(NonAllocatedFinance(balanceAdjustments: []))
+		)
 	)
 }

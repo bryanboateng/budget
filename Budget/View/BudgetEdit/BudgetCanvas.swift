@@ -5,8 +5,7 @@ struct BudgetCanvas: View {
 	@Binding var symbol: String
 	@Binding var showGreeting: Bool
 	@Binding var grenze: Decimal
-
-	let color: Category.Color
+	@Binding var color: Budget.Color
 
 	var body: some View {
 		Form {
@@ -18,6 +17,12 @@ struct BudgetCanvas: View {
 				.listRowBackground(Color(UIColor.systemGroupedBackground))
 			Section {
 				TextField("Symbol", text: $symbol, axis: .vertical)
+				Picker("Farbe", selection: $color) {
+					ForEach(Budget.Color.allCases, id: \.self) { color in
+						Text(color.localizedName)
+					}
+				}
+				.pickerStyle(.menu)
 			} header: {
 				Text("Symbol")
 			}
@@ -27,7 +32,7 @@ struct BudgetCanvas: View {
 				Text("Name")
 			}
 			Section {
-				Toggle("Aktiviere monatliche Zuweisung", isOn: $showGreeting)
+				Toggle("Monatliche Zuweisung", isOn: $showGreeting)
 				if showGreeting {
 					TextField(
 						"Monatliche Zuweisung",
@@ -48,13 +53,14 @@ struct BudgetCanvas: View {
 	@State var symbol = "waterbottle"
 	@State var showGreeting = true
 	@State var grenze = Decimal(234.85)
+	@State var color = Budget.Color.orange
 	return NavigationStack {
 		BudgetCanvas(
 			name: $name,
 			symbol: $symbol,
 			showGreeting: $showGreeting,
 			grenze: $grenze,
-			color: .green
+			color: $color
 		)
 	}
 }

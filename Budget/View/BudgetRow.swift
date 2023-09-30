@@ -2,7 +2,6 @@ import SwiftUI
 
 struct BudgetRow: View {
 	let budget: Budget
-	let color: Category.Color
 
 	var body: some View {
 		HStack {
@@ -12,32 +11,50 @@ struct BudgetRow: View {
 			} icon: {
 				Image(systemName: budget.symbol)
 					.font(.title3)
-					.foregroundStyle(color.swiftUIColor)
+					.foregroundStyle(budget.color.swiftUIColor)
 			}
 			Spacer()
-			if let reality = budget.weofnopwe {
-				let ewf = Text(
-					"(\(budget.currentBalance.formatted(.number.precision(.fractionLength(2)))))"
-				)
-					.foregroundStyle(.secondary)
-					.font(.subheadline)
-				let balanceText = Text(reality.spendableBalance, format: .eur())
-				Text("\(ewf) \(balanceText)")
-			} else {
-				Text(budget.currentBalance, format: .eur())
+			Group {
+				switch budget.strategy {
+				case .noMonthlyAllocation(let finance):
+					Text(finance.balance, format: .eur())
+				case .withMonthlyAllocation(let finance):
+					Text("• \(finance.discretionaryFunds, format: .eur())")
+				}
 			}
+			.monospacedDigit()
 		}
 		.foregroundColor(.primary)
 	}
 }
 
 #Preview {
-	NavigationStack {
+	let budget1 = Budget(
+		name: "Moinsen",
+		symbol: "figure.bowling",
+		color: .red,
+		strategy: .noMonthlyAllocation(.init(balanceAdjustments: []))
+	)
+	let budget2 = Budget(
+		name: "Moinsen",
+		symbol: "chair",
+		color: .green,
+		strategy: .withMonthlyAllocation(.init(
+			balanceAdjustments: [],
+			monthlyAllocation: 89.2
+		))
+	)
+	return NavigationStack {
 		List(0..<100) { _ in
 			Menu {
 				Text("Lorem")
 			} label: {
-				BudgetRow(budget: Budget(name: "Moinsen", symbol: "figure.bowling"), color: .red)
+				BudgetRow(budget: budget1)
+			}
+			Menu {
+				Text("Lorem")
+			} label: {
+				BudgetRow(budget: budget2)
 			}
 		}
 	}

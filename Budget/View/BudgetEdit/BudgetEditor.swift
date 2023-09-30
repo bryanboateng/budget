@@ -4,16 +4,16 @@ struct BudgetEditor: View {
 	@Environment(\.dismiss) private var dismiss
 	@EnvironmentObject private var model: Model
 
-	let category: Category
 	let budget: Budget
 
 	@State private var name: String
 	@State private var symbol: String
 	@State private var showGreeting: Bool
 	@State private var grenze: Decimal
+	@State private var color: Budget.Color
 
 	private var changesArePresent: Bool {
-		budget.name != name || budget.symbol != symbol
+		budget.name != name || budget.symbol != symbol || budget.color != color
 	}
 
 	var body: some View {
@@ -23,8 +23,8 @@ struct BudgetEditor: View {
 				symbol: $symbol,
 				showGreeting: $showGreeting,
 				grenze: $grenze,
-				color: category.color
-			)		
+				color: $color
+			)
 			.navigationTitle("Budget bearbeiten")
 				.navigationBarTitleDisplayMode(.inline)
 				.toolbar {
@@ -35,11 +35,16 @@ struct BudgetEditor: View {
 					}
 					ToolbarItem(placement: .confirmationAction) {
 						Button("Fertig") {
+							let newName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+							let newSymbol = symbol.trimmingCharacters(in: .whitespacesAndNewlines)
 							model.update(
-								budget,
-								of: category,
-								withName: name.trimmingCharacters(in: .whitespacesAndNewlines),
-								andSymbol: symbol
+								budget: budget.id,
+								change: .init(
+									name: newName != budget.name ? newName : nil,
+									symbol: newSymbol != budget.symbol ? newSymbol : nil,
+									color: color != budget.color ? color : nil,
+									monthlyAllocation: bieoinsen()
+								)
 							)
 							dismiss()
 						}
@@ -53,19 +58,24 @@ struct BudgetEditor: View {
 		}
 	}
 
-	init(budget: Budget, category: Category) {
+	func bieoinsen() -> Budget.Change.Oewo {
+		.activate(grenze)
+	}
+
+	init(budget: Budget) {
 		self.budget = budget
-		self.category = category
 
 		_name = State(initialValue: budget.name)
 		_symbol = State(initialValue: budget.symbol)
+		_color = State(initialValue: budget.color)
 
-		if let reality = budget.weofnopwe {
-			_showGreeting = State(initialValue: true)
-			_grenze = State(initialValue: reality.monthlyAllocation)
-		} else {
+		switch budget.strategy {
+		case .noMonthlyAllocation:
 			_showGreeting = State(initialValue: false)
 			_grenze = State(initialValue: 0)
+		case .withMonthlyAllocation(let mdonw):
+			_showGreeting = State(initialValue: true)
+			_grenze = State(initialValue: mdonw.monthlyAllocation)
 		}
 	}
 }

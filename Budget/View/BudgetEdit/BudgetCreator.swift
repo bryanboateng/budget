@@ -4,12 +4,11 @@ struct BudgetCreator: View {
 	@Environment(\.dismiss) private var dismiss
 	@EnvironmentObject private var model: Model
 
-	let category: Category
-
-	@State var name = ""
-	@State var symbol = ""
-	@State var showGreeting = false
-	@State var grenze: Decimal = 0
+	@State private var name = ""
+	@State private var symbol = ""
+	@State private var showGreeting = false
+	@State private var grenze: Decimal = 0
+	@State private var color = Budget.Color.allCases.randomElement()!
 
 	var body: some View {
 		NavigationStack {
@@ -18,7 +17,7 @@ struct BudgetCreator: View {
 				symbol: $symbol,
 				showGreeting: $showGreeting,
 				grenze: $grenze,
-				color: category.color
+				color: $color
 			)
 			.navigationTitle("Neues Budget")
 			.navigationBarTitleDisplayMode(.inline)
@@ -30,11 +29,20 @@ struct BudgetCreator: View {
 				}
 				ToolbarItem(placement: .confirmationAction) {
 					Button("Fertig") {
-						var budget = Budget(name: name.trimmingCharacters(in: .whitespacesAndNewlines), symbol: symbol)
-						if showGreeting {
-							budget.owefn(monthlyAllocation: grenze)
-						}
-						model.insert(budget, into: category)
+						let budget = Budget(
+							name: name.trimmingCharacters(in: .whitespacesAndNewlines),
+							symbol: symbol,
+							color: color,
+							strategy: {
+								if showGreeting {
+									return .withMonthlyAllocation(AllocatedFinance(balanceAdjustments: [], monthlyAllocation: grenze))
+								} else {
+									return .noMonthlyAllocation(NonAllocatedFinance(balanceAdjustments: []))
+								}
+							}()
+						)
+
+						model.insert(budget)
 						dismiss()
 					}
 					.disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)

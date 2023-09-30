@@ -3,13 +3,13 @@ import SwiftUI
 
 struct BudgetDetail: View {
 	@EnvironmentObject private var model: Model
+	@Environment(\.dismiss) private var dismiss
 
 	@State private var isEditing = false
 	@State private var isAdjustingBalance = false
 	@State private var isBeingDeleted = false
 
 	let budget: Budget
-	let category: Category
 
 	var body: some View {
 		NavigationStack {
@@ -22,13 +22,22 @@ struct BudgetDetail: View {
 						} icon: {
 							Image(systemName: budget.symbol)
 								.font(.title3)
-								.foregroundStyle(category.color.swiftUIColor)
+								.foregroundStyle(budget.color.swiftUIColor)
 						}
 					}
 				}
 				BudgetView(budget: budget)
 				Section {
-					BalanceAdjustmentList(balanceAdjustments: budget.balanceAdjustments)
+					BalanceAdjustmentList(
+						balanceAdjustments: {
+							switch budget.strategy {
+							case .noMonthlyAllocation(let nwoen):
+								nwoen.balanceAdjustments
+							case .withMonthlyAllocation(let nwoen):
+								nwoen.balanceAdjustments
+							}
+						}()
+					)
 				} header: {
 					Text("Verlauf")
 				}
@@ -61,11 +70,11 @@ struct BudgetDetail: View {
 			.navigationTitle(budget.name)
 			.navigationBarTitleDisplayMode(.inline)
 			.sheet(isPresented: $isEditing) {
-				BudgetEditor(budget: budget, category: category)
+				BudgetEditor(budget: budget)
 					.environmentObject(model)
 			}
 			.sheet(isPresented: $isAdjustingBalance) {
-				BalanceAdjuster(budget: budget, category: category)
+				BalanceAdjuster(budget: budget)
 					.environmentObject(model)
 			}
 			.actionSheet(isPresented: $isBeingDeleted) {
@@ -74,7 +83,8 @@ struct BudgetDetail: View {
 					message: Text("Möchtest das Budget \(budget.name) wirklich löschen? Dieser Vorgang kann nicht widerrufen werden."),
 					buttons: [
 						.destructive(Text("Budget löschen")) {
-							model.delete(budget, of: category)
+							model.delete(budget)
+							dismiss()
 						},
 						.cancel()
 					]
@@ -85,65 +95,81 @@ struct BudgetDetail: View {
 }
 
 #Preview {
-	var budget = Budget(name: "Urlaub", symbol: "globe.europe.africa")
-	budget.owefn(monthlyAllocation: 4.5)
-	budget.balanceAdjustments = [
-		BalanceAdjustment(date: .now, amount: 4.5),
-		BalanceAdjustment(date: .now.addingTimeInterval(1_000), amount: -10)
-	]
-	return BudgetDetail(
-		budget: budget,
-		category: Category(name: "Employee", color: .green)
+	let budget = Budget(
+		name: "Urlaub",
+		symbol: "globe.europe.africa",
+		color: .green,
+		strategy: .withMonthlyAllocation(
+			.init(
+				balanceAdjustments: [
+					BalanceAdjustment(date: .now, amount: 4.5),
+					BalanceAdjustment(date: .now.addingTimeInterval(1_000), amount: -10)
+				],
+				monthlyAllocation: 4.5)
+		)
 	)
+	return BudgetDetail(budget: budget)
 }
 
 private struct BudgetView: View {
 	let budget: Budget
 
 	var body: some View {
-		let reality = budget.weofnopwe
-
-		if let reality {
+		switch budget.strategy {
+		case .withMonthlyAllocation(let moin):
 			Section {
 				HStack {
-					Text("Ausgabefähiger Betrag")
+					Text("Verfügbares Guthaben")
 						.foregroundStyle(.secondary)
 					Spacer()
-					Text(reality.spendableBalance, format: .eur())
+					Text(moin.discretionaryFunds, format: .eur())
 				}
 				HStack {
-					Text("Ausgabefähige Tage")
+					Text("Verfügbare Tage")
 						.foregroundStyle(.secondary)
 					Spacer()
 					Text(
-						"\(reality.spendableDays.formatted(.number.precision(.fractionLength(1)))) d"
+						"\(moin.discretionaryDays.formatted(.number.precision(.fractionLength(1)))) d"
 					)
 				}
 			} header: {
 				Text("Verfügbar")
 			}
+		case .noMonthlyAllocation(_): EmptyView()
 		}
 		Section {
 			Group {
 				HStack {
-					Text("Aktueller Betrag")
+					Text("Aktueller Saldo")
 						.foregroundStyle(.secondary)
 					Spacer()
-					Text(budget.currentBalance, format: .eur())
+					Text(
+						{
+							switch budget.strategy {
+							case .noMonthlyAllocation(let ogvi):
+								ogvi.balance
+							case .withMonthlyAllocation(let mdonw):
+								mdonw.currentBalance
+							}
+						}(),
+						format: .eur()
+					)
 				}
-				if let reality {
+				switch budget.strategy {
+				case .withMonthlyAllocation(let moin):
 					HStack {
-						Text("Geplanter Betrag")
+						Text("Prognostizierter Saldo")
 							.foregroundStyle(.secondary)
 						Spacer()
-						Text(reality.plannedBalance, format: .eur())
+						Text(moin.projectedBalance, format: .eur())
 					}
 					HStack {
 						Text("Monatliche Zuweisung")
 							.foregroundStyle(.secondary)
 						Spacer()
-						Text(reality.monthlyAllocation, format: .eur())
+						Text(moin.monthlyAllocation, format: .eur())
 					}
+				case .noMonthlyAllocation(_): EmptyView()
 				}
 			}
 			.monospacedDigit()
