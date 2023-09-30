@@ -55,7 +55,7 @@ class UIKitCurrencyField: UILabel, UIKeyInput {
 	}
 
 	private func updateText() {
-		text = amount.formatted(.eur())
+		text = amount.formatted(.number.precision(.fractionLength(2)))
 	}
 }
 

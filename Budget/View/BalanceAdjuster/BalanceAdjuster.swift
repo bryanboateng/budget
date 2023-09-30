@@ -17,13 +17,6 @@ struct BalanceAdjuster: View {
 	let budget: Budget
 	let category: Category
 
-	private var weof: Text {
-		Text(
-			absoluteAmount,
-			format: .number.precision(.fractionLength(2))
-		)
-		.font(.system(size: fontSize, weight: .semibold))
-	}
 	private var directionImageName: String {
 		switch direction {
 		case .outgoing: "minus"
@@ -47,19 +40,16 @@ struct BalanceAdjuster: View {
 	var body: some View {
 		NavigationStack {
 			Form {
-				VStack {
+				VStack(spacing: 0) {
 					Label(directionString(direction), systemImage: directionImageName)
 						.labelStyle(.iconOnly)
 						.symbolVariant(.square)
 						.symbolVariant(.fill)
 						.foregroundStyle(directionImageColor)
 						.font(.system(size: 24, weight: .semibold))
-
-					Text("\(weof)\nEUR")
+					CurrencyField(amount: $absoluteAmount, fontSize: fontSize)
+					Text("EUR")
 						.fontWeight(.semibold)
-						.multilineTextAlignment(.center)
-					//					CurrencyField(amount: $absoluteAmount, fontSize: fontSize)
-					//						.border(.green)
 				}
 				.frame(maxWidth: .infinity, alignment: .center)
 				.listRowBackground(Color(UIColor.systemGroupedBackground))
