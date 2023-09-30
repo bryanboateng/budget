@@ -5,7 +5,8 @@ class Model: ObservableObject {
 	@Published private(set) var budgets: Set<Budget>
 
 	private let savePath = URL.documentsDirectory
-		.appendingPathComponent("budgets")
+		.appending(component: "budgets")
+		.appendingPathExtension("json")
 
 	init() {
 		do {
@@ -73,12 +74,11 @@ class Model: ObservableObject {
 	}
 
 	private func save() {
-		do {
-			let data = try JSONEncoder().encode(budgets)
-			try data.write(to: savePath, options: [.atomic, .completeFileProtection])
-		} catch {
-			print("Unable to save data.")
-		}
+		let encoder = JSONEncoder()
+		encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+		try! encoder
+			.encode(budgets)
+			.write(to: savePath, options: [.atomic, .completeFileProtection])
 	}
 
 	subscript(budgetID: Budget.ID) -> Budget {
