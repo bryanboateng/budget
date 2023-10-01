@@ -83,7 +83,7 @@ struct BudgetDetail: View {
 					message: Text("Möchtest das Budget \(budget.name) wirklich löschen? Dieser Vorgang kann nicht widerrufen werden."),
 					buttons: [
 						.destructive(Text("Budget löschen")) {
-							model.delete(budget)
+							model.delete(budget: budget.id)
 							dismiss()
 						},
 						.cancel()

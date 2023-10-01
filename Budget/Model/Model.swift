@@ -68,8 +68,9 @@ class Model: ObservableObject {
 		save()
 	}
 
-	func delete(_ budget: Budget) {
-		budgets.remove(budget)
+	func delete(budget id: Budget.ID) {
+		let index = budgets.firstIndex { $0.id == id }!
+		budgets.remove(at: index)
 		save()
 	}
 

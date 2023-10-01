@@ -45,7 +45,10 @@ struct BudgetCreator: View {
 						model.insert(budget)
 						dismiss()
 					}
-					.disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+					.disabled(
+						name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+						symbol.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+					)
 				}
 			}
 		}
