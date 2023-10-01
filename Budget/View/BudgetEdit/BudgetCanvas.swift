@@ -17,6 +17,8 @@ struct BudgetCanvas: View {
 				.listRowBackground(Color(UIColor.systemGroupedBackground))
 			Section {
 				TextField("Symbol", text: $symbol, axis: .vertical)
+					.autocorrectionDisabled(true)
+					.textInputAutocapitalization(.never)
 				Picker("Farbe", selection: $color) {
 					ForEach(Budget.Color.allCases, id: \.self) { color in
 						Text(color.localizedName)
