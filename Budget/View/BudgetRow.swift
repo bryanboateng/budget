@@ -15,11 +15,10 @@ struct BudgetRow: View {
 			}
 			Spacer()
 			Group {
-				switch budget.strategy {
-				case .noMonthlyAllocation(let finance):
-					Text(finance.balance, format: .eur())
-				case .withMonthlyAllocation(let finance):
-					Text("• \(finance.discretionaryFunds, format: .eur())")
+				if let projection = budget.projection {
+					Text("• \(projection.discretionaryFunds, format: .eur())")
+				} else {
+					Text(budget.balance, format: .eur())
 				}
 			}
 			.monospacedDigit()
@@ -32,18 +31,14 @@ struct BudgetRow: View {
 	let budget1 = Budget(
 		name: "Moinsen",
 		symbol: "figure.bowling",
-		color: .red,
-		strategy: .noMonthlyAllocation(.init(balanceAdjustments: []))
+		color: .red
 	)
-	let budget2 = Budget(
+	var budget2 = Budget(
 		name: "Moinsen",
 		symbol: "chair",
-		color: .green,
-		strategy: .withMonthlyAllocation(.init(
-			balanceAdjustments: [],
-			monthlyAllocation: 89.2
-		))
+		color: .green
 	)
+	budget2.setMonthlyAllocation(89.2)
 	return NavigationStack {
 		List(0..<100) { _ in
 			Menu {

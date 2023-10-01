@@ -13,37 +13,35 @@ struct BudgetEditor: View {
 	@State private var color: Budget.Color
 
 	private var strategyHasChanged: Bool {
-		switch budget.strategy {
-		case .noMonthlyAllocation(_):
-			return showGreeting
-		case .withMonthlyAllocation(let allocatedFinance):
+		if let projection = budget.projection {
 			if showGreeting {
-				return allocatedFinance.monthlyAllocation != grenze
+				return projection.monthlyAllocation != grenze
 			} else {
 				return true
 			}
+		} else {
+			return showGreeting
 		}
 	}
 	private var changesArePresent: Bool {
 		budget.name != name || budget.symbol != symbol || budget.color != color || strategyHasChanged
 	}
 	func bieoinsen() -> Budget.Change.Oewo? {
-		switch budget.strategy {
-		case .noMonthlyAllocation(_):
+		if let projection = budget.projection {
 			if showGreeting {
-				return .activate(grenze)
-			} else {
-				return nil
-			}
-		case .withMonthlyAllocation(let allocatedFinance):
-			if showGreeting {
-				if allocatedFinance.monthlyAllocation != grenze {
+				if projection.monthlyAllocation != grenze {
 					return .activate(grenze)
 				} else {
 					return nil
 				}
 			} else {
 				return .deactivate
+			}
+		} else {
+			if showGreeting {
+				return .activate(grenze)
+			} else {
+				return nil
 			}
 		}
 	}
@@ -97,13 +95,12 @@ struct BudgetEditor: View {
 		_symbol = State(initialValue: budget.symbol)
 		_color = State(initialValue: budget.color)
 
-		switch budget.strategy {
-		case .noMonthlyAllocation:
+		if let projection = budget.projection {
+			_showGreeting = State(initialValue: true)
+			_grenze = State(initialValue: projection.monthlyAllocation)
+		} else {
 			_showGreeting = State(initialValue: false)
 			_grenze = State(initialValue: 0)
-		case .withMonthlyAllocation(let mdonw):
-			_showGreeting = State(initialValue: true)
-			_grenze = State(initialValue: mdonw.monthlyAllocation)
 		}
 	}
 }

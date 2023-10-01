@@ -22,11 +22,10 @@ struct BudgetGroupRow: View {
 		}
 	}
 	private func comparisonValue(_ budget: Budget) -> Decimal {
-		switch budget.strategy {
-		case .noMonthlyAllocation(let ogvi):
-			return ogvi.balance
-		case .withMonthlyAllocation(let mdonw):
-			return mdonw.discretionaryFunds
+		if let projection = budget.projection {
+			return projection.discretionaryFunds
+		} else {
+			return budget.balance
 		}
 	}
 }

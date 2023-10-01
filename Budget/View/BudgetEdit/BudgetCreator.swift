@@ -29,18 +29,14 @@ struct BudgetCreator: View {
 				}
 				ToolbarItem(placement: .confirmationAction) {
 					Button("Fertig") {
-						let budget = Budget(
+						var budget = Budget(
 							name: name.trimmingCharacters(in: .whitespacesAndNewlines),
 							symbol: symbol,
-							color: color,
-							strategy: {
-								if showGreeting {
-									return .withMonthlyAllocation(AllocatedFinance(balanceAdjustments: [], monthlyAllocation: grenze))
-								} else {
-									return .noMonthlyAllocation(NonAllocatedFinance(balanceAdjustments: []))
-								}
-							}()
+							color: color
 						)
+						if showGreeting {
+							budget.setMonthlyAllocation(grenze)
+						}
 
 						model.insert(budget)
 						dismiss()

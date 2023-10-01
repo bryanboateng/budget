@@ -34,37 +34,19 @@ class Model: ObservableObject {
 			budget.color = color
 		}
 		if let mwe = change.monthlyAllocation {
-			let adjustments = switch budget.strategy {
-			case .noMonthlyAllocation(let finance):
-				finance.balanceAdjustments
-			case .withMonthlyAllocation(let finance):
-				finance.balanceAdjustments
-			}
 			switch mwe {
-			case .deactivate: budget.strategy = .noMonthlyAllocation(.init(balanceAdjustments: adjustments))
-			case .activate(let money): budget.strategy = .withMonthlyAllocation(.init(balanceAdjustments: adjustments, monthlyAllocation: money))
+			case .deactivate: budget.removeMonthlyAllocation()
+			case .activate(let money): budget.setMonthlyAllocation(money)
 			}
 		}
-		self[budget.id] = budget
+		self[id] = budget
 		save()
 	}
 
 	func adjustBalance(ofBudget id: Budget.ID, by amount: Decimal) {
 		var budget = self[id]
-		switch budget.strategy {
-		case .noMonthlyAllocation(let finance):
-			var balanceAdjustments = finance.balanceAdjustments
-			balanceAdjustments.insert(BalanceAdjustment(date: .now, amount: amount))
-			budget.strategy = .noMonthlyAllocation(.init(balanceAdjustments: balanceAdjustments))
-		case .withMonthlyAllocation(let finance):
-			var balanceAdjustments = finance.balanceAdjustments
-			balanceAdjustments.insert(BalanceAdjustment(date: .now, amount: amount))
-			budget.strategy = .withMonthlyAllocation(.init(
-				balanceAdjustments: balanceAdjustments,
-				monthlyAllocation: finance.monthlyAllocation
-			))
-		}
-		self[budget.id] = budget
+		budget.adjustBalance(amount)
+		self[id] = budget
 		save()
 	}
 
@@ -73,7 +55,7 @@ class Model: ObservableObject {
 		budgets.remove(at: index)
 		save()
 	}
-
+	
 	private func save() {
 		let encoder = JSONEncoder()
 		encoder.outputFormatting = [.prettyPrinted, .sortedKeys]

@@ -29,14 +29,7 @@ struct BudgetDetail: View {
 				BudgetView(budget: budget)
 				Section {
 					BalanceAdjustmentList(
-						balanceAdjustments: {
-							switch budget.strategy {
-							case .noMonthlyAllocation(let nwoen):
-								nwoen.balanceAdjustments
-							case .withMonthlyAllocation(let nwoen):
-								nwoen.balanceAdjustments
-							}
-						}()
+						balanceAdjustments: budget.balanceAdjustments
 					)
 				} header: {
 					Text("Verlauf")
@@ -95,17 +88,16 @@ struct BudgetDetail: View {
 }
 
 #Preview {
-	let budget = Budget(
+	var budget = Budget(
 		name: "Urlaub",
 		symbol: "globe.europe.africa",
-		color: .green,
-		strategy: .withMonthlyAllocation(
-			.init(
-				balanceAdjustments: [
-					BalanceAdjustment(date: .now, amount: 4.5),
-					BalanceAdjustment(date: .now.addingTimeInterval(1_000), amount: -10)
-				],
-				monthlyAllocation: 4.5)
+		color: .green
+	)
+	budget.adjustBalance(4.5)
+	budget.balanceAdjustments.insert(
+		Budget.BalanceAdjustment(
+			date: .now.addingTimeInterval(1_000),
+			amount: -10
 		)
 	)
 	return BudgetDetail(budget: budget)
@@ -115,27 +107,25 @@ private struct BudgetView: View {
 	let budget: Budget
 
 	var body: some View {
-		switch budget.strategy {
-		case .withMonthlyAllocation(let moin):
+		if let projection = budget.projection {
 			Section {
 				HStack {
 					Text("Verfügbares Guthaben")
 						.foregroundStyle(.secondary)
 					Spacer()
-					Text(moin.discretionaryFunds, format: .eur())
+					Text(projection.discretionaryFunds, format: .eur())
 				}
 				HStack {
 					Text("Verfügbare Tage")
 						.foregroundStyle(.secondary)
 					Spacer()
 					Text(
-						"\(moin.discretionaryDays.formatted(.number.precision(.fractionLength(1)))) d"
+						"\(projection.discretionaryDays.formatted(.number.precision(.fractionLength(1)))) d"
 					)
 				}
 			} header: {
 				Text("Verfügbar")
 			}
-		case .noMonthlyAllocation(_): EmptyView()
 		}
 		Section {
 			Group {
@@ -143,33 +133,21 @@ private struct BudgetView: View {
 					Text("Aktueller Saldo")
 						.foregroundStyle(.secondary)
 					Spacer()
-					Text(
-						{
-							switch budget.strategy {
-							case .noMonthlyAllocation(let ogvi):
-								ogvi.balance
-							case .withMonthlyAllocation(let mdonw):
-								mdonw.currentBalance
-							}
-						}(),
-						format: .eur()
-					)
+					Text(budget.balance, format: .eur())
 				}
-				switch budget.strategy {
-				case .withMonthlyAllocation(let moin):
+				if let projection = budget.projection {
 					HStack {
 						Text("Prognostizierter Saldo")
 							.foregroundStyle(.secondary)
 						Spacer()
-						Text(moin.projectedBalance, format: .eur())
+						Text(projection.projectedBalance, format: .eur())
 					}
 					HStack {
 						Text("Monatliche Zuweisung")
 							.foregroundStyle(.secondary)
 						Spacer()
-						Text(moin.monthlyAllocation, format: .eur())
+						Text(projection.monthlyAllocation, format: .eur())
 					}
-				case .noMonthlyAllocation(_): EmptyView()
 				}
 			}
 			.monospacedDigit()
@@ -178,7 +156,7 @@ private struct BudgetView: View {
 }
 
 private struct BalanceAdjustmentList: View {
-	let balanceAdjustments: Set<BalanceAdjustment>
+	let balanceAdjustments: Set<Budget.BalanceAdjustment>
 
 	var body: some View {
 		if balanceAdjustments.isEmpty {

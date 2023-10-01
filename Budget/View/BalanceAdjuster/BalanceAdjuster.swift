@@ -108,8 +108,7 @@ struct BalanceAdjuster: View {
 		budget: Budget(
 			name: "fe",
 			symbol: "gear",
-			color: .green,
-			strategy: .noMonthlyAllocation(NonAllocatedFinance(balanceAdjustments: []))
+			color: .green
 		)
 	)
 }

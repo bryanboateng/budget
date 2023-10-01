@@ -7,13 +7,7 @@ struct Overview: View {
 
 	private var totalBalance: Decimal {
 		model.budgets.reduce(0) { partialResult, budget in
-			let amount = switch budget.strategy {
-			case .noMonthlyAllocation(let finance):
-				finance.balance
-			case .withMonthlyAllocation(let finance):
-				finance.currentBalance
-			}
-			return partialResult + amount
+			partialResult + budget.balance
 		}
 	}
 

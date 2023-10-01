@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B605B78D27EDD092008DA364 /* BudgetDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605B78C27EDD092008DA364 /* BudgetDetail.swift */; };
-		B605B78F27EDF5C8008DA364 /* BalanceAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605B78E27EDF5C8008DA364 /* BalanceAdjustment.swift */; };
 		B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA5D126299259008CADBF /* CurrencyField.swift */; };
 		B640C0C627EE686300271B9E /* BudgetGroupRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640C0C527EE686300271B9E /* BudgetGroupRow.swift */; };
 		B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */; };
@@ -30,7 +29,6 @@
 
 /* Begin PBXFileReference section */
 		B605B78C27EDD092008DA364 /* BudgetDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetDetail.swift; sourceTree = "<group>"; };
-		B605B78E27EDF5C8008DA364 /* BalanceAdjustment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceAdjustment.swift; sourceTree = "<group>"; };
 		B61DA5D126299259008CADBF /* CurrencyField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyField.swift; sourceTree = "<group>"; };
 		B640C0C527EE686300271B9E /* BudgetGroupRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetGroupRow.swift; sourceTree = "<group>"; };
 		B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormatStyle+Euro.swift"; sourceTree = "<group>"; };
@@ -68,7 +66,6 @@
 			children = (
 				B6C1FA0227C6390700758BE4 /* Model.swift */,
 				B6C1FA0027C638DD00758BE4 /* Budget.swift */,
-				B605B78E27EDF5C8008DA364 /* BalanceAdjustment.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -260,7 +257,6 @@
 				B683B27826069F7800F7F347 /* Overview.swift in Sources */,
 				B6C1FA0127C638DE00758BE4 /* Budget.swift in Sources */,
 				B663DF3427A08E140022E546 /* BudgetCanvas.swift in Sources */,
-				B605B78F27EDF5C8008DA364 /* BalanceAdjustment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
