@@ -33,10 +33,10 @@ class Model: ObservableObject {
 		if let color = change.color {
 			budget.color = color
 		}
-		if let mwe = change.monthlyAllocation {
-			switch mwe {
+		if let monthlyAllocation = change.monthlyAllocation {
+			switch monthlyAllocation {
 			case .deactivate: budget.removeMonthlyAllocation()
-			case .activate(let money): budget.setMonthlyAllocation(money)
+			case .activate(let amount): budget.setMonthlyAllocation(amount)
 			}
 		}
 		self[id] = budget

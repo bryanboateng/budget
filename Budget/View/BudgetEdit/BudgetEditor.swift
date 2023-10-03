@@ -8,29 +8,31 @@ struct BudgetEditor: View {
 
 	@State private var name: String
 	@State private var symbol: String
-	@State private var showGreeting: Bool
-	@State private var grenze: Decimal
 	@State private var color: Budget.Color
+	@State private var projectionIsEnabled: Bool
+	@State private var monthlyAllocation: Decimal
 
-	private var strategyHasChanged: Bool {
+	private var changesArePresent: Bool {
+		budget.name != name || budget.symbol != symbol || budget.color != color || projectionHasChanged
+	}
+
+	private var projectionHasChanged: Bool {
 		if let projection = budget.projection {
-			if showGreeting {
-				return projection.monthlyAllocation != grenze
+			if projectionIsEnabled {
+				return projection.monthlyAllocation != monthlyAllocation
 			} else {
 				return true
 			}
 		} else {
-			return showGreeting
+			return projectionIsEnabled
 		}
 	}
-	private var changesArePresent: Bool {
-		budget.name != name || budget.symbol != symbol || budget.color != color || strategyHasChanged
-	}
-	func bieoinsen() -> Budget.Change.Oewo? {
+
+	private var monthlyAllocationChange: Budget.Change.MonthlyAllocation? {
 		if let projection = budget.projection {
-			if showGreeting {
-				if projection.monthlyAllocation != grenze {
-					return .activate(grenze)
+			if projectionIsEnabled {
+				if projection.monthlyAllocation != monthlyAllocation {
+					return .activate(monthlyAllocation)
 				} else {
 					return nil
 				}
@@ -38,8 +40,8 @@ struct BudgetEditor: View {
 				return .deactivate
 			}
 		} else {
-			if showGreeting {
-				return .activate(grenze)
+			if projectionIsEnabled {
+				return .activate(monthlyAllocation)
 			} else {
 				return nil
 			}
@@ -51,9 +53,9 @@ struct BudgetEditor: View {
 			BudgetCanvas(
 				name: $name,
 				symbol: $symbol,
-				showGreeting: $showGreeting,
-				grenze: $grenze,
-				color: $color
+				color: $color,
+				projectionIsEnabled: $projectionIsEnabled,
+				monthlyAllocation: $monthlyAllocation
 			)
 			.navigationTitle("Budget bearbeiten")
 				.navigationBarTitleDisplayMode(.inline)
@@ -73,7 +75,7 @@ struct BudgetEditor: View {
 									name: newName != budget.name ? newName : nil,
 									symbol: newSymbol != budget.symbol ? newSymbol : nil,
 									color: color != budget.color ? color : nil,
-									monthlyAllocation: bieoinsen()
+									monthlyAllocation: monthlyAllocationChange
 								)
 							)
 							dismiss()
@@ -96,11 +98,11 @@ struct BudgetEditor: View {
 		_color = State(initialValue: budget.color)
 
 		if let projection = budget.projection {
-			_showGreeting = State(initialValue: true)
-			_grenze = State(initialValue: projection.monthlyAllocation)
+			_projectionIsEnabled = State(initialValue: true)
+			_monthlyAllocation = State(initialValue: projection.monthlyAllocation)
 		} else {
-			_showGreeting = State(initialValue: false)
-			_grenze = State(initialValue: 0)
+			_projectionIsEnabled = State(initialValue: false)
+			_monthlyAllocation = State(initialValue: 0)
 		}
 	}
 }

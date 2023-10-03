@@ -6,18 +6,18 @@ struct BudgetCreator: View {
 
 	@State private var name = ""
 	@State private var symbol = ""
-	@State private var showGreeting = false
-	@State private var grenze: Decimal = 0
 	@State private var color = Budget.Color.allCases.randomElement()!
+	@State private var projectionIsEnabled = false
+	@State private var monthlyAllocation: Decimal = 0
 
 	var body: some View {
 		NavigationStack {
 			BudgetCanvas(
 				name: $name,
 				symbol: $symbol,
-				showGreeting: $showGreeting,
-				grenze: $grenze,
-				color: $color
+				color: $color,
+				projectionIsEnabled: $projectionIsEnabled,
+				monthlyAllocation: $monthlyAllocation
 			)
 			.navigationTitle("Neues Budget")
 			.navigationBarTitleDisplayMode(.inline)
@@ -34,8 +34,8 @@ struct BudgetCreator: View {
 							symbol: symbol,
 							color: color
 						)
-						if showGreeting {
-							budget.setMonthlyAllocation(grenze)
+						if projectionIsEnabled {
+							budget.setMonthlyAllocation(monthlyAllocation)
 						}
 
 						model.insert(budget)

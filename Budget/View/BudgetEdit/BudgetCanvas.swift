@@ -3,9 +3,9 @@ import SwiftUI
 struct BudgetCanvas: View {
 	@Binding var name: String
 	@Binding var symbol: String
-	@Binding var showGreeting: Bool
-	@Binding var grenze: Decimal
 	@Binding var color: Budget.Color
+	@Binding var projectionIsEnabled: Bool
+	@Binding var monthlyAllocation: Decimal
 
 	var body: some View {
 		Form {
@@ -34,11 +34,11 @@ struct BudgetCanvas: View {
 				Text("Symbol")
 			}
 			Section {
-				Toggle("Monatliche Zuweisung", isOn: $showGreeting)
-				if showGreeting {
+				Toggle("Monatliche Zuweisung", isOn: $projectionIsEnabled)
+				if projectionIsEnabled {
 					TextField(
 						"Monatliche Zuweisung",
-						value: $grenze,
+						value: $monthlyAllocation,
 						format: .number.precision(.fractionLength(2))
 					)
 					.keyboardType(.decimalPad)
@@ -53,16 +53,16 @@ struct BudgetCanvas: View {
 #Preview {
 	@State var name = "Wasserflaschen"
 	@State var symbol = "waterbottle"
-	@State var showGreeting = true
-	@State var grenze = Decimal(234.85)
 	@State var color = Budget.Color.orange
+	@State var projectionIsEnabled = true
+	@State var monthlyAllocation = Decimal(234.85)
 	return NavigationStack {
 		BudgetCanvas(
 			name: $name,
 			symbol: $symbol,
-			showGreeting: $showGreeting,
-			grenze: $grenze,
-			color: $color
+			color: $color,
+			projectionIsEnabled: $projectionIsEnabled,
+			monthlyAllocation: $monthlyAllocation
 		)
 	}
 }

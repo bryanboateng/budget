@@ -147,9 +147,9 @@ struct Budget: Codable, Identifiable, Hashable {
 		let name: String?
 		let symbol: String?
 		let color: Color?
-		let monthlyAllocation: Oewo?
+		let monthlyAllocation: MonthlyAllocation?
 
-		enum Oewo {
+		enum MonthlyAllocation {
 			case deactivate
 			case activate(Decimal)
 		}
