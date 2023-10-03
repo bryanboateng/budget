@@ -5,19 +5,10 @@ struct BudgetRow: View {
 
 	var body: some View {
 		HStack {
-//			Label {
-//				Text(budget.name)
-//					.multilineTextAlignment(.leading)
-//			} icon: {
-//				Image(systemName: budget.symbol)
-//					.font(.title3)
-//					.foregroundStyle(budget.color.swiftUIColor)
-//			}
 			Label {
 				Text(budget.name)
 			} icon: {
 				Image(systemName: budget.symbol)
-//					.font(.title3)
 					.foregroundStyle(budget.color.swiftUIColor)
 			}
 			.multilineTextAlignment(.leading)
