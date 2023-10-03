@@ -21,7 +21,6 @@ struct BudgetDetail: View {
 								.multilineTextAlignment(.leading)
 						} icon: {
 							Image(systemName: budget.symbol)
-								.font(.title3)
 								.foregroundStyle(budget.color.swiftUIColor)
 						}
 					}
