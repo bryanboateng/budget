@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SwiftUIView: View {
+struct BalanceHistory: View {
 	@Environment(\.dismiss)
 	private var dismiss
 
@@ -106,5 +106,5 @@ private struct Mase {
 	allBudgets[2] = entertainmentBudget
 	allBudgets[3] = travelBudget
 
-	return SwiftUIView(budgets: allBudgets)
+	return BalanceHistory(budgets: allBudgets)
 }

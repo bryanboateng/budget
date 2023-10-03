@@ -66,7 +66,7 @@ struct Overview: View {
 			BudgetCreator()
 		}
 		.sheet(isPresented: $historyIsOpen) {
-			SwiftUIView(budgets: model.budgets)
+			BalanceHistory(budgets: model.budgets)
 		}
 	}
 }
