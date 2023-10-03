@@ -10,7 +10,6 @@ struct SwiftUIView: View {
 			.flatMap({ budget in
 				budget.balanceAdjustments.map { adjustment in
 					Mase(
-						budgetID: budget.id,
 						budgetName: budget.name,
 						budgetSymbol: budget.symbol,
 						budgetColor: budget.color,
@@ -29,7 +28,7 @@ struct SwiftUIView: View {
 				if balanceAdjustments.isEmpty {
 					ContentUnavailableView("Kein Verlauf", systemImage: "clock")
 				} else {
-					List(balanceAdjustments, id: \.self) { wef in
+					List(balanceAdjustments, id: \.balanceAdjustment.id) { wef in
 						HStack(alignment: .firstTextBaseline) {
 							VStack(alignment: .leading) {
 								Text(
@@ -58,8 +57,7 @@ struct SwiftUIView: View {
 	}
 }
 
-private struct Mase: Hashable {
-	let budgetID: UUID
+private struct Mase {
 	let budgetName: String
 	let budgetSymbol: String
 	let budgetColor: Budget.Color
