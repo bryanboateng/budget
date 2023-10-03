@@ -134,7 +134,7 @@ struct Budget: Codable, Identifiable, Hashable {
 			self.amount = amount
 		}
 
-		static func == (lhs: BalanceAdjustment, rhs: BalanceAdjustment) -> Bool {
+		static func == (lhs: Self, rhs: Self) -> Bool {
 			lhs.id == rhs.id
 		}
 
@@ -147,9 +147,9 @@ struct Budget: Codable, Identifiable, Hashable {
 		let name: String?
 		let symbol: String?
 		let color: Color?
-		let monthlyAllocation: MonthlyAllocation?
+		let projection: Projection?
 
-		enum MonthlyAllocation {
+		enum Projection {
 			case deactivate
 			case activate(Decimal)
 		}

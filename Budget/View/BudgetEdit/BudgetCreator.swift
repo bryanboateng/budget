@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct BudgetCreator: View {
-	@Environment(\.dismiss) private var dismiss
+	@Environment(\.dismiss)
+	private var dismiss
 	@EnvironmentObject private var model: Model
 
 	@State private var name = ""

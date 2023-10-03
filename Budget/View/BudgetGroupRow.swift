@@ -21,6 +21,7 @@ struct BudgetGroupRow: View {
 			}
 		}
 	}
+
 	private func comparisonValue(_ budget: Budget) -> Decimal {
 		if let projection = budget.projection {
 			return projection.discretionaryFunds

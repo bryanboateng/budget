@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct BudgetEditor: View {
-	@Environment(\.dismiss) private var dismiss
+	@Environment(\.dismiss)
+	private var dismiss
 	@EnvironmentObject private var model: Model
 
 	let budget: Budget
@@ -28,7 +29,7 @@ struct BudgetEditor: View {
 		}
 	}
 
-	private var monthlyAllocationChange: Budget.Change.MonthlyAllocation? {
+	private var projectionChange: Budget.Change.Projection? {
 		if let projection = budget.projection {
 			if projectionIsEnabled {
 				if projection.monthlyAllocation != monthlyAllocation {
@@ -75,7 +76,7 @@ struct BudgetEditor: View {
 									name: newName != budget.name ? newName : nil,
 									symbol: newSymbol != budget.symbol ? newSymbol : nil,
 									color: color != budget.color ? color : nil,
-									monthlyAllocation: monthlyAllocationChange
+									projection: projectionChange
 								)
 							)
 							dismiss()

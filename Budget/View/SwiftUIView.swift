@@ -1,13 +1,14 @@
 import SwiftUI
 
 struct SwiftUIView: View {
-	@Environment(\.dismiss) private var dismiss
+	@Environment(\.dismiss)
+	private var dismiss
 
 	let budgets: any Collection<Budget>
 
 	private var balanceAdjustments: [Mase] {
 		budgets
-			.flatMap({ budget in
+			.flatMap { budget in
 				budget.balanceAdjustments.map { adjustment in
 					Mase(
 						budgetName: budget.name,
@@ -16,7 +17,7 @@ struct SwiftUIView: View {
 						balanceAdjustment: adjustment
 					)
 				}
-			})
+			}
 			.sorted { lhs, rhs in
 				lhs.balanceAdjustment.date > rhs.balanceAdjustment.date
 			}

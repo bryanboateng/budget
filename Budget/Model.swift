@@ -33,7 +33,7 @@ class Model: ObservableObject {
 		if let color = change.color {
 			budget.color = color
 		}
-		if let monthlyAllocation = change.monthlyAllocation {
+		if let monthlyAllocation = change.projection {
 			switch monthlyAllocation {
 			case .deactivate: budget.removeMonthlyAllocation()
 			case .activate(let amount): budget.setMonthlyAllocation(amount)
@@ -55,7 +55,7 @@ class Model: ObservableObject {
 		budgets.remove(at: index)
 		save()
 	}
-	
+
 	private func save() {
 		let encoder = JSONEncoder()
 		encoder.outputFormatting = [.prettyPrinted, .sortedKeys]

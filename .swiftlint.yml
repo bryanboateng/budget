@@ -6,13 +6,23 @@ disabled_rules:
   - explicit_acl
   - explicit_top_level_acl
   - explicit_type_interface
+  - nesting
   - no_grouping_extension
   - no_magic_numbers
   - required_deinit
   - strict_fileprivate
+  - superfluous_else
   - switch_case_on_newline
 
 identifier_name:
   excluded:
     - id
     - to
+
+file_types_order:
+  order:
+    - [[main_type], [extension], [preview_provider], [library_content_provider], [supporting_type]]
+
+type_contents_order:
+  order:
+    - [[case], [type_alias, associated_type], [type_property], [type_method], [instance_property], [initializer], [subtype], [ib_inspectable], [ib_outlet],  [view_life_cycle_method], [ib_action], [other_method], [subscript], [deinitializer]]

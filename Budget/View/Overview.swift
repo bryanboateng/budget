@@ -12,7 +12,7 @@ struct Overview: View {
 		}
 	}
 
-	private var groupedBudgets: Dictionary<Budget.Color, [Budget]> {
+	private var groupedBudgets: [Budget.Color: [Budget]] {
 		.init(grouping: model.budgets) { budget in
 			budget.color
 		}
@@ -30,7 +30,7 @@ struct Overview: View {
 							groupedBudgets.keys.contains(color)
 						}
 						, id: \.self
-					){ color in
+					) { color in
 						Section {
 							BudgetGroupRow(budgets: Set<Budget>(groupedBudgets[color]!))
 						} header: {
@@ -70,6 +70,7 @@ struct Overview: View {
 		}
 	}
 }
+
 private struct BalanceDisplay: View {
 	let balance: Decimal
 

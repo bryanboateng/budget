@@ -3,7 +3,8 @@ import SwiftUI
 
 struct BudgetDetail: View {
 	@EnvironmentObject private var model: Model
-	@Environment(\.dismiss) private var dismiss
+	@Environment(\.dismiss)
+	private var dismiss
 
 	@State private var isEditing = false
 	@State private var isAdjustingBalance = false
