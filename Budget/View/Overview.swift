@@ -4,6 +4,7 @@ struct Overview: View {
 	@EnvironmentObject private var model: Model
 
 	@State private var isCreatingBudget = false
+	@State private var historyIsOpen = false
 
 	private var totalBalance: Decimal {
 		model.budgets.reduce(0) { partialResult, budget in
@@ -20,9 +21,7 @@ struct Overview: View {
 	var body: some View {
 		Group {
 			if model.budgets.isEmpty {
-				ContentUnavailableView {
-					Label("Keine Budgets", systemImage: "circle")
-				}
+				ContentUnavailableView("Keine Budgets", systemImage: "rectangle")
 			} else {
 				List {
 					BalanceDisplay(balance: totalBalance)
@@ -45,19 +44,29 @@ struct Overview: View {
 		.toolbar {
 			ToolbarItem(placement: .navigationBarTrailing) {
 				Button {
+					historyIsOpen = true
+				} label: {
+					Label("Verlauf", systemImage: "clock")
+				}
+			}
+			ToolbarItem(placement: .navigationBarTrailing) {
+				Button {
 					isCreatingBudget = true
 				} label: {
-					Label("Kategorien", systemImage: "circle.badge.plus")
+					Label("Kategorien", systemImage: "rectangle.badge.plus")
 				}
 			}
 			ToolbarItemGroup(placement: .bottomBar) {
 				Spacer()
-				Button("Saldo anpassen", systemImage: "arrow.left.arrow.right") {
+				Button("Saldo anpassen", systemImage: "plusminus") {
 				}
 			}
 		}
 		.sheet(isPresented: $isCreatingBudget) {
 			BudgetCreator()
+		}
+		.sheet(isPresented: $historyIsOpen) {
+			SwiftUIView(budgets: model.budgets)
 		}
 	}
 }

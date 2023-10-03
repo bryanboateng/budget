@@ -55,7 +55,7 @@ struct BudgetDetail: View {
 				}
 				ToolbarItemGroup(placement: .bottomBar) {
 					Spacer()
-					Button("Saldo anpassen", systemImage: "arrow.left.arrow.right") {
+					Button("Saldo anpassen", systemImage: "plusminus") {
 						isAdjustingBalance = true
 					}
 				}

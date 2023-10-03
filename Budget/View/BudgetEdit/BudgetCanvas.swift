@@ -16,6 +16,11 @@ struct BudgetCanvas: View {
 				.frame(maxWidth: .infinity, alignment: .center)
 				.listRowBackground(Color(UIColor.systemGroupedBackground))
 			Section {
+				TextField("Name", text: $name, axis: .vertical)
+			} header: {
+				Text("Name")
+			}
+			Section {
 				TextField("Symbol", text: $symbol, axis: .vertical)
 					.autocorrectionDisabled(true)
 					.textInputAutocapitalization(.never)
@@ -27,11 +32,6 @@ struct BudgetCanvas: View {
 				.pickerStyle(.menu)
 			} header: {
 				Text("Symbol")
-			}
-			Section {
-				TextField("Name", text: $name, axis: .vertical)
-			} header: {
-				Text("Name")
 			}
 			Section {
 				Toggle("Monatliche Zuweisung", isOn: $showGreeting)
