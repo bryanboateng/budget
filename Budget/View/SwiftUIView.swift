@@ -10,7 +10,7 @@ struct SwiftUIView: View {
 		budgets
 			.flatMap { budget in
 				budget.balanceAdjustments.map { adjustment in
-					Mase(
+					.init(
 						budgetName: budget.name,
 						budgetSymbol: budget.symbol,
 						budgetColor: budget.color,

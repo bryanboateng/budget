@@ -38,7 +38,7 @@ struct Budget: Codable, Identifiable, Hashable {
 
 	var projection: Projection? {
 		guard let monthlyAllocation else { return nil }
-		return Projection(monthlyAllocation: monthlyAllocation, balance: balance)
+		return .init(monthlyAllocation: monthlyAllocation, balance: balance)
 	}
 
 	struct Projection {

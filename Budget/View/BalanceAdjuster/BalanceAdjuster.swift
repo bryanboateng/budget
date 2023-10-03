@@ -105,7 +105,7 @@ struct BalanceAdjuster: View {
 
 #Preview {
 	BalanceAdjuster(
-		budget: Budget(
+		budget: .init(
 			name: "fe",
 			symbol: "gear",
 			color: .green

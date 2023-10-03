@@ -95,7 +95,7 @@ struct BudgetDetail: View {
 	)
 	budget.adjustBalance(4.5)
 	budget.balanceAdjustments.insert(
-		Budget.BalanceAdjustment(
+		.init(
 			date: .now.addingTimeInterval(1_000),
 			amount: -10
 		)

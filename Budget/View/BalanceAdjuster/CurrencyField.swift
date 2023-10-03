@@ -81,7 +81,7 @@ struct CurrencyField: UIViewRepresentable {
 	let fontSize: CGFloat
 
 	func makeCoordinator() -> Coordinator {
-		Coordinator(self)
+		.init(self)
 	}
 
 	func makeUIView(context: Context) -> UIKitCurrencyField {
