@@ -7,25 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B605B78D27EDD092008DA364 /* BalanceHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605B78C27EDD092008DA364 /* BalanceHistory.swift */; };
-		B605B78F27EDF5C8008DA364 /* BalanceAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605B78E27EDF5C8008DA364 /* BalanceAdjustment.swift */; };
+		B605B78D27EDD092008DA364 /* BudgetDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605B78C27EDD092008DA364 /* BudgetDetail.swift */; };
 		B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA5D126299259008CADBF /* CurrencyField.swift */; };
-		B640C0C627EE686300271B9E /* BudgetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640C0C527EE686300271B9E /* BudgetList.swift */; };
-		B64337CB27F3073400A31D2D /* CategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64337CA27F3073400A31D2D /* CategoryManager.swift */; };
-		B64337CD27F3A71400A31D2D /* CategoryEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64337CC27F3A71300A31D2D /* CategoryEditor.swift */; };
+		B640C0C627EE686300271B9E /* BudgetGroupRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640C0C527EE686300271B9E /* BudgetGroupRow.swift */; };
 		B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */; };
 		B663DF3427A08E140022E546 /* BudgetCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = B663DF3327A08E140022E546 /* BudgetCanvas.swift */; };
-		B683B27826069F7800F7F347 /* Budgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683B27726069F7800F7F347 /* Budgets.swift */; };
-		B69EE4E627B151090070DEBA /* CategoryCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69EE4E527B151090070DEBA /* CategoryCreator.swift */; };
-		B69EE4E927B151890070DEBA /* CategoryCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69EE4E827B151890070DEBA /* CategoryCanvas.swift */; };
-		B6C1F9FF27C6370F00758BE4 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C1F9FE27C6370F00758BE4 /* Category.swift */; };
+		B683B27826069F7800F7F347 /* Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683B27726069F7800F7F347 /* Overview.swift */; };
 		B6C1FA0127C638DE00758BE4 /* Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C1FA0027C638DD00758BE4 /* Budget.swift */; };
 		B6C1FA0327C6390700758BE4 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C1FA0227C6390700758BE4 /* Model.swift */; };
 		B6C78A892606BDC7007B2CC5 /* BudgetCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */; };
-		B6C78A8C2607619E007B2CC5 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */; };
 		B6CA77E5287C8A8E0052CE8B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6CA77E3287C8A8E0052CE8B /* InfoPlist.strings */; };
-		B6CA77E8287C8A8E0052CE8B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6CA77E6287C8A8E0052CE8B /* Localizable.strings */; };
 		B6CFEAE0286B4C820011B82E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B6CFEADF286B4C820011B82E /* .swiftlint.yml */; };
+		B6DD5AB22ACB70C500FC927F /* BalanceHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DD5AB12ACB70C500FC927F /* BalanceHistory.swift */; };
 		B6E093172628D8DD0091F9A6 /* BalanceAdjuster.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E093162628D8DD0091F9A6 /* BalanceAdjuster.swift */; };
 		B6E4DD14261726DF004C3D3C /* BudgetEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E4DD13261726DF004C3D3C /* BudgetEditor.swift */; };
 		B6F504BC260695E5005E20A5 /* BudgetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F504BB260695E5005E20A5 /* BudgetApp.swift */; };
@@ -35,27 +28,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B605B78C27EDD092008DA364 /* BalanceHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceHistory.swift; sourceTree = "<group>"; };
-		B605B78E27EDF5C8008DA364 /* BalanceAdjustment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceAdjustment.swift; sourceTree = "<group>"; };
+		B605B78C27EDD092008DA364 /* BudgetDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetDetail.swift; sourceTree = "<group>"; };
 		B61DA5D126299259008CADBF /* CurrencyField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyField.swift; sourceTree = "<group>"; };
-		B640C0C527EE686300271B9E /* BudgetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetList.swift; sourceTree = "<group>"; };
-		B64337CA27F3073400A31D2D /* CategoryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryManager.swift; sourceTree = "<group>"; };
-		B64337CC27F3A71300A31D2D /* CategoryEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEditor.swift; sourceTree = "<group>"; };
+		B640C0C527EE686300271B9E /* BudgetGroupRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetGroupRow.swift; sourceTree = "<group>"; };
 		B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormatStyle+Euro.swift"; sourceTree = "<group>"; };
 		B663DF3327A08E140022E546 /* BudgetCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCanvas.swift; sourceTree = "<group>"; };
-		B683B27726069F7800F7F347 /* Budgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budgets.swift; sourceTree = "<group>"; };
-		B69EE4E527B151090070DEBA /* CategoryCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCreator.swift; sourceTree = "<group>"; };
-		B69EE4E827B151890070DEBA /* CategoryCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCanvas.swift; sourceTree = "<group>"; };
-		B6C1F9FE27C6370F00758BE4 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		B683B27726069F7800F7F347 /* Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overview.swift; sourceTree = "<group>"; };
 		B6C1FA0027C638DD00758BE4 /* Budget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget.swift; sourceTree = "<group>"; };
 		B6C1FA0227C6390700758BE4 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCreator.swift; sourceTree = "<group>"; };
-		B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
 		B6CA77E4287C8A8E0052CE8B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B6CA77E7287C8A8E0052CE8B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B6CA77E9287C8AA30052CE8B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B6CA77EA287C8AA50052CE8B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B6CFEADF286B4C820011B82E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		B6DD5AB12ACB70C500FC927F /* BalanceHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceHistory.swift; sourceTree = "<group>"; };
 		B6E093162628D8DD0091F9A6 /* BalanceAdjuster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceAdjuster.swift; sourceTree = "<group>"; };
 		B6E4DD13261726DF004C3D3C /* BudgetEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetEditor.swift; sourceTree = "<group>"; };
 		B6F504B8260695E5005E20A5 /* Budget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Budget.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,35 +61,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B64FC475260C09D900CA02A4 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				B6C1FA0227C6390700758BE4 /* Model.swift */,
-				B6C1F9FE27C6370F00758BE4 /* Category.swift */,
-				B6C1FA0027C638DD00758BE4 /* Budget.swift */,
-				B605B78E27EDF5C8008DA364 /* BalanceAdjustment.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		B663DF3127A08DE10022E546 /* Budget */ = {
+		B663DF3127A08DE10022E546 /* BudgetEdit */ = {
 			isa = PBXGroup;
 			children = (
 				B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */,
 				B6E4DD13261726DF004C3D3C /* BudgetEditor.swift */,
 				B663DF3327A08E140022E546 /* BudgetCanvas.swift */,
 			);
-			path = Budget;
+			path = BudgetEdit;
 			sourceTree = "<group>";
 		};
 		B67A913C2659AF96003AADD8 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				B683B27726069F7800F7F347 /* Budgets.swift */,
-				B640C0C527EE686300271B9E /* BudgetList.swift */,
+				B683B27726069F7800F7F347 /* Overview.swift */,
+				B6DD5AB12ACB70C500FC927F /* BalanceHistory.swift */,
+				B640C0C527EE686300271B9E /* BudgetGroupRow.swift */,
 				B6F504BD260695E5005E20A5 /* BudgetRow.swift */,
-				B605B78C27EDD092008DA364 /* BalanceHistory.swift */,
-				B69EE4EA27B153EF0070DEBA /* CUD */,
+				B605B78C27EDD092008DA364 /* BudgetDetail.swift */,
+				B663DF3127A08DE10022E546 /* BudgetEdit */,
 				B67A913D2659AFC1003AADD8 /* BalanceAdjuster */,
 			);
 			path = View;
@@ -118,27 +92,6 @@
 				B61DA5D126299259008CADBF /* CurrencyField.swift */,
 			);
 			path = BalanceAdjuster;
-			sourceTree = "<group>";
-		};
-		B69EE4E727B151130070DEBA /* Category */ = {
-			isa = PBXGroup;
-			children = (
-				B69EE4E527B151090070DEBA /* CategoryCreator.swift */,
-				B64337CC27F3A71300A31D2D /* CategoryEditor.swift */,
-				B69EE4E827B151890070DEBA /* CategoryCanvas.swift */,
-				B64337CA27F3073400A31D2D /* CategoryManager.swift */,
-				B6C78A8B2607619D007B2CC5 /* ColorPicker.swift */,
-			);
-			path = Category;
-			sourceTree = "<group>";
-		};
-		B69EE4EA27B153EF0070DEBA /* CUD */ = {
-			isa = PBXGroup;
-			children = (
-				B69EE4E727B151130070DEBA /* Category */,
-				B663DF3127A08DE10022E546 /* Budget */,
-			);
-			path = CUD;
 			sourceTree = "<group>";
 		};
 		B6F504AF260695E5005E20A5 = {
@@ -162,13 +115,13 @@
 			isa = PBXGroup;
 			children = (
 				B6F504BB260695E5005E20A5 /* BudgetApp.swift */,
-				B64FC475260C09D900CA02A4 /* Model */,
+				B6C1FA0227C6390700758BE4 /* Model.swift */,
+				B6C1FA0027C638DD00758BE4 /* Budget.swift */,
 				B67A913C2659AF96003AADD8 /* View */,
 				B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */,
 				B6F504BF260695E7005E20A5 /* Assets.xcassets */,
 				B6F504C4260695E7005E20A5 /* Info.plist */,
 				B6CA77E3287C8A8E0052CE8B /* InfoPlist.strings */,
-				B6CA77E6287C8A8E0052CE8B /* Localizable.strings */,
 				B6F504C1260695E7005E20A5 /* Preview Content */,
 			);
 			path = Budget;
@@ -192,7 +145,7 @@
 				B6F504B4260695E5005E20A5 /* Sources */,
 				B6F504B5260695E5005E20A5 /* Frameworks */,
 				B6F504B6260695E5005E20A5 /* Resources */,
-				B62F9E4A286B3B930075850C /* ShellScript */,
+				B62F9E4A286B3B930075850C /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -211,8 +164,9 @@
 		B6F504B0260695E5005E20A5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					B6F504B7260695E5005E20A5 = {
 						CreatedOnToolsVersion = 12.4;
@@ -221,10 +175,9 @@
 			};
 			buildConfigurationList = B6F504B3260695E5005E20A5 /* Build configuration list for PBXProject "Budget" */;
 			compatibilityVersion = "Xcode 9.3";
-			developmentRegion = en;
+			developmentRegion = de;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
 				de,
 			);
@@ -245,7 +198,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6CA77E8287C8A8E0052CE8B /* Localizable.strings in Resources */,
 				B6CFEAE0286B4C820011B82E /* .swiftlint.yml in Resources */,
 				B6CA77E5287C8A8E0052CE8B /* InfoPlist.strings in Resources */,
 				B6F504C3260695E7005E20A5 /* Preview Assets.xcassets in Resources */,
@@ -256,7 +208,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B62F9E4A286B3B930075850C /* ShellScript */ = {
+		B62F9E4A286B3B930075850C /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -266,13 +218,15 @@
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint > /dev/null; then\n\tswiftlint --no-cache\nelse\n\techo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "
+";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -282,25 +236,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6F504BE260695E5005E20A5 /* BudgetRow.swift in Sources */,
-				B64337CD27F3A71400A31D2D /* CategoryEditor.swift in Sources */,
 				B6F504BC260695E5005E20A5 /* BudgetApp.swift in Sources */,
 				B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */,
 				B6C1FA0327C6390700758BE4 /* Model.swift in Sources */,
 				B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */,
-				B64337CB27F3073400A31D2D /* CategoryManager.swift in Sources */,
-				B69EE4E627B151090070DEBA /* CategoryCreator.swift in Sources */,
-				B605B78D27EDD092008DA364 /* BalanceHistory.swift in Sources */,
+				B605B78D27EDD092008DA364 /* BudgetDetail.swift in Sources */,
 				B6E093172628D8DD0091F9A6 /* BalanceAdjuster.swift in Sources */,
-				B6C78A8C2607619E007B2CC5 /* ColorPicker.swift in Sources */,
 				B6E4DD14261726DF004C3D3C /* BudgetEditor.swift in Sources */,
-				B6C1F9FF27C6370F00758BE4 /* Category.swift in Sources */,
-				B640C0C627EE686300271B9E /* BudgetList.swift in Sources */,
+				B6DD5AB22ACB70C500FC927F /* BalanceHistory.swift in Sources */,
+				B640C0C627EE686300271B9E /* BudgetGroupRow.swift in Sources */,
 				B6C78A892606BDC7007B2CC5 /* BudgetCreator.swift in Sources */,
-				B683B27826069F7800F7F347 /* Budgets.swift in Sources */,
+				B683B27826069F7800F7F347 /* Overview.swift in Sources */,
 				B6C1FA0127C638DE00758BE4 /* Budget.swift in Sources */,
-				B69EE4E927B151890070DEBA /* CategoryCanvas.swift in Sources */,
 				B663DF3427A08E140022E546 /* BudgetCanvas.swift in Sources */,
-				B605B78F27EDF5C8008DA364 /* BalanceAdjustment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,19 +258,9 @@
 		B6CA77E3287C8A8E0052CE8B /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B6CA77EA287C8AA50052CE8B /* en */,
 				B6CA77E4287C8A8E0052CE8B /* de */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		B6CA77E6287C8A8E0052CE8B /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B6CA77E9287C8AA30052CE8B /* en */,
-				B6CA77E7287C8A8E0052CE8B /* de */,
-			);
-			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -332,6 +270,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -365,6 +304,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -379,7 +319,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -393,6 +333,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -426,6 +367,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -434,7 +376,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -456,7 +398,7 @@
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Budget/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -481,7 +423,7 @@
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Budget/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
