@@ -71,7 +71,7 @@ struct CurrencyField: UIViewRepresentable {
 			parent.amount = amount
 		}
 
-		@objc
+		@MainActor @objc
 		func handleTap(_ sender: UITapGestureRecognizer) {
 			sender.view?.becomeFirstResponder()
 		}
