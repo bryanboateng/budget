@@ -32,9 +32,13 @@ struct BalanceHistory: View {
 					List(balanceAdjustments, id: \.balanceAdjustment.id) { wef in
 						HStack(alignment: .firstTextBaseline) {
 							VStack(alignment: .leading) {
-								Text(
-									"\(Text("●").foregroundStyle(wef.budgetColor.swiftUIColor)) \(Text(wef.budgetName))"
-								)
+									HStack{
+										Image(systemName: "circle")
+											.symbolVariant(.fill)
+											.imageScale(.small)
+											.foregroundStyle(wef.budgetColor.swiftUIColor)
+										Text(wef.budgetName)
+									}
 								Text(wef.balanceAdjustment.date, format: .dateTime.day().month().hour().minute().second())
 									.foregroundStyle(.secondary)
 							}
