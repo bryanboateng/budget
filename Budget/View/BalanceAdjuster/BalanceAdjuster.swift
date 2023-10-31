@@ -4,6 +4,15 @@ struct BalanceAdjuster: View {
 	private enum Direction: CaseIterable {
 		case outgoing
 		case incoming
+
+		mutating func toggle() {
+			switch self {
+			case .outgoing:
+				self = .incoming
+			case .incoming:
+				self = .outgoing
+			}
+		}
 	}
 
 	init(budget: Budget.ID) {
@@ -59,12 +68,14 @@ struct BalanceAdjuster: View {
 		NavigationStack {
 			Form {
 				VStack(spacing: 0) {
-					Label(directionString(direction), systemImage: directionImageName)
-						.labelStyle(.iconOnly)
-						.symbolVariant(.square)
-						.symbolVariant(.fill)
-						.foregroundStyle(directionImageColor)
-						.font(.system(size: 24, weight: .semibold))
+					Button(directionString(direction), systemImage: directionImageName) {
+						direction.toggle()
+					}
+					.labelStyle(.iconOnly)
+					.symbolVariant(.square)
+					.symbolVariant(.fill)
+					.foregroundStyle(directionImageColor)
+					.font(.system(size: 24, weight: .semibold))
 					CurrencyField(amount: $absoluteAmount, fontSize: fontSize)
 						.focused($currencyFieldIsFocused)
 					Text("EUR")
