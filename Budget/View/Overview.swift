@@ -53,7 +53,7 @@ struct Overview: View {
 					Label("Verlauf", systemImage: "clock")
 				}
 			}
-			ToolbarItem(placement: .navigationBarTrailing) {
+			ToolbarItem(placement: .bottomBar) {
 				Button {
 					isCreatingBudget = true
 				} label: {
