@@ -74,7 +74,7 @@ struct Overview: View {
 		.sheet(isPresented: $isCreatingBudget) {
 			BudgetCreator()
 		}
-		.sheet(isPresented: $historyIsOpen) {
+		.fullScreenCover(isPresented: $historyIsOpen) {
 			BalanceHistory(budgets: model.budgets)
 		}
 		.sheet(isPresented: $isAdjustingBalance) {
