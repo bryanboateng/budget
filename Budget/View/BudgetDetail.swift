@@ -68,7 +68,7 @@ struct BudgetDetail: View {
 					.environmentObject(model)
 			}
 			.sheet(isPresented: $isAdjustingBalance) {
-				BalanceAdjuster(budget: budget)
+				BalanceAdjuster(budget: budget.id)
 					.environmentObject(model)
 			}
 			.actionSheet(isPresented: $isBeingDeleted) {

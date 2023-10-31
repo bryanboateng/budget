@@ -6,6 +6,10 @@ struct BalanceAdjuster: View {
 		case incoming
 	}
 
+	init(budget: Budget.ID) {
+		_budgetID = State(initialValue: budget)
+	}
+
 	@Environment(\.dismiss) private var dismiss
 	@EnvironmentObject private var model: Model
 
@@ -15,7 +19,7 @@ struct BalanceAdjuster: View {
 	@State private var absoluteAmount: Decimal = 0
 	@State private var direction = Direction.outgoing
 
-	let budget: Budget
+	@State private var budgetID: Budget.ID
 
 	private var directionImageName: String {
 		switch direction {
@@ -34,6 +38,20 @@ struct BalanceAdjuster: View {
 		switch direction {
 		case .outgoing: "Ausgabe"
 		case .incoming: "Einnahme"
+		}
+	}
+
+	private var groupedBudgets: [Budget.Color: [Budget]] {
+		.init(grouping: model.budgets) { budget in
+			budget.color
+		}
+	}
+
+	private func comparisonValue(_ budget: Budget) -> Decimal {
+		if let projection = budget.projection {
+			return projection.discretionaryFunds
+		} else {
+			return budget.balance
 		}
 	}
 
@@ -56,8 +74,28 @@ struct BalanceAdjuster: View {
 				.listRowBackground(Color(UIColor.systemGroupedBackground))
 
 				Section(header: Text("Budget")) {
-					BudgetRow(budget: budget)
+					Picker(selection: $budgetID, label: EmptyView()) {
+						ForEach(
+							Budget.Color.allCases.filter { color in
+								groupedBudgets.keys.contains(color)
+							}
+							, id: \.self
+						) { color in
+							ForEach(
+								groupedBudgets[color]!.sorted { lhs, rhs in
+									if comparisonValue(lhs) == comparisonValue(rhs) {
+										return lhs.name < rhs.name
+									}
+									return comparisonValue(lhs) > comparisonValue(rhs)
+								}
+							) { budget in
+								BudgetRow(budget: budget)
+									.tag(budget.id)
+							}
+						}
+					}
 				}
+				.pickerStyle(.navigationLink)
 
 				Picker("Richtung", selection: $direction) {
 					ForEach(Direction.allCases, id: \.self) { color in
@@ -96,19 +134,9 @@ struct BalanceAdjuster: View {
 				case .incoming: absoluteAmount
 				}
 			}()
-			model.adjustBalance(ofBudget: budget.id, by: amount)
+			model.adjustBalance(ofBudget: budgetID, by: amount)
 			dismiss()
 		}
 		.disabled(absoluteAmount == 0.0)
 	}
-}
-
-#Preview {
-	BalanceAdjuster(
-		budget: .init(
-			name: "fe",
-			symbol: "gear",
-			color: .green
-		)
-	)
 }

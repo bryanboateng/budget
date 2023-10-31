@@ -48,6 +48,7 @@ class Model: ObservableObject {
 		budget.adjustBalance(amount)
 		self[id] = budget
 		save()
+		UserDefaults.standard.set(id.uuidString, forKey: "lastUsedBudget")
 	}
 
 	func delete(budget id: Budget.ID) {

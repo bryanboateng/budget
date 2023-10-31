@@ -1,9 +1,11 @@
 import SwiftUI
 
 struct Overview: View {
+	@AppStorage("lastUsedBudget") private var lastUsedBudgetIDString = ""
 	@EnvironmentObject private var model: Model
 
 	@State private var isCreatingBudget = false
+	@State private var isAdjustingBalance = false
 	@State private var historyIsOpen = false
 
 	private var totalBalance: Decimal {
@@ -63,8 +65,10 @@ struct Overview: View {
 			ToolbarItemGroup(placement: .bottomBar) {
 				Spacer()
 				Button("Saldo anpassen", systemImage: "eurosign") {
+					isAdjustingBalance = true
 				}
 				.symbolVariant(.circle)
+				.disabled(groupedBudgets.isEmpty)
 			}
 		}
 		.sheet(isPresented: $isCreatingBudget) {
@@ -72,6 +76,13 @@ struct Overview: View {
 		}
 		.sheet(isPresented: $historyIsOpen) {
 			BalanceHistory(budgets: model.budgets)
+		}
+		.sheet(isPresented: $isAdjustingBalance) {
+			BalanceAdjuster(
+				budget:
+					UUID(uuidString: lastUsedBudgetIDString) ?? model.budgets.randomElement()!.id
+			)
+			.environmentObject(model)
 		}
 	}
 }
