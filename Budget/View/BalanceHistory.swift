@@ -1,3 +1,4 @@
+import OrderedCollections
 import SwiftUI
 
 struct BalanceHistory: View {
@@ -6,48 +7,54 @@ struct BalanceHistory: View {
 
 	let budgets: any Collection<Budget>
 
-	private var balanceAdjustments: [Mase] {
-		budgets
-			.flatMap { budget in
-				budget.balanceAdjustments.map { adjustment in
-					.init(
+	private var groupedRows: OrderedDictionary<YearMonth, [Row]> {
+		var groupedRows: OrderedDictionary<YearMonth, [Row]> = [:]
+
+		for budget in budgets {
+			for balanceAdjustment in budget.balanceAdjustments {
+				let dateComponents = Calendar
+					.current
+					.dateComponents([.month, .year], from: balanceAdjustment.date)
+				let yearMonth = YearMonth(
+					month: dateComponents.month!,
+					year: dateComponents.year!
+				)
+				groupedRows[yearMonth, default: []].append(
+					Row(
 						budgetName: budget.name,
 						budgetColor: budget.color,
-						balanceAdjustment: adjustment
+						balanceAdjustment: balanceAdjustment
 					)
-				}
+				)
 			}
-			.sorted { lhs, rhs in
+		}
+
+		for rowGroup in groupedRows {
+			groupedRows[rowGroup.key] = rowGroup.value.sorted(by: { lhs, rhs in
 				lhs.balanceAdjustment.date > rhs.balanceAdjustment.date
-			}
+			})
+		}
+
+		groupedRows.sort { lhs, rhs in
+			lhs.key > rhs.key
+		}
+
+		return groupedRows
 	}
 
 	var body: some View {
 		NavigationStack {
 			Group {
-				if balanceAdjustments.isEmpty {
+				if groupedRows.isEmpty {
 					if #available(iOS 17, *) {
 						ContentUnavailableView("Kein Verlauf", systemImage: "clock")
 					} else {
 						Text("Kein Verlauf")
 					}
 				} else {
-					List(balanceAdjustments, id: \.balanceAdjustment.id) { wef in
-						HStack(alignment: .firstTextBaseline) {
-							VStack(alignment: .leading) {
-									HStack{
-										Image(systemName: "circle")
-											.symbolVariant(.fill)
-											.imageScale(.small)
-											.foregroundStyle(wef.budgetColor.swiftUIColor)
-										Text(wef.budgetName)
-									}
-								Text(wef.balanceAdjustment.date, format: .dateTime.day().month().hour().minute().second())
-									.foregroundStyle(.secondary)
-							}
-							Spacer()
-							Text(wef.balanceAdjustment.amount, format: .eur().sign(strategy: .accountingAlways()))
-								.monospacedDigit()
+					List {
+						ForEach(groupedRows.elements, id: \.0) { rowGroup in
+							RowGroup(rowGroup: rowGroup)
 						}
 					}
 				}
@@ -63,12 +70,69 @@ struct BalanceHistory: View {
 			}
 		}
 	}
-}
 
-private struct Mase {
-	let budgetName: String
-	let budgetColor: Budget.Color
-	let balanceAdjustment: Budget.BalanceAdjustment
+	private struct RowGroup: View {
+		let rowGroup: OrderedDictionary<
+			BalanceHistory.YearMonth,
+			[BalanceHistory.Row]
+		>.Elements.Element
+
+		var body: some View {
+			Section(
+				Calendar.current
+					.date(from: DateComponents(year: rowGroup.0.year, month: rowGroup.0.month))!
+					.formatted(.dateTime.year().month(.wide))
+			) {
+				ForEach(rowGroup.1, id: \.balanceAdjustment) { row in
+					HStack(alignment: .firstTextBaseline) {
+						VStack(alignment: .leading) {
+							HStack{
+								Image(systemName: "circle")
+									.symbolVariant(.fill)
+									.imageScale(.small)
+									.foregroundStyle(row.budgetColor.swiftUIColor)
+								Text(row.budgetName)
+							}
+							Text(
+								row.balanceAdjustment.date,
+								format: .dateTime.day().month().hour().minute().second()
+							)
+							.foregroundStyle(.secondary)
+						}
+						Spacer()
+						Text(
+							row.balanceAdjustment.amount,
+							format: .eur().sign(strategy: .accountingAlways())
+						)
+						.monospacedDigit()
+					}
+				}
+			}
+		}
+	}
+
+	private struct YearMonth: Hashable, Comparable {
+		let month: Int
+		let year: Int
+
+		func hash(into hasher: inout Hasher) {
+			hasher.combine(month)
+			hasher.combine(year)
+		}
+
+		static func < (lhs: YearMonth, rhs: YearMonth) -> Bool {
+			if lhs.year == rhs.year {
+				return lhs.month < rhs.month
+			}
+			return lhs.year < rhs.year
+		}
+	}
+
+	private struct Row {
+		let budgetName: String
+		let budgetColor: Budget.Color
+		let balanceAdjustment: Budget.BalanceAdjustment
+	}
 }
 
 #Preview {
