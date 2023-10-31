@@ -12,7 +12,6 @@ struct BalanceHistory: View {
 				budget.balanceAdjustments.map { adjustment in
 					.init(
 						budgetName: budget.name,
-						budgetSymbol: budget.symbol,
 						budgetColor: budget.color,
 						balanceAdjustment: adjustment
 					)
@@ -68,7 +67,6 @@ struct BalanceHistory: View {
 
 private struct Mase {
 	let budgetName: String
-	let budgetSymbol: String
 	let budgetColor: Budget.Color
 	let balanceAdjustment: Budget.BalanceAdjustment
 }
