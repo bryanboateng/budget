@@ -9,18 +9,24 @@ struct BudgetCanvas: View {
 
 	var body: some View {
 		Form {
-			Label(name, systemImage: symbol)
-				.foregroundStyle(color.swiftUIColor)
-				.font(.system(size: 100))
-				.labelStyle(.iconOnly)
-				.frame(maxWidth: .infinity, alignment: .center)
-				.listRowBackground(Color(UIColor.systemGroupedBackground))
 			Section {
 				TextField("Name", text: $name, axis: .vertical)
 			} header: {
 				Text("Name")
 			}
 			Section {
+				Group {
+					if UIImage(systemName: symbol) != nil {
+						Image(systemName: symbol)
+					} else {
+						Image(systemName: "questionmark.diamond")
+							.foregroundStyle(.secondary)
+							.symbolVariant(.fill)
+					}
+				}
+				.foregroundStyle(color.swiftUIColor)
+				.font(.system(size: 100))
+				.frame(maxWidth: .infinity, alignment: .center)
 				TextField("Symbol", text: $symbol, axis: .vertical)
 					.autocorrectionDisabled(true)
 					.textInputAutocapitalization(.never)
