@@ -84,7 +84,6 @@ struct Budget: Codable, Identifiable, Hashable {
 		case purple
 		case pink
 		case brown
-		case gray
 
 		var swiftUIColor: SwiftUI.Color {
 			switch self {
@@ -100,7 +99,6 @@ struct Budget: Codable, Identifiable, Hashable {
 			case .purple: .purple
 			case .pink: SwiftUI.Color("CustomPink")
 			case .brown: .brown
-			case .gray: .gray
 			}
 		}
 
@@ -118,7 +116,6 @@ struct Budget: Codable, Identifiable, Hashable {
 			case .purple: "Lila"
 			case .pink: "Rosa"
 			case .brown: "Braun"
-			case .gray: "Grau"
 			}
 		}
 	}
