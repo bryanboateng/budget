@@ -24,6 +24,7 @@ struct BudgetCanvas: View {
 				TextField("Symbol", text: $symbol, axis: .vertical)
 					.autocorrectionDisabled(true)
 					.textInputAutocapitalization(.never)
+					.keyboardType(.asciiCapable)
 				Picker("Farbe", selection: $color) {
 					ForEach(Budget.Color.allCases, id: \.self) { color in
 						Text(color.localizedName)
