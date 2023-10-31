@@ -22,7 +22,7 @@ struct Overview: View {
 		Group {
 			if model.budgets.isEmpty {
 				if #available(iOS 17, *) {
-					ContentUnavailableView("Keine Budgets", systemImage: "rectangle")
+					ContentUnavailableView("Keine Budgets", systemImage: "folder")
 				} else {
 					Text("Keine Budgets")
 				}
@@ -57,13 +57,14 @@ struct Overview: View {
 				Button {
 					isCreatingBudget = true
 				} label: {
-					Label("Kategorien", systemImage: "rectangle.badge.plus")
+					Label("Kategorien", systemImage: "folder.badge.plus")
 				}
 			}
 			ToolbarItemGroup(placement: .bottomBar) {
 				Spacer()
-				Button("Saldo anpassen", systemImage: "plusminus") {
+				Button("Saldo anpassen", systemImage: "eurosign") {
 				}
+				.symbolVariant(.circle)
 			}
 		}
 		.sheet(isPresented: $isCreatingBudget) {

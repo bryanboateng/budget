@@ -55,9 +55,10 @@ struct BudgetDetail: View {
 				}
 				ToolbarItemGroup(placement: .bottomBar) {
 					Spacer()
-					Button("Saldo anpassen", systemImage: "plusminus") {
+					Button("Saldo anpassen", systemImage: "eurosign") {
 						isAdjustingBalance = true
 					}
+					.symbolVariant(.circle)
 				}
 			}
 			.navigationTitle(budget.name)
