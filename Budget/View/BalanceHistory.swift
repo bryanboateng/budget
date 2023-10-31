@@ -50,10 +50,10 @@ struct BalanceHistory: View {
 								.monospacedDigit()
 						}
 					}
-					.navigationTitle("Verlauf")
-					.navigationBarTitleDisplayMode(.inline)
 				}
 			}
+			.navigationTitle("Verlauf")
+			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
 				ToolbarItem(placement: .confirmationAction) {
 					Button("Fertig") {
