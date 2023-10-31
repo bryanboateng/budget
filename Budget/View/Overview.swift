@@ -21,7 +21,11 @@ struct Overview: View {
 	var body: some View {
 		Group {
 			if model.budgets.isEmpty {
-				ContentUnavailableView("Keine Budgets", systemImage: "rectangle")
+				if #available(iOS 17, *) {
+					ContentUnavailableView("Keine Budgets", systemImage: "rectangle")
+				} else {
+					Text("Keine Budgets")
+				}
 			} else {
 				List {
 					BalanceDisplay(balance: totalBalance)

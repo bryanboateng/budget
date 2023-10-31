@@ -27,7 +27,11 @@ struct BalanceHistory: View {
 		NavigationStack {
 			Group {
 				if balanceAdjustments.isEmpty {
-					ContentUnavailableView("Kein Verlauf", systemImage: "clock")
+					if #available(iOS 17, *) {
+						ContentUnavailableView("Kein Verlauf", systemImage: "clock")
+					} else {
+						Text("Kein Verlauf")
+					}
 				} else {
 					List(balanceAdjustments, id: \.balanceAdjustment.id) { wef in
 						HStack(alignment: .firstTextBaseline) {
