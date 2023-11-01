@@ -8,8 +8,14 @@ struct BudgetRow: View {
 			Label {
 				Text(budget.name)
 			} icon: {
-				Image(systemName: budget.symbol)
-					.foregroundStyle(budget.color.swiftUIColor)
+				if #available(iOS 17, *) {
+					Image(systemName: budget.symbol)
+						.foregroundStyle(budget.color.swiftUIColor)
+				} else {
+					Image(systemName: budget.symbol)
+						.foregroundStyle(budget.color.swiftUIColor)
+						.font(.title3)
+				}
 			}
 			.multilineTextAlignment(.leading)
 			Spacer()
