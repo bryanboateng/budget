@@ -170,7 +170,7 @@ private struct BalanceAdjustmentList: View {
 					Text(adjustment.date, format: .dateTime.day().month().hour().minute().second())
 						.foregroundStyle(.secondary)
 					Spacer()
-					Text(adjustment.amount, format: .eur().sign(strategy: .accountingAlways()))
+					Text(adjustment.amount, format: .eur().sign(strategy: .always()))
 						.monospacedDigit()
 				}
 			}

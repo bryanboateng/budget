@@ -101,7 +101,7 @@ struct BalanceHistory: View {
 						Spacer()
 						Text(
 							row.balanceAdjustment.amount,
-							format: .eur().sign(strategy: .accountingAlways())
+							format: .eur().sign(strategy: .always())
 						)
 						.monospacedDigit()
 					}
