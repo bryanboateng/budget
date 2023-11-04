@@ -172,6 +172,7 @@ private struct BalanceAdjustmentList: View {
 					Spacer()
 					Text(adjustment.amount, format: .eur().sign(strategy: .always()))
 						.monospacedDigit()
+						.foregroundStyle(adjustment.amount > 0 ? .green : .primary)
 				}
 			}
 		}

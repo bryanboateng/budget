@@ -104,6 +104,7 @@ struct BalanceHistory: View {
 							format: .eur().sign(strategy: .always())
 						)
 						.monospacedDigit()
+						.foregroundStyle(row.balanceAdjustment.amount > 0 ? .green : .primary)
 					}
 				}
 			}
