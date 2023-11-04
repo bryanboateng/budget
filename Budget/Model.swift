@@ -9,12 +9,13 @@ class Model: ObservableObject {
 		.appendingPathExtension("json")
 
 	init() {
-		do {
-			let data = try Data(contentsOf: saveURL)
-			budgets = try JSONDecoder().decode(Set<Budget>.self, from: data)
-		} catch {
+		let fileManager = FileManager.default
+		if !fileManager.fileExists(atPath: saveURL.path()) {
 			budgets = []
+			save()
 		}
+		let data = try! Data(contentsOf: saveURL)
+		budgets = try! JSONDecoder().decode(Set<Budget>.self, from: data)
 	}
 
 	func insert(_ budget: Budget) {
