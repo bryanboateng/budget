@@ -4,13 +4,13 @@ import Foundation
 class Model: ObservableObject {
 	@Published private(set) var budgets: Set<Budget>
 
-	private let savePath = URL.documentsDirectory
+	private let saveURL = URL.documentsDirectory
 		.appending(component: "budgets")
 		.appendingPathExtension("json")
 
 	init() {
 		do {
-			let data = try Data(contentsOf: savePath)
+			let data = try Data(contentsOf: saveURL)
 			budgets = try JSONDecoder().decode(Set<Budget>.self, from: data)
 		} catch {
 			budgets = []
@@ -62,7 +62,7 @@ class Model: ObservableObject {
 		encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
 		try! encoder
 			.encode(budgets)
-			.write(to: savePath, options: [.atomic, .completeFileProtection])
+			.write(to: saveURL, options: [.atomic, .completeFileProtection])
 	}
 
 	subscript(budgetID: Budget.ID) -> Budget {
