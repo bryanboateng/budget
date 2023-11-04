@@ -46,7 +46,7 @@ struct Overview: View {
 		}
 		.navigationTitle("Konto")
 		.toolbar {
-			ToolbarItem(placement: .navigationBarTrailing) {
+			ToolbarItem(placement: .topBarTrailing) {
 				Button {
 					historyIsOpen = true
 				} label: {
