@@ -87,9 +87,8 @@ struct BalanceHistory: View {
 					HStack(alignment: .firstTextBaseline) {
 						VStack(alignment: .leading) {
 							HStack{
-								Image(systemName: "circle")
+								Image(systemName: "circlebadge")
 									.symbolVariant(.fill)
-									.imageScale(.small)
 									.foregroundStyle(row.budgetColor.swiftUIColor)
 								Text(row.budgetName)
 							}
