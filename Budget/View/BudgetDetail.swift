@@ -27,12 +27,10 @@ struct BudgetDetail: View {
 					}
 				}
 				BudgetView(budget: budget)
-				Section {
+				Section("Verlauf") {
 					BalanceAdjustmentList(
 						balanceAdjustments: budget.balanceAdjustments
 					)
-				} header: {
-					Text("Verlauf")
 				}
 			}
 			.toolbar {
@@ -109,7 +107,7 @@ private struct BudgetView: View {
 
 	var body: some View {
 		if let projection = budget.projection {
-			Section {
+			Section("Verfügbar") {
 				HStack {
 					Text("Verfügbares Guthaben")
 						.foregroundStyle(.secondary)
@@ -124,8 +122,6 @@ private struct BudgetView: View {
 						"\(projection.discretionaryDays.formatted(.number.precision(.fractionLength(1)))) d"
 					)
 				}
-			} header: {
-				Text("Verfügbar")
 			}
 		}
 		Section {

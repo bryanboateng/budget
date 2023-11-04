@@ -37,10 +37,8 @@ struct Overview: View {
 						}
 						, id: \.self
 					) { color in
-						Section {
+						Section(color.localizedName) {
 							BudgetGroupRow(budgets: Set<Budget>(groupedBudgets[color]!))
-						} header: {
-							Text(color.localizedName)
 						}
 					}
 				}

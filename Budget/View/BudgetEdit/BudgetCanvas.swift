@@ -9,12 +9,10 @@ struct BudgetCanvas: View {
 
 	var body: some View {
 		Form {
-			Section {
+			Section("Name") {
 				TextField("Name", text: $name, axis: .vertical)
-			} header: {
-				Text("Name")
 			}
-			Section {
+			Section("Symbol") {
 				Group {
 					if UIImage(systemName: symbol) != nil {
 						Image(systemName: symbol)
@@ -37,10 +35,8 @@ struct BudgetCanvas: View {
 					}
 				}
 				.pickerStyle(.menu)
-			} header: {
-				Text("Symbol")
 			}
-			Section {
+			Section("Monatliche Zuweisung") {
 				Toggle("Monatliche Zuweisung", isOn: $projectionIsEnabled)
 				if projectionIsEnabled {
 					TextField(
@@ -50,8 +46,6 @@ struct BudgetCanvas: View {
 					)
 					.keyboardType(.decimalPad)
 				}
-			} header: {
-				Text("Monatliche Zuweisung")
 			}
 		}
 	}

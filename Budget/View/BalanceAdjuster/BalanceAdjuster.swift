@@ -84,7 +84,7 @@ struct BalanceAdjuster: View {
 				.frame(maxWidth: .infinity, alignment: .center)
 				.listRowBackground(Color(UIColor.systemGroupedBackground))
 
-				Section(header: Text("Budget")) {
+				Section("Budget") {
 					Picker(selection: $budgetID, label: EmptyView()) {
 						ForEach(
 							Budget.Color.allCases.filter { color in
