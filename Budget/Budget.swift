@@ -71,7 +71,7 @@ struct Budget: Codable, Identifiable, Hashable {
 		}
 	}
 
-	enum Color: CaseIterable, Codable {
+	enum Color: String, CaseIterable, Codable {
 		case red
 		case orange
 		case yellow
