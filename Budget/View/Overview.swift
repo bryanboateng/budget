@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct Overview: View {
-	@AppStorage("lastUsedBudget") private var lastUsedBudgetIDString = ""
+	@AppStorage(UserDefaultKeys.latestPrimaryBudgetID.rawValue) private var lastUsedBudgetIDString = ""
 	@EnvironmentObject private var model: Model
 
 	@State private var isCreatingBudget = false
@@ -77,7 +77,7 @@ struct Overview: View {
 		}
 		.sheet(isPresented: $isAdjustingBalance) {
 			BalanceAdjuster(
-				budget:
+				primaryBudgetID:
 					UUID(uuidString: lastUsedBudgetIDString) ?? model.budgets.randomElement()!.id
 			)
 			.environmentObject(model)

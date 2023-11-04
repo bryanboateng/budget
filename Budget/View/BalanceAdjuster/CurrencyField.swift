@@ -7,6 +7,12 @@ protocol UIKitCurrencyFieldDelegate: AnyObject {
 class UIKitCurrencyField: UILabel, UIKeyInput {
 	weak var delegate: UIKitCurrencyFieldDelegate?
 
+	var sign: FloatingPointSign? {
+		didSet {
+			updateText()
+		}
+	}
+
 	var amount: Decimal = 0.0 {
 		didSet(oldAmount) {
 			let amountString = amount.formatted(.number.grouping(.never).scale(100))
@@ -55,7 +61,14 @@ class UIKitCurrencyField: UILabel, UIKeyInput {
 	}
 
 	private func updateText() {
-		text = amount.formatted(.number.precision(.fractionLength(2)))
+		text = {
+			let prefix = switch sign {
+			case .plus: "+"
+			case .minus: "-"
+			case .none: ""
+			}
+			return "\(prefix)\(amount.formatted(.eur()))"
+		}()
 	}
 }
 
@@ -78,6 +91,7 @@ struct CurrencyField: UIViewRepresentable {
 	}
 
 	@Binding var amount: Decimal
+	let sign: FloatingPointSign?
 	let fontSize: CGFloat
 
 	func makeCoordinator() -> Coordinator {
@@ -108,10 +122,19 @@ struct CurrencyField: UIViewRepresentable {
 
 	func updateUIView(_ currencyField: UIKitCurrencyField, context: Context) {
 		currencyField.amount = amount
+		currencyField.sign = sign
+
+		currencyField.textColor = {
+			if sign == .plus {
+				return .systemGreen
+			} else {
+				return .label
+			}
+		}()
 	}
 }
 
 #Preview {
 	@State var absoluteAmount: Decimal = 0.0
-	return CurrencyField(amount: $absoluteAmount, fontSize: 65)
+	return CurrencyField(amount: $absoluteAmount, sign: .minus, fontSize: 65)
 }
