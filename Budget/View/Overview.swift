@@ -91,13 +91,21 @@ private struct BalanceDisplay: View {
 	let balance: Decimal
 
 	var body: some View {
-		VStack(alignment: .leading) {
-			Text("Kontostand")
-				.foregroundStyle(.secondary)
-				.font(.subheadline)
+		HStack {
+			Label {
+				Text("Kontostand")
+			} icon: {
+				if #available(iOS 17, *) {
+					Image(systemName: "building.columns")
+				} else {
+					Image(systemName: "building.columns")
+						.font(.title3)
+				}
+			}
+			Spacer()
 			Text(balance, format: .eur())
-				.font(.title)
-				.fontWeight(.semibold)
+				.monospacedDigit()
 		}
+		.foregroundColor(.secondary)
 	}
 }
