@@ -39,7 +39,7 @@ struct BudgetCreator: View {
 							budget.setMonthlyAllocation(monthlyAllocation)
 						}
 
-						model.insert(budget)
+						model.add(budget)
 						dismiss()
 					}
 					.disabled(

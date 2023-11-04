@@ -18,7 +18,7 @@ class Model: ObservableObject {
 		budgets = try! JSONDecoder().decode(Set<Budget>.self, from: data)
 	}
 
-	func insert(_ budget: Budget) {
+	func add(_ budget: Budget) {
 		budgets.insert(budget)
 		save()
 	}
