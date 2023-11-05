@@ -24,7 +24,6 @@ struct BalanceAdjuster: View {
 	@EnvironmentObject private var model: Model
 
 	@ScaledMetric private var fontSize: CGFloat = 65
-	@FocusState private var currencyFieldIsFocused: Bool
 
 	@State private var absoluteAmount: Decimal = 0
 	@State private var direction = Direction.outgoing
@@ -73,9 +72,6 @@ struct BalanceAdjuster: View {
 				Section {
 					doneButton
 				}
-			}
-			.onAppear {
-				currencyFieldIsFocused = true
 			}
 			.navigationTitle("Saldo anpassen")
 			.navigationBarTitleDisplayMode(.inline)
