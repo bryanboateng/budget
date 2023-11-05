@@ -21,6 +21,10 @@ class Model: ObservableObject {
 	func add(_ budget: Budget) {
 		budgets.insert(budget)
 		save()
+		UserDefaults.standard.set(
+			budget.color.rawValue,
+			forKey: UserDefaultKeys.colorOfMostRecentlyCreatedBudget.rawValue
+		)
 	}
 
 	func update(budget id: Budget.ID, change: Budget.Change) {
