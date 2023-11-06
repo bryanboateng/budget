@@ -23,11 +23,7 @@ struct Overview: View {
 	var body: some View {
 		Group {
 			if model.budgets.isEmpty {
-				if #available(iOS 17, *) {
-					ContentUnavailableView("Keine Budgets", systemImage: "folder")
-				} else {
-					Text("Keine Budgets")
-				}
+				ContentUnavailableView("Keine Budgets", systemImage: "folder")
 			} else {
 				List {
 					BalanceDisplay(balance: totalBalance)
@@ -93,12 +89,7 @@ private struct BalanceDisplay: View {
 			Label {
 				Text("Kontostand")
 			} icon: {
-				if #available(iOS 17, *) {
-					Image(systemName: "building.columns")
-				} else {
-					Image(systemName: "building.columns")
-						.font(.title3)
-				}
+				Image(systemName: "building.columns")
 			}
 			Spacer()
 			Text(balance, format: .eur())

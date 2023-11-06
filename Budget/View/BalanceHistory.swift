@@ -46,11 +46,7 @@ struct BalanceHistory: View {
 		NavigationStack {
 			Group {
 				if groupedRows.isEmpty {
-					if #available(iOS 17, *) {
-						ContentUnavailableView("Kein Verlauf", systemImage: "clock")
-					} else {
-						Text("Kein Verlauf")
-					}
+					ContentUnavailableView("Kein Verlauf", systemImage: "clock")
 				} else {
 					List {
 						ForEach(groupedRows.elements, id: \.0) { rowGroup in

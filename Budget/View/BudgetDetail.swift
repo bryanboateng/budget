@@ -157,12 +157,8 @@ private struct BalanceAdjustmentList: View {
 
 	var body: some View {
 		if balanceAdjustments.isEmpty {
-			if #available(iOS 17, *) {
-				ContentUnavailableView {
-					Label("Kein Verlauf", systemImage: "clock")
-				}
-			} else {
-				Text("Kein Verlauf")
+			ContentUnavailableView {
+				Label("Kein Verlauf", systemImage: "clock")
 			}
 		} else {
 			ForEach(balanceAdjustments.sorted { $0.date > $1.date }) { adjustment in
