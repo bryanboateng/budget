@@ -5,16 +5,21 @@ struct BudgetRow: View {
 
 	var body: some View {
 		HStack {
-			Label {
-				Text(budget.name)
-			} icon: {
+			Group {
 				if #available(iOS 17, *) {
-					Image(systemName: budget.symbol)
-						.foregroundStyle(budget.color.swiftUIColor)
+					Label {
+						Text(budget.name)
+					} icon: {
+						Image(systemName: budget.symbol)
+							.foregroundStyle(budget.color.swiftUIColor)
+					}
 				} else {
-					Image(systemName: budget.symbol)
-						.foregroundStyle(budget.color.swiftUIColor)
-						.font(.title3)
+					HStack {
+						Image(systemName: budget.symbol)
+							.foregroundStyle(budget.color.swiftUIColor)
+							.font(.title3)
+						Text(budget.name)
+					}
 				}
 			}
 			.multilineTextAlignment(.leading)
