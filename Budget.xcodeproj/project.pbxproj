@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		B605B78D27EDD092008DA364 /* BudgetDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605B78C27EDD092008DA364 /* BudgetDetail.swift */; };
 		B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA5D126299259008CADBF /* CurrencyField.swift */; };
-		B640C0C627EE686300271B9E /* BudgetGroupRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640C0C527EE686300271B9E /* BudgetGroupRow.swift */; };
 		B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */; };
 		B663DF3427A08E140022E546 /* BudgetCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = B663DF3327A08E140022E546 /* BudgetCanvas.swift */; };
 		B683B27826069F7800F7F347 /* Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683B27726069F7800F7F347 /* Overview.swift */; };
@@ -28,12 +27,12 @@
 		B6F504C3260695E7005E20A5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6F504C2260695E7005E20A5 /* Preview Assets.xcassets */; };
 		B6F7C5942AF6DF0300F5C26C /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F7C5932AF6DF0200F5C26C /* UserDefaultKeys.swift */; };
 		B6FC07232AFA848000E425DB /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = B6FC07222AFA848000E425DB /* ComposableArchitecture */; };
+		B6FC07252AFA9D1A00E425DB /* BudgetForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FC07242AFA9D1A00E425DB /* BudgetForm.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B605B78C27EDD092008DA364 /* BudgetDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetDetail.swift; sourceTree = "<group>"; };
 		B61DA5D126299259008CADBF /* CurrencyField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyField.swift; sourceTree = "<group>"; };
-		B640C0C527EE686300271B9E /* BudgetGroupRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetGroupRow.swift; sourceTree = "<group>"; };
 		B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormatStyle+Euro.swift"; sourceTree = "<group>"; };
 		B663DF3327A08E140022E546 /* BudgetCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCanvas.swift; sourceTree = "<group>"; };
 		B683B27726069F7800F7F347 /* Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overview.swift; sourceTree = "<group>"; };
@@ -52,6 +51,7 @@
 		B6F504C2260695E7005E20A5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B6F504C4260695E7005E20A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6F7C5932AF6DF0200F5C26C /* UserDefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
+		B6FC07242AFA9D1A00E425DB /* BudgetForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetForm.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +70,7 @@
 		B663DF3127A08DE10022E546 /* BudgetEdit */ = {
 			isa = PBXGroup;
 			children = (
+				B6FC07242AFA9D1A00E425DB /* BudgetForm.swift */,
 				B6C78A882606BDC7007B2CC5 /* BudgetCreator.swift */,
 				B6E4DD13261726DF004C3D3C /* BudgetEditor.swift */,
 				B663DF3327A08E140022E546 /* BudgetCanvas.swift */,
@@ -82,7 +83,6 @@
 			children = (
 				B683B27726069F7800F7F347 /* Overview.swift */,
 				B6DD5AB12ACB70C500FC927F /* BalanceHistory.swift */,
-				B640C0C527EE686300271B9E /* BudgetGroupRow.swift */,
 				B6F504BD260695E5005E20A5 /* BudgetRow.swift */,
 				B605B78C27EDD092008DA364 /* BudgetDetail.swift */,
 				B663DF3127A08DE10022E546 /* BudgetEdit */,
@@ -248,6 +248,7 @@
 			files = (
 				B6F504BE260695E5005E20A5 /* BudgetRow.swift in Sources */,
 				B6F504BC260695E5005E20A5 /* BudgetApp.swift in Sources */,
+				B6FC07252AFA9D1A00E425DB /* BudgetForm.swift in Sources */,
 				B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */,
 				B6C1FA0327C6390700758BE4 /* Model.swift in Sources */,
 				B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */,
@@ -255,7 +256,6 @@
 				B6E093172628D8DD0091F9A6 /* BalanceOperator.swift in Sources */,
 				B6E4DD14261726DF004C3D3C /* BudgetEditor.swift in Sources */,
 				B6DD5AB22ACB70C500FC927F /* BalanceHistory.swift in Sources */,
-				B640C0C627EE686300271B9E /* BudgetGroupRow.swift in Sources */,
 				B6C78A892606BDC7007B2CC5 /* BudgetCreator.swift in Sources */,
 				B683B27826069F7800F7F347 /* Overview.swift in Sources */,
 				B6C1FA0127C638DE00758BE4 /* Budget.swift in Sources */,

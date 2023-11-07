@@ -1,12 +1,12 @@
 import Foundation
 import SwiftUI
 
-struct Budget: Codable, Identifiable, Hashable {
+struct Budget: Equatable, Codable, Identifiable {
 	let id: UUID
 	var name: String
 	var symbol: String
 	var color: Color
-	var balanceAdjustments: Set<BalanceAdjustment> = []
+	var balanceAdjustments: Set<BalanceAdjustment>
 
 	var balance: Decimal {
 		balanceAdjustments.reduce(0) { partialResult, balanceAdjustment in
@@ -16,11 +16,19 @@ struct Budget: Codable, Identifiable, Hashable {
 
 	private var monthlyAllocation: Decimal?
 
-	init(name: String, symbol: String, color: Color, monthlyAllocation: Decimal? = nil) {
-		self.id = UUID()
+	init(
+		id: UUID,
+		name: String,
+		symbol: String,
+		color: Color,
+		balanceAdjustments: Set<BalanceAdjustment> = [],
+		monthlyAllocation: Decimal? = nil
+	) {
+		self.id = id
 		self.name = name
 		self.symbol = symbol
 		self.color = color
+		self.balanceAdjustments = balanceAdjustments
 		self.monthlyAllocation = monthlyAllocation
 	}
 
@@ -33,7 +41,7 @@ struct Budget: Codable, Identifiable, Hashable {
 	}
 
 	mutating func adjustBalance(_ amount: Decimal) {
-		balanceAdjustments.insert(.init(date: .now, amount: amount))
+		balanceAdjustments.insert(.init(id: UUID(), date: .now, amount: amount))
 	}
 
 	var projection: Projection? {
@@ -125,12 +133,6 @@ struct Budget: Codable, Identifiable, Hashable {
 		let date: Date
 		let amount: Decimal
 
-		init(date: Date, amount: Decimal) {
-			self.id = UUID()
-			self.date = date
-			self.amount = amount
-		}
-
 		static func == (lhs: Self, rhs: Self) -> Bool {
 			lhs.id == rhs.id
 		}
@@ -151,4 +153,16 @@ struct Budget: Codable, Identifiable, Hashable {
 			case activate(Decimal)
 		}
 	}
+}
+
+extension Budget {
+	static let mock = Self(
+		id: UUID(),
+		name: "Essen",
+		symbol: "frying.pan",
+		color: .orange,
+		balanceAdjustments: [
+			BalanceAdjustment(id: UUID(), date: .now, amount: 20.41)
+		]
+	)
 }
