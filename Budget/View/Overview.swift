@@ -49,8 +49,8 @@ struct OverviewFeature: Reducer {
 		case balanceOperationButtonTapped
 		case addBudgetButtonTapped
 		case addBudget(PresentationAction<BudgetFormFeature.Action>)
-		case cancelStandupButtonTapped
-		case saveStandupButtonTapped
+		case cancelBudgetButtonTapped
+		case saveBudgetButtonTapped
 	}
 	@Dependency(\.uuid) var uuid
 	var body: some ReducerOf<Self> {
@@ -71,10 +71,10 @@ struct OverviewFeature: Reducer {
 				return .none
 			case .addBudget:
 				return .none
-			case .cancelStandupButtonTapped:
+			case .cancelBudgetButtonTapped:
 				state.addBudget = nil
 				return .none
-			case .saveStandupButtonTapped:
+			case .saveBudgetButtonTapped:
 				guard let addBudget = state.addBudget else { return .none }
 				let trimmedName = addBudget.name.trimmingCharacters(in: .whitespacesAndNewlines)
 				guard !trimmedName.isEmpty else { return .none }
@@ -160,12 +160,12 @@ struct OverviewView: View {
 						.toolbar {
 							ToolbarItem(placement: .cancellationAction) {
 								Button("Abbrechen") {
-									viewStore.send(.cancelStandupButtonTapped)
+									viewStore.send(.cancelBudgetButtonTapped)
 								}
 							}
 							ToolbarItem(placement: .confirmationAction) {
 								Button("Fertig") {
-									viewStore.send(.saveStandupButtonTapped)
+									viewStore.send(.saveBudgetButtonTapped)
 								}
 //								.disabled(
 //									viewStore.addBudget?.name.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
