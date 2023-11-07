@@ -5,7 +5,7 @@ struct Overview: View {
 	@EnvironmentObject private var model: Model
 
 	@State private var isCreatingBudget = false
-	@State private var isAdjustingBalance = false
+	@State private var isOperatingOnBalance = false
 	@State private var historyIsOpen = false
 
 	private var totalBalance: Decimal {
@@ -59,7 +59,7 @@ struct Overview: View {
 			ToolbarItemGroup(placement: .bottomBar) {
 				Spacer()
 				Button("Saldo anpassen", systemImage: "eurosign") {
-					isAdjustingBalance = true
+					isOperatingOnBalance = true
 				}
 				.symbolVariant(.circle)
 				.disabled(groupedBudgets.isEmpty)
@@ -71,8 +71,8 @@ struct Overview: View {
 		.fullScreenCover(isPresented: $historyIsOpen) {
 			BalanceHistory(budgets: model.budgets)
 		}
-		.sheet(isPresented: $isAdjustingBalance) {
-			BalanceAdjuster(
+		.fullScreenCover(isPresented: $isOperatingOnBalance) {
+			BalanceOperator(
 				primaryBudgetID:
 					UUID(uuidString: lastUsedBudgetIDString) ?? model.budgets.randomElement()!.id
 			)

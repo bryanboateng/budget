@@ -7,7 +7,7 @@ struct BudgetDetail: View {
 	private var dismiss
 
 	@State private var isEditing = false
-	@State private var isAdjustingBalance = false
+	@State private var isOperatingOnBalance = false
 	@State private var isBeingDeleted = false
 
 	let budget: Budget
@@ -54,7 +54,7 @@ struct BudgetDetail: View {
 				ToolbarItemGroup(placement: .bottomBar) {
 					Spacer()
 					Button("Saldo anpassen", systemImage: "eurosign") {
-						isAdjustingBalance = true
+						isOperatingOnBalance = true
 					}
 					.symbolVariant(.circle)
 				}
@@ -65,8 +65,8 @@ struct BudgetDetail: View {
 				BudgetEditor(budget: budget)
 					.environmentObject(model)
 			}
-			.sheet(isPresented: $isAdjustingBalance) {
-				BalanceAdjuster(primaryBudgetID: budget.id)
+			.fullScreenCover(isPresented: $isOperatingOnBalance) {
+				BalanceOperator(primaryBudgetID: budget.id)
 					.environmentObject(model)
 			}
 			.actionSheet(isPresented: $isBeingDeleted) {

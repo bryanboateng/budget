@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct BalanceAdjuster: View {
+struct BalanceOperator: View {
 	private enum Direction: CaseIterable {
 		case outgoing
 		case incoming
@@ -15,8 +15,8 @@ struct BalanceAdjuster: View {
 		}
 	}
 
-	private enum AdjustmentType: CaseIterable {
-		case single
+	private enum Operation: CaseIterable {
+		case adjustment
 		case transfer
 	}
 
@@ -27,10 +27,11 @@ struct BalanceAdjuster: View {
 
 	@State private var absoluteAmount: Decimal = 0
 	@State private var direction = Direction.outgoing
-	@State private var adjustmentType = AdjustmentType.single
+	@State private var operation = Operation.adjustment
 
 	@State private var primaryBudgetID: Budget.ID
 	@State private var secondaryBudgetID: Budget.ID
+	@FocusState var currencyFieldIsFocused: Bool
 
 	init(primaryBudgetID: Budget.ID) {
 		_primaryBudgetID = State(initialValue: primaryBudgetID)
@@ -50,30 +51,44 @@ struct BalanceAdjuster: View {
 	var body: some View {
 		NavigationStack {
 			Form {
-				Section {
-					AdjustmentTypePicker(adjustmentType: $adjustmentType)
-				}
-				switch adjustmentType {
-				case .single:
-					SingleAdjustmentView(
-						fontSize: fontSize,
+				CurrencyField(
+					amount: $absoluteAmount,
+					sign: {
+						switch operation {
+						case .adjustment:
+							switch direction {
+							case .outgoing: return .minus
+							case .incoming: return .plus
+							}
+						case .transfer:
+							return nil
+						}
+					}(),
+					fontSize: fontSize
+				)
+				.focused($currencyFieldIsFocused)
+				.frame(maxWidth: .infinity, alignment: .center)
+				.listRowBackground(Color(UIColor.systemGroupedBackground))
+				switch operation {
+				case .adjustment:
+					AdjustmentView(
 						budgetID: $primaryBudgetID,
-						direction: $direction,
-						absoluteAmount: $absoluteAmount
+						direction: $direction
 					)
 				case .transfer:
-					TransferAdjustmentView(
-						fontSize: fontSize,
+					TransferView(
 						senderID: $primaryBudgetID,
-						receiverID: $secondaryBudgetID,
-						amount: $absoluteAmount
+						receiverID: $secondaryBudgetID
 					)
 				}
 				Section {
 					doneButton
 				}
 			}
-			.navigationTitle("Saldo anpassen")
+			.onAppear {
+				currencyFieldIsFocused = true
+			}
+			.navigationTitle("Saldo-Operation")
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
 				ToolbarItem(placement: .cancellationAction) {
@@ -83,6 +98,13 @@ struct BalanceAdjuster: View {
 				}
 				ToolbarItem(placement: .confirmationAction) {
 					doneButton
+				}
+				ToolbarItem(placement: .principal) {
+					Picker("Saldo-Operation", selection: $operation) {
+						Text("Anpassung").tag(Operation.adjustment)
+						Text("Umbuchung").tag(Operation.transfer)
+					}
+					.pickerStyle(.segmented)
 				}
 			}
 		}
@@ -96,8 +118,8 @@ struct BalanceAdjuster: View {
 					primaryBudgetID.uuidString,
 					forKey: UserDefaultKeys.latestPrimaryBudgetID.rawValue
 				)
-			switch adjustmentType {
-			case .single:
+			switch operation {
+			case .adjustment:
 				let amount: Decimal = {
 					switch direction {
 					case .outgoing: -1 * absoluteAmount
@@ -160,31 +182,9 @@ struct BalanceAdjuster: View {
 		}
 	}
 
-	private struct AdjustmentTypePicker: View {
-		private func adjustmentTypeString(_ type: AdjustmentType) -> String {
-			switch type {
-			case .single: "Einzel"
-			case .transfer: "Übertrag"
-			}
-		}
-		@Binding var adjustmentType: AdjustmentType
-
-		var body: some View {
-			Picker("Art", selection: $adjustmentType) {
-				ForEach(AdjustmentType.allCases, id: \.self) { color in
-					Text(adjustmentTypeString(color))
-				}
-			}
-			.pickerStyle(.menu)
-		}
-	}
-
-	private struct SingleAdjustmentView: View {
-		let fontSize: CGFloat
+	private struct AdjustmentView: View {
 		@Binding var budgetID: Budget.ID
 		@Binding var direction: Direction
-		@Binding var absoluteAmount: Decimal
-		@FocusState var currencyFieldIsFocused: Bool
 
 		private func directionString(_ direction: Direction) -> String {
 			switch direction {
@@ -198,15 +198,6 @@ struct BalanceAdjuster: View {
 				BudgetPicker(budgetID: $budgetID)
 			}
 			.pickerStyle(.navigationLink)
-			CurrencyFieldSection(
-				fontSize: fontSize,
-				absoluteAmount: $absoluteAmount,
-				direction:  direction,
-				isFocused: $currencyFieldIsFocused
-			)
-			.onAppear {
-				currencyFieldIsFocused = true
-			}
 			Picker("Richtung", selection: $direction) {
 				ForEach(Direction.allCases, id: \.self) { color in
 					Text(directionString(color))
@@ -216,12 +207,9 @@ struct BalanceAdjuster: View {
 		}
 	}
 
-	private struct TransferAdjustmentView: View {
-		let fontSize: CGFloat
+	private struct TransferView: View {
 		@Binding var senderID: Budget.ID
 		@Binding var receiverID: Budget.ID
-		@Binding var amount: Decimal
-		@FocusState var currencyFieldIsFocused: Bool
 
 		var body: some View {
 			Section("Sender") {
@@ -232,38 +220,6 @@ struct BalanceAdjuster: View {
 				BudgetPicker(budgetID: $receiverID)
 			}
 			.pickerStyle(.navigationLink)
-			CurrencyFieldSection(
-				fontSize: fontSize,
-				absoluteAmount: $amount,
-				direction: nil,
-				isFocused: $currencyFieldIsFocused
-			)
-			.onAppear {
-				currencyFieldIsFocused = true
-			}
-		}
-	}
-
-	private struct CurrencyFieldSection: View {
-		let fontSize: CGFloat
-		@Binding var absoluteAmount: Decimal
-		let direction: Direction?
-		@FocusState<Bool>.Binding var isFocused: Bool
-
-		private var sign: FloatingPointSign? {
-			switch direction {
-			case .outgoing: return .minus
-			case .incoming: return .plus
-			case .none: return nil
-			}
-		}
-
-		var body: some View {
-			Section("Betrag") {
-				CurrencyField(amount: $absoluteAmount, sign: sign, fontSize: fontSize)
-					.focused($isFocused)
-					.frame(maxWidth: .infinity, alignment: .center)
-			}
 		}
 	}
 }
