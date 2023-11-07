@@ -34,7 +34,7 @@ struct Overview: View {
 						, id: \.self
 					) { color in
 						Section(color.localizedName) {
-							BudgetGroupRow(budgets: Set<Budget>(groupedBudgets[color]!))
+//							BudgetGroupRow(budgets: Set<Budget>(groupedBudgets[color]!))
 						}
 					}
 				}
@@ -65,19 +65,19 @@ struct Overview: View {
 				.disabled(groupedBudgets.isEmpty)
 			}
 		}
-		.sheet(isPresented: $isCreatingBudget) {
-			BudgetCreator()
-		}
-		.fullScreenCover(isPresented: $historyIsOpen) {
-			BalanceHistory(budgets: model.budgets)
-		}
-		.fullScreenCover(isPresented: $isOperatingOnBalance) {
-			BalanceOperator(
-				primaryBudgetID:
-					UUID(uuidString: lastUsedBudgetIDString) ?? model.budgets.randomElement()!.id
-			)
-			.environmentObject(model)
-		}
+//		.sheet(isPresented: $isCreatingBudget) {
+//			BudgetCreator()
+//		}
+//		.fullScreenCover(isPresented: $historyIsOpen) {
+//			BalanceHistory(budgets: model.budgets)
+//		}
+//		.fullScreenCover(isPresented: $isOperatingOnBalance) {
+//			BalanceOperator(
+//				primaryBudgetID:
+//					UUID(uuidString: lastUsedBudgetIDString) ?? model.budgets.randomElement()!.id
+//			)
+//			.environmentObject(model)
+//		}
 	}
 }
 
