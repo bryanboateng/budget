@@ -84,18 +84,18 @@
 				B6F504BD260695E5005E20A5 /* BudgetRow.swift */,
 				B605B78C27EDD092008DA364 /* BudgetDetail.swift */,
 				B663DF3127A08DE10022E546 /* BudgetEdit */,
-				B67A913D2659AFC1003AADD8 /* BalanceAdjuster */,
+				B67A913D2659AFC1003AADD8 /* BalanceOperator */,
 			);
 			path = View;
 			sourceTree = "<group>";
 		};
-		B67A913D2659AFC1003AADD8 /* BalanceAdjuster */ = {
+		B67A913D2659AFC1003AADD8 /* BalanceOperator */ = {
 			isa = PBXGroup;
 			children = (
 				B6E093162628D8DD0091F9A6 /* BalanceOperator.swift */,
 				B61DA5D126299259008CADBF /* CurrencyField.swift */,
 			);
-			path = BalanceAdjuster;
+			path = BalanceOperator;
 			sourceTree = "<group>";
 		};
 		B6F504AF260695E5005E20A5 = {
