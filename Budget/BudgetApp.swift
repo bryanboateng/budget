@@ -2,7 +2,7 @@ import ComposableArchitecture
 import SwiftUI
 
 @main
-struct CounterApp: App {
+struct BudgetApp: App {
 	var body: some Scene {
 		WindowGroup {
 			NavigationStack {
