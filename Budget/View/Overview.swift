@@ -6,6 +6,7 @@ struct OverviewFeature: Reducer {
 	struct State: Equatable {
 		@PresentationState var addBudget: BudgetFormFeature.State?
 		var budgets: IdentifiedArrayOf<Budget> = []
+		@BindingState var historyIsOpen = false
 
 		var groupedBudgets: OrderedDictionary<Budget.Color, [Budget]> {
 			func comparisonValue(_ budget: Budget) -> Decimal {
@@ -44,19 +45,25 @@ struct OverviewFeature: Reducer {
 			}
 		}
 	}
-	enum Action {
+	enum Action: BindableAction {
+		case binding(BindingAction<State>)
 		case historyButtonTapped
 		case balanceOperationButtonTapped
 		case addBudgetButtonTapped
 		case addBudget(PresentationAction<BudgetFormFeature.Action>)
 		case cancelBudgetButtonTapped
 		case saveBudgetButtonTapped
+		case balanceHistoryDoneButtonTapped
 	}
 	@Dependency(\.uuid) var uuid
 	var body: some ReducerOf<Self> {
+		BindingReducer()
 		Reduce { state, action in
 			switch action {
+			case .binding:
+				return .none
 			case .historyButtonTapped:
+				state.historyIsOpen = true
 				return .none
 			case .balanceOperationButtonTapped:
 				return .none
@@ -90,6 +97,9 @@ struct OverviewFeature: Reducer {
 				}
 				state.budgets.append(newBudget)
 				state.addBudget = nil
+				return .none
+			case .balanceHistoryDoneButtonTapped:
+				state.historyIsOpen = false
 				return .none
 			}
 		}
@@ -175,12 +185,22 @@ struct OverviewView: View {
 						}
 				}
 			}
-			//		.sheet(isPresented: $isCreatingBudget) {
-			//			BudgetCreator()
-			//		}
-			//		.fullScreenCover(isPresented: $historyIsOpen) {
-			//			BalanceHistory(budgets: model.budgets)
-			//		}
+			.fullScreenCover(
+				isPresented: viewStore.$historyIsOpen
+			) {
+				NavigationStack {
+					BalanceHistory(budgets: viewStore.budgets)
+						.navigationTitle("Verlauf")
+						.navigationBarTitleDisplayMode(.inline)
+						.toolbar {
+							ToolbarItem(placement: .confirmationAction) {
+								Button("Fertig") {
+									viewStore.send(.balanceHistoryDoneButtonTapped)
+								}
+							}
+						}
+				}
+			}
 			//		.fullScreenCover(isPresented: $isOperatingOnBalance) {
 			//			BalanceOperator(
 			//				primaryBudgetID:
