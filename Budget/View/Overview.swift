@@ -4,6 +4,7 @@ import SwiftUI
 
 struct OverviewFeature: Reducer {
 	struct State: Equatable {
+		@PresentationState var addBudget: BudgetFormFeature.State?
 		var budgets: IdentifiedArrayOf<Budget> = []
 
 		var groupedBudgets: OrderedDictionary<Budget.Color, [Budget]> {
@@ -46,7 +47,10 @@ struct OverviewFeature: Reducer {
 	enum Action {
 		case historyButtonTapped
 		case balanceOperationButtonTapped
-		case createBudgetButtonTapped
+		case addBudgetButtonTapped
+		case addBudget(PresentationAction<BudgetFormFeature.Action>)
+		case cancelStandupButtonTapped
+		case saveStandupButtonTapped
 	}
 	@Dependency(\.uuid) var uuid
 	var body: some ReducerOf<Self> {
@@ -56,17 +60,41 @@ struct OverviewFeature: Reducer {
 				return .none
 			case .balanceOperationButtonTapped:
 				return .none
-			case .createBudgetButtonTapped:
-				state.budgets.append(
-					Budget(
-						id: self.uuid(),
-						name: "d",
-						symbol: "car",
-						color: .allCases.randomElement()!
-					)
+			case .addBudgetButtonTapped:
+				state.addBudget = BudgetFormFeature.State(
+					name: "",
+					symbol: "",
+					color: .allCases.randomElement()!,
+					projectionIsEnabled: false,
+					monthlyAllocation: 0
 				)
 				return .none
+			case .addBudget:
+				return .none
+			case .cancelStandupButtonTapped:
+				state.addBudget = nil
+				return .none
+			case .saveStandupButtonTapped:
+				guard let addBudget = state.addBudget else { return .none }
+				let trimmedName = addBudget.name.trimmingCharacters(in: .whitespacesAndNewlines)
+				guard !trimmedName.isEmpty else { return .none }
+				guard UIImage(systemName: addBudget.symbol) != nil else { return .none }
+					var newBudget = Budget(
+						id: self.uuid(),
+						name: trimmedName,
+						symbol: addBudget.symbol,
+						color: addBudget.color
+					)
+				if addBudget.projectionIsEnabled {
+					newBudget.setMonthlyAllocation(addBudget.monthlyAllocation)
+				}
+				state.budgets.append(newBudget)
+				state.addBudget = nil
+				return .none
 			}
+		}
+		.ifLet(\.$addBudget, action: /Action.addBudget) {
+			BudgetFormFeature()
 		}
 	}
 }
@@ -105,7 +133,7 @@ struct OverviewView: View {
 				}
 				ToolbarItem(placement: .bottomBar) {
 					Button {
-						viewStore.send(.createBudgetButtonTapped)
+						viewStore.send(.addBudgetButtonTapped)
 					} label: {
 						Label("Kategorien", systemImage: "folder.badge.plus")
 					}
@@ -117,6 +145,34 @@ struct OverviewView: View {
 					}
 					.symbolVariant(.circle)
 					.disabled(viewStore.groupedBudgets.isEmpty)
+				}
+			}
+			.sheet(
+				store: self.store.scope(
+					state: \.$addBudget,
+					action: { .addBudget($0) }
+				)
+			) { store in
+				NavigationStack {
+					BudgetFormView(store: store)
+						.navigationTitle("Neues Budget")
+						.navigationBarTitleDisplayMode(.inline)
+						.toolbar {
+							ToolbarItem(placement: .cancellationAction) {
+								Button("Abbrechen") {
+									viewStore.send(.cancelStandupButtonTapped)
+								}
+							}
+							ToolbarItem(placement: .confirmationAction) {
+								Button("Fertig") {
+									viewStore.send(.saveStandupButtonTapped)
+								}
+//								.disabled(
+//									viewStore.addBudget?.name.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+//									viewStore.addBudget?.symbol.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+//								)
+							}
+						}
 				}
 			}
 			//		.sheet(isPresented: $isCreatingBudget) {
