@@ -141,18 +141,6 @@ struct Budget: Equatable, Codable, Identifiable {
 			hasher.combine(id)
 		}
 	}
-
-	struct Change {
-		let name: String?
-		let symbol: String?
-		let color: Color?
-		let projection: Projection?
-
-		enum Projection {
-			case deactivate
-			case activate(Decimal)
-		}
-	}
 }
 
 extension Budget {
