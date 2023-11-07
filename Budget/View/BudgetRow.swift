@@ -30,11 +30,13 @@ struct BudgetRow: View {
 
 #Preview {
 	let budget1 = Budget(
+		id: UUID(),
 		name: "Moinsen",
 		symbol: "figure.bowling",
 		color: .red
 	)
 	var budget2 = Budget(
+		id: UUID(),
 		name: "Moinsen",
 		symbol: "chair",
 		color: .green

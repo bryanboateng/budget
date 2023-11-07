@@ -1,82 +1,213 @@
+import ComposableArchitecture
+import OrderedCollections
 import SwiftUI
 
-struct Overview: View {
+struct OverviewFeature: Reducer {
+	struct State: Equatable {
+		@PresentationState var addBudget: BudgetFormFeature.State?
+		var budgets: IdentifiedArrayOf<Budget> = []
+		@BindingState var historyIsOpen = false
+
+		var groupedBudgets: OrderedDictionary<Budget.Color, [Budget]> {
+			func comparisonValue(_ budget: Budget) -> Decimal {
+				if let projection = budget.projection {
+					return projection.discretionaryFunds
+				} else {
+					return budget.balance
+				}
+			}
+
+			let hello = Dictionary(grouping: budgets) { budget in
+				budget.color
+			}
+				.mapValues { budgets in
+					budgets.sorted { lhs, rhs in
+						if comparisonValue(lhs) == comparisonValue(rhs) {
+							return lhs.name < rhs.name
+						}
+						return comparisonValue(lhs) > comparisonValue(rhs)
+					}
+				}
+
+			return OrderedDictionary(
+				Budget.Color.allCases.compactMap { color in
+					hello[color].map { budgets in
+						(color, budgets)
+					}
+				},
+				uniquingKeysWith: { (first, _) in first }
+			)
+		}
+
+		var totalBalance: Decimal {
+			budgets.reduce(0) { partialResult, budget in
+				partialResult + budget.balance
+			}
+		}
+	}
+	enum Action: BindableAction {
+		case binding(BindingAction<State>)
+		case historyButtonTapped
+		case balanceOperationButtonTapped
+		case addBudgetButtonTapped
+		case addBudget(PresentationAction<BudgetFormFeature.Action>)
+		case cancelBudgetButtonTapped
+		case saveBudgetButtonTapped
+		case balanceHistoryDoneButtonTapped
+	}
+	@Dependency(\.uuid) var uuid
+	var body: some ReducerOf<Self> {
+		BindingReducer()
+		Reduce { state, action in
+			switch action {
+			case .binding:
+				return .none
+			case .historyButtonTapped:
+				state.historyIsOpen = true
+				return .none
+			case .balanceOperationButtonTapped:
+				return .none
+			case .addBudgetButtonTapped:
+				state.addBudget = BudgetFormFeature.State(
+					name: "",
+					symbol: "",
+					color: .allCases.randomElement()!,
+					projectionIsEnabled: false,
+					monthlyAllocation: 0
+				)
+				return .none
+			case .addBudget:
+				return .none
+			case .cancelBudgetButtonTapped:
+				state.addBudget = nil
+				return .none
+			case .saveBudgetButtonTapped:
+				guard let addBudget = state.addBudget else { return .none }
+				let trimmedName = addBudget.name.trimmingCharacters(in: .whitespacesAndNewlines)
+				guard !trimmedName.isEmpty else { return .none }
+				guard UIImage(systemName: addBudget.symbol) != nil else { return .none }
+					var newBudget = Budget(
+						id: self.uuid(),
+						name: trimmedName,
+						symbol: addBudget.symbol,
+						color: addBudget.color
+					)
+				if addBudget.projectionIsEnabled {
+					newBudget.setMonthlyAllocation(addBudget.monthlyAllocation)
+				}
+				state.budgets.append(newBudget)
+				state.addBudget = nil
+				return .none
+			case .balanceHistoryDoneButtonTapped:
+				state.historyIsOpen = false
+				return .none
+			}
+		}
+		.ifLet(\.$addBudget, action: /Action.addBudget) {
+			BudgetFormFeature()
+		}
+	}
+}
+
+struct OverviewView: View {
+
+	let store: StoreOf<OverviewFeature>
 	@AppStorage(UserDefaultKeys.latestPrimaryBudgetID.rawValue) private var lastUsedBudgetIDString = ""
-	@EnvironmentObject private var model: Model
-
-	@State private var isCreatingBudget = false
-	@State private var isOperatingOnBalance = false
-	@State private var historyIsOpen = false
-
-	private var totalBalance: Decimal {
-		model.budgets.reduce(0) { partialResult, budget in
-			partialResult + budget.balance
-		}
-	}
-
-	private var groupedBudgets: [Budget.Color: [Budget]] {
-		.init(grouping: model.budgets) { budget in
-			budget.color
-		}
-	}
 
 	var body: some View {
-		Group {
-			if model.budgets.isEmpty {
-				ContentUnavailableView("Keine Budgets", systemImage: "folder")
-			} else {
-				List {
-					BalanceDisplay(balance: totalBalance)
-					ForEach(
-						Budget.Color.allCases.filter { color in
-							groupedBudgets.keys.contains(color)
-						}
-						, id: \.self
-					) { color in
-						Section(color.localizedName) {
-							BudgetGroupRow(budgets: Set<Budget>(groupedBudgets[color]!))
+		WithViewStore(self.store, observe: { $0 }) { viewStore in
+			Group {
+				if viewStore.budgets.isEmpty {
+					ContentUnavailableView("Keine Budgets", systemImage: "folder")
+				} else {
+					List {
+						BalanceDisplay(balance: viewStore.totalBalance)
+						ForEach(viewStore.groupedBudgets.elements, id: \.key) { color, budgets in
+							Section(color.localizedName) {
+								ForEach(budgets) { budget in
+									BudgetRow(budget: budget)
+								}
+							}
 						}
 					}
 				}
 			}
-		}
-		.navigationTitle("Konto")
-		.toolbar {
-			ToolbarItem(placement: .topBarTrailing) {
-				Button {
-					historyIsOpen = true
-				} label: {
-					Label("Verlauf", systemImage: "clock")
+			.navigationTitle("Konto")
+			.toolbar {
+				ToolbarItem(placement: .topBarTrailing) {
+					Button {
+						viewStore.send(.historyButtonTapped)
+					} label: {
+						Label("Verlauf", systemImage: "clock")
+					}
+				}
+				ToolbarItem(placement: .bottomBar) {
+					Button {
+						viewStore.send(.addBudgetButtonTapped)
+					} label: {
+						Label("Kategorien", systemImage: "folder.badge.plus")
+					}
+				}
+				ToolbarItemGroup(placement: .bottomBar) {
+					Spacer()
+					Button("Saldo anpassen", systemImage: "eurosign") {
+						viewStore.send(.balanceOperationButtonTapped)
+					}
+					.symbolVariant(.circle)
+					.disabled(viewStore.groupedBudgets.isEmpty)
 				}
 			}
-			ToolbarItem(placement: .bottomBar) {
-				Button {
-					isCreatingBudget = true
-				} label: {
-					Label("Kategorien", systemImage: "folder.badge.plus")
+			.sheet(
+				store: self.store.scope(
+					state: \.$addBudget,
+					action: { .addBudget($0) }
+				)
+			) { store in
+				NavigationStack {
+					BudgetFormView(store: store)
+						.navigationTitle("Neues Budget")
+						.navigationBarTitleDisplayMode(.inline)
+						.toolbar {
+							ToolbarItem(placement: .cancellationAction) {
+								Button("Abbrechen") {
+									viewStore.send(.cancelBudgetButtonTapped)
+								}
+							}
+							ToolbarItem(placement: .confirmationAction) {
+								Button("Fertig") {
+									viewStore.send(.saveBudgetButtonTapped)
+								}
+//								.disabled(
+//									viewStore.addBudget?.name.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+//									viewStore.addBudget?.symbol.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+//								)
+							}
+						}
 				}
 			}
-			ToolbarItemGroup(placement: .bottomBar) {
-				Spacer()
-				Button("Saldo anpassen", systemImage: "eurosign") {
-					isOperatingOnBalance = true
+			.fullScreenCover(
+				isPresented: viewStore.$historyIsOpen
+			) {
+				NavigationStack {
+					BalanceHistory(budgets: viewStore.budgets)
+						.navigationTitle("Verlauf")
+						.navigationBarTitleDisplayMode(.inline)
+						.toolbar {
+							ToolbarItem(placement: .confirmationAction) {
+								Button("Fertig") {
+									viewStore.send(.balanceHistoryDoneButtonTapped)
+								}
+							}
+						}
 				}
-				.symbolVariant(.circle)
-				.disabled(groupedBudgets.isEmpty)
 			}
-		}
-		.sheet(isPresented: $isCreatingBudget) {
-			BudgetCreator()
-		}
-		.fullScreenCover(isPresented: $historyIsOpen) {
-			BalanceHistory(budgets: model.budgets)
-		}
-		.fullScreenCover(isPresented: $isOperatingOnBalance) {
-			BalanceOperator(
-				primaryBudgetID:
-					UUID(uuidString: lastUsedBudgetIDString) ?? model.budgets.randomElement()!.id
-			)
-			.environmentObject(model)
+			//		.fullScreenCover(isPresented: $isOperatingOnBalance) {
+			//			BalanceOperator(
+			//				primaryBudgetID:
+			//					UUID(uuidString: lastUsedBudgetIDString) ?? model.budgets.randomElement()!.id
+			//			)
+			//			.environmentObject(model)
+			//		}
 		}
 	}
 }
@@ -96,5 +227,19 @@ private struct BalanceDisplay: View {
 				.monospacedDigit()
 		}
 		.foregroundColor(.secondary)
+	}
+}
+
+#Preview {
+	NavigationStack {
+		OverviewView(
+			store: Store(
+				initialState: OverviewFeature.State(
+					budgets: [.mock]
+				)
+			) {
+				OverviewFeature()
+			}
+		)
 	}
 }

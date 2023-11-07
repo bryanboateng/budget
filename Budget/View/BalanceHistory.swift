@@ -2,9 +2,6 @@ import OrderedCollections
 import SwiftUI
 
 struct BalanceHistory: View {
-	@Environment(\.dismiss)
-	private var dismiss
-
 	let budgets: any Collection<Budget>
 
 	private var groupedRows: OrderedDictionary<YearMonth, [Row]> {
@@ -43,24 +40,13 @@ struct BalanceHistory: View {
 	}
 
 	var body: some View {
-		NavigationStack {
-			Group {
-				if groupedRows.isEmpty {
-					ContentUnavailableView("Kein Verlauf", systemImage: "clock")
-				} else {
-					List {
-						ForEach(groupedRows.elements, id: \.0) { rowGroup in
-							RowGroup(rowGroup: rowGroup)
-						}
-					}
-				}
-			}
-			.navigationTitle("Verlauf")
-			.navigationBarTitleDisplayMode(.inline)
-			.toolbar {
-				ToolbarItem(placement: .confirmationAction) {
-					Button("Fertig") {
-						dismiss()
+		Group {
+			if groupedRows.isEmpty {
+				ContentUnavailableView("Kein Verlauf", systemImage: "clock")
+			} else {
+				List {
+					ForEach(groupedRows.elements, id: \.0) { rowGroup in
+						RowGroup(rowGroup: rowGroup)
 					}
 				}
 			}
@@ -132,10 +118,34 @@ struct BalanceHistory: View {
 }
 
 #Preview {
-	var groceriesBudget = Budget(name: "Groceries", symbol: "carrot", color: .green, monthlyAllocation: 300)
-	var rentBudget = Budget(name: "Rent", symbol: "house", color: .red, monthlyAllocation: 800)
-	var entertainmentBudget = Budget(name: "Entertainment", symbol: "popcorn", color: .cyan, monthlyAllocation: 100)
-	var travelBudget = Budget(name: "Travel", symbol: "globe.europe.africa", color: .blue, monthlyAllocation: 200)
+	var groceriesBudget = Budget(
+		id: UUID(),
+		name: "Groceries",
+		symbol: "carrot",
+		color: .green,
+		monthlyAllocation: 300
+	)
+	var rentBudget = Budget(
+		id: UUID(),
+		name: "Rent",
+		symbol: "house",
+		color: .red,
+		monthlyAllocation: 800
+	)
+	var entertainmentBudget = Budget(
+		id: UUID(),
+		name: "Entertainment",
+		symbol: "popcorn",
+		color: .cyan,
+		monthlyAllocation: 100
+	)
+	var travelBudget = Budget(
+		id: UUID(),
+		name: "Travel",
+		symbol: "globe.europe.africa",
+		color: .blue,
+		monthlyAllocation: 200
+	)
 
 	// Create an array to easily manage all budgets
 	var allBudgets = [groceriesBudget, rentBudget, entertainmentBudget, travelBudget]
@@ -149,10 +159,10 @@ struct BalanceHistory: View {
 	let date4 = dateFormatter.date(from: "2023/09/25")!
 
 	// Create BalanceAdjustment objects
-	let adjustment1 = Budget.BalanceAdjustment(date: date1, amount: 50)
-	let adjustment2 = Budget.BalanceAdjustment(date: date2, amount: -25)
-	let adjustment3 = Budget.BalanceAdjustment(date: date3, amount: 30)
-	let adjustment4 = Budget.BalanceAdjustment(date: date4, amount: -10)
+	let adjustment1 = Budget.BalanceAdjustment(id: UUID(), date: date1, amount: 50)
+	let adjustment2 = Budget.BalanceAdjustment(id: UUID(), date: date2, amount: -25)
+	let adjustment3 = Budget.BalanceAdjustment(id: UUID(), date: date3, amount: 30)
+	let adjustment4 = Budget.BalanceAdjustment(id: UUID(), date: date4, amount: -10)
 
 	// Add BalanceAdjustment objects to appropriate budgets
 	groceriesBudget.balanceAdjustments.insert(adjustment1)
