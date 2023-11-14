@@ -46,27 +46,20 @@ struct OverviewFeature: Reducer {
 		}
 	}
 	enum Action: BindableAction {
-		case binding(BindingAction<State>)
-		case historyButtonTapped
-		case balanceOperationButtonTapped
 		case addBudgetButtonTapped
 		case addBudget(PresentationAction<BudgetFormFeature.Action>)
-		case cancelBudgetButtonTapped
-		case saveBudgetButtonTapped
 		case balanceHistoryDoneButtonTapped
+		case balanceOperationButtonTapped
+		case binding(BindingAction<State>)
+		case cancelBudgetButtonTapped
+		case historyButtonTapped
+		case saveBudgetButtonTapped
 	}
 	@Dependency(\.uuid) var uuid
 	var body: some ReducerOf<Self> {
 		BindingReducer()
 		Reduce { state, action in
 			switch action {
-			case .binding:
-				return .none
-			case .historyButtonTapped:
-				state.historyIsOpen = true
-				return .none
-			case .balanceOperationButtonTapped:
-				return .none
 			case .addBudgetButtonTapped:
 				state.addBudget = BudgetFormFeature.State(
 					name: "",
@@ -78,8 +71,18 @@ struct OverviewFeature: Reducer {
 				return .none
 			case .addBudget:
 				return .none
+			case .balanceHistoryDoneButtonTapped:
+				state.historyIsOpen = false
+				return .none
+			case .balanceOperationButtonTapped:
+				return .none
+			case .binding:
+				return .none
 			case .cancelBudgetButtonTapped:
 				state.addBudget = nil
+				return .none
+			case .historyButtonTapped:
+				state.historyIsOpen = true
 				return .none
 			case .saveBudgetButtonTapped:
 				guard let addBudget = state.addBudget else { return .none }
@@ -97,9 +100,6 @@ struct OverviewFeature: Reducer {
 				}
 				state.budgets.append(newBudget)
 				state.addBudget = nil
-				return .none
-			case .balanceHistoryDoneButtonTapped:
-				state.historyIsOpen = false
 				return .none
 			}
 		}

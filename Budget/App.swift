@@ -3,12 +3,12 @@ import SwiftUI
 
 struct AppFeature: Reducer {
 	struct State {
-		var path = StackState<Path.State>()
 		var overview = OverviewFeature.State()
+		var path = StackState<Path.State>()
 	}
 	enum Action {
-		case path(StackAction<Path.State, Path.Action>)
 		case overview(OverviewFeature.Action)
+		case path(StackAction<Path.State, Path.Action>)
 	}
 
 	struct Path: Reducer {
@@ -32,6 +32,8 @@ struct AppFeature: Reducer {
 
 		Reduce { state, action in
 			switch action {
+			case .overview:
+				return .none
 			case let .path(.element(id: _, action: .detail(.delegate(action)))):
 				switch action {
 				case let .budgetUpdated(budget):
@@ -42,8 +44,6 @@ struct AppFeature: Reducer {
 				}
 				return .none
 			case .path:
-				return .none
-			case .overview:
 				return .none
 			}
 		}

@@ -8,11 +8,11 @@ struct BudgetDetailFeature: Reducer {
 	}
 	enum Action {
 		case balanceOperationButtonTapped
-		case editButtonTapped
+		case cancelEditButtonTapped
 		case delegate(Delegate)
 		case deleteButtonTapped
 		case destination(PresentationAction<Destination.Action>)
-		case cancelEditButtonTapped
+		case editButtonTapped
 		case saveBudgetButtonTapped
 		enum Delegate {
 			case deleteStandup(id: Budget.ID)
@@ -48,6 +48,9 @@ struct BudgetDetailFeature: Reducer {
 			switch action {
 			case .balanceOperationButtonTapped:
 				return .none
+			case .cancelEditButtonTapped:
+				state.destination = nil
+				return .none
 			case .destination(.presented(.confirmationDialog(.confirmDeletion))):
 				return .run { [id = state.budget.id] send in
 					await send(.delegate(.deleteStandup(id: id)))
@@ -55,17 +58,7 @@ struct BudgetDetailFeature: Reducer {
 				}
 			case .destination:
 				return .none
-			case .editButtonTapped:
-				let projection = state.budget.projection
-				state.destination = .editBudget(
-					BudgetFormFeature.State(
-						name: state.budget.name,
-						symbol: state.budget.symbol,
-						color: state.budget.color,
-						projectionIsEnabled: projection != nil,
-						monthlyAllocation: projection?.monthlyAllocation ?? 0
-					)
-				)
+			case .delegate:
 				return .none
 			case .deleteButtonTapped:
 				state.destination = .confirmationDialog(
@@ -86,8 +79,17 @@ struct BudgetDetailFeature: Reducer {
 					}
 				)
 				return .none
-			case .cancelEditButtonTapped:
-				state.destination = nil
+			case .editButtonTapped:
+				let projection = state.budget.projection
+				state.destination = .editBudget(
+					BudgetFormFeature.State(
+						name: state.budget.name,
+						symbol: state.budget.symbol,
+						color: state.budget.color,
+						projectionIsEnabled: projection != nil,
+						monthlyAllocation: projection?.monthlyAllocation ?? 0
+					)
+				)
 				return .none
 			case .saveBudgetButtonTapped:
 				guard case let .editBudget(budgetForm) = state.destination else { return .none }
@@ -122,8 +124,6 @@ struct BudgetDetailFeature: Reducer {
 					state.budget.removeMonthlyAllocation()
 				}
 				state.destination = nil
-				return .none
-			case .delegate:
 				return .none
 			}
 		}
