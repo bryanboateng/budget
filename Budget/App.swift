@@ -25,6 +25,9 @@ struct AppFeature: Reducer {
 		}
 	}
 
+	@Dependency(\.continuousClock) var clock
+	@Dependency(\.dataManager.save) var saveData
+
 	var body: some ReducerOf<Self> {
 		Scope(state: \.overview, action: /Action.overview) {
 			OverviewFeature()
@@ -49,6 +52,21 @@ struct AppFeature: Reducer {
 		}
 		.forEach(\.path, action: /Action.path) {
 			Path()
+		}
+
+		Reduce { state, _ in
+				.run { [budgets = state.overview.budgets] _ in
+					enum CancelID { case saveDebounce }
+					try await withTaskCancellation(
+						id: CancelID.saveDebounce, cancelInFlight: true
+					) {
+						try await self.clock.sleep(for: .seconds(1))
+						try self.saveData(
+							JSONEncoder().encode(budgets),
+							.budgets
+						)
+					}
+				}
 		}
 	}
 }
@@ -82,12 +100,13 @@ struct AppView: View {
 #Preview {
 	AppView(
 		store: Store(
-			initialState: AppFeature.State(
-				overview: OverviewFeature.State(budgets: [.mock])
-			)
+			initialState: AppFeature.State()
 		) {
 			AppFeature()
-				._printChanges()
+		} withDependencies: {
+			$0.dataManager = .mock(
+				initialData: try? JSONEncoder().encode([Budget.mock])
+			)
 		}
 	)
 }

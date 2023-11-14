@@ -13,6 +13,8 @@
 		B66C60342AFAF725001C07D4 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66C60332AFAF725001C07D4 /* App.swift */; };
 		B683B27826069F7800F7F347 /* Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683B27726069F7800F7F347 /* Overview.swift */; };
 		B687B7C92AF1AADC00AA4A1E /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = B687B7C82AF1AADC00AA4A1E /* OrderedCollections */; };
+		B6982BD92B041AFB008190A0 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6982BD82B041AFB008190A0 /* DataManager.swift */; };
+		B6982BDB2B042020008190A0 /* URL+budgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6982BDA2B04201F008190A0 /* URL+budgets.swift */; };
 		B6C1FA0127C638DE00758BE4 /* Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C1FA0027C638DD00758BE4 /* Budget.swift */; };
 		B6CA77E5287C8A8E0052CE8B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6CA77E3287C8A8E0052CE8B /* InfoPlist.strings */; };
 		B6CFEAE0286B4C820011B82E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B6CFEADF286B4C820011B82E /* .swiftlint.yml */; };
@@ -33,6 +35,8 @@
 		B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormatStyle+Euro.swift"; sourceTree = "<group>"; };
 		B66C60332AFAF725001C07D4 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		B683B27726069F7800F7F347 /* Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overview.swift; sourceTree = "<group>"; };
+		B6982BD82B041AFB008190A0 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		B6982BDA2B04201F008190A0 /* URL+budgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+budgets.swift"; sourceTree = "<group>"; };
 		B6C1FA0027C638DD00758BE4 /* Budget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget.swift; sourceTree = "<group>"; };
 		B6CA77E4287C8A8E0052CE8B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B6CFEADF286B4C820011B82E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -105,6 +109,8 @@
 			children = (
 				B6F504BB260695E5005E20A5 /* BudgetApp.swift */,
 				B66C60332AFAF725001C07D4 /* App.swift */,
+				B6982BD82B041AFB008190A0 /* DataManager.swift */,
+				B6982BDA2B04201F008190A0 /* URL+budgets.swift */,
 				B6F7C5932AF6DF0200F5C26C /* UserDefaultKeys.swift */,
 				B6C1FA0027C638DD00758BE4 /* Budget.swift */,
 				B67A913C2659AF96003AADD8 /* View */,
@@ -232,6 +238,7 @@
 				B6F504BE260695E5005E20A5 /* BudgetRow.swift in Sources */,
 				B6F504BC260695E5005E20A5 /* BudgetApp.swift in Sources */,
 				B6FC07252AFA9D1A00E425DB /* BudgetForm.swift in Sources */,
+				B6982BDB2B042020008190A0 /* URL+budgets.swift in Sources */,
 				B66C60342AFAF725001C07D4 /* App.swift in Sources */,
 				B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */,
 				B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */,
@@ -240,6 +247,7 @@
 				B6DD5AB22ACB70C500FC927F /* BalanceHistory.swift in Sources */,
 				B683B27826069F7800F7F347 /* Overview.swift in Sources */,
 				B6C1FA0127C638DE00758BE4 /* Budget.swift in Sources */,
+				B6982BD92B041AFB008190A0 /* DataManager.swift in Sources */,
 				B6F7C5942AF6DF0300F5C26C /* UserDefaultKeys.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

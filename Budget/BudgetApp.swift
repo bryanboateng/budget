@@ -8,9 +8,7 @@ struct BudgetApp: App {
 			AppView(
 				store: Store(
 					initialState: AppFeature.State(
-						overview: OverviewFeature.State(
-							budgets: [.mock]
-						)
+						overview: OverviewFeature.State()
 					)
 				) {
 					AppFeature()

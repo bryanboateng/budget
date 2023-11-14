@@ -4,6 +4,25 @@ import SwiftUI
 
 struct OverviewFeature: Reducer {
 	struct State: Equatable {
+
+		init(
+			addBudget: BudgetFormFeature.State? = nil,
+			historyIsOpen: Bool = false
+		) {
+			self.addBudget = addBudget
+			self.historyIsOpen = historyIsOpen
+
+			do {
+				@Dependency(\.dataManager.load) var loadData
+				self.budgets = try JSONDecoder().decode(
+					IdentifiedArrayOf<Budget>.self,
+					from: loadData(.budgets)
+				)
+			} catch {
+				self.budgets = []
+			}
+		}
+
 		@PresentationState var addBudget: BudgetFormFeature.State?
 		var budgets: IdentifiedArrayOf<Budget> = []
 		@BindingState var historyIsOpen = false
@@ -238,11 +257,13 @@ private struct BalanceDisplay: View {
 	NavigationStack {
 		OverviewView(
 			store: Store(
-				initialState: OverviewFeature.State(
-					budgets: [.mock]
-				)
+				initialState: OverviewFeature.State()
 			) {
 				OverviewFeature()
+			} withDependencies: {
+				$0.dataManager = .mock(
+					initialData: try? JSONEncoder().encode([Budget.mock])
+				)
 			}
 		)
 	}
