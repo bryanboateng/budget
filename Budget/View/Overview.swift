@@ -110,9 +110,7 @@ struct OverviewFeature: Reducer {
 }
 
 struct OverviewView: View {
-
 	let store: StoreOf<OverviewFeature>
-	@AppStorage(UserDefaultKeys.latestPrimaryBudgetID.rawValue) private var lastUsedBudgetIDString = ""
 
 	var body: some View {
 		WithViewStore(self.store, observe: { $0 }) { viewStore in
@@ -125,7 +123,13 @@ struct OverviewView: View {
 						ForEach(viewStore.groupedBudgets.elements, id: \.key) { color, budgets in
 							Section(color.localizedName) {
 								ForEach(budgets) { budget in
-									BudgetRow(budget: budget)
+									NavigationLink(
+										state: AppFeature.Path.State.detail(
+											BudgetDetailFeature.State(budget: budget)
+										)
+									) {
+										BudgetRow(budget: budget)
+									}
 								}
 							}
 						}

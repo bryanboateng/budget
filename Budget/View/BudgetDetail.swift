@@ -3,77 +3,137 @@ import SwiftUI
 
 struct BudgetDetailFeature: Reducer {
 	struct State: Equatable {
-		@PresentationState var editBudget: BudgetFormFeature.State?
 		var budget: Budget
+		@PresentationState var destination: Destination.State?
 	}
 	enum Action {
 		case balanceOperationButtonTapped
 		case editButtonTapped
+		case delegate(Delegate)
 		case deleteButtonTapped
-		case editBudget(PresentationAction<BudgetFormFeature.Action>)
+		case destination(PresentationAction<Destination.Action>)
 		case cancelEditButtonTapped
 		case saveBudgetButtonTapped
+		enum Delegate {
+			case deleteStandup(id: Budget.ID)
+			case budgetUpdated(Budget)
+		}
 	}
+	@Dependency(\.dismiss) var dismiss
+
+	struct Destination: Reducer {
+		enum State: Equatable {
+			case confirmationDialog(ConfirmationDialogState<Action.ConfirmationDialog>)
+			case editBudget(BudgetFormFeature.State)
+		}
+		enum Action: Equatable {
+			case confirmationDialog(ConfirmationDialog)
+			case editBudget(BudgetFormFeature.Action)
+			enum ConfirmationDialog {
+				case confirmDeletion
+			}
+		}
+		var body: some ReducerOf<Self> {
+			Scope(
+				state: /State.editBudget,
+				action: /Action.editBudget
+			) {
+				BudgetFormFeature()
+			}
+		}
+	}
+
 	var body: some ReducerOf<Self> {
 		Reduce { state, action in
 			switch action {
 			case .balanceOperationButtonTapped:
 				return .none
+			case .destination(.presented(.confirmationDialog(.confirmDeletion))):
+				return .run { [id = state.budget.id] send in
+					await send(.delegate(.deleteStandup(id: id)))
+					await self.dismiss()
+				}
+			case .destination:
+				return .none
 			case .editButtonTapped:
 				let projection = state.budget.projection
-				state.editBudget = BudgetFormFeature.State(
-					name: state.budget.name,
-					symbol: state.budget.symbol,
-					color: state.budget.color,
-					projectionIsEnabled: projection != nil,
-					monthlyAllocation: projection?.monthlyAllocation ?? 0
+				state.destination = .editBudget(
+					BudgetFormFeature.State(
+						name: state.budget.name,
+						symbol: state.budget.symbol,
+						color: state.budget.color,
+						projectionIsEnabled: projection != nil,
+						monthlyAllocation: projection?.monthlyAllocation ?? 0
+					)
 				)
 				return .none
 			case .deleteButtonTapped:
-				return .none
-			case .editBudget:
+				state.destination = .confirmationDialog(
+					ConfirmationDialogState {
+						TextState("\(state.budget.name) löschen")
+					} actions: {
+						ButtonState(
+							role: .destructive,
+							action: .confirmDeletion
+						) {
+							TextState("Budget löschen")
+						}
+						ButtonState(role: .cancel) {
+							TextState("Abbrechen")
+						}
+					} message: {
+						TextState("Möchtest das Budget wirklich löschen? Dieser Vorgang kann nicht widerrufen werden.")
+					}
+				)
 				return .none
 			case .cancelEditButtonTapped:
-				state.editBudget = nil
+				state.destination = nil
 				return .none
 			case .saveBudgetButtonTapped:
-				guard let editBudget = state.editBudget else { return .none }
+				guard case let .editBudget(budgetForm) = state.destination else { return .none }
 
-				let trimmedName = editBudget.name.trimmingCharacters(in: .whitespacesAndNewlines)
+				let trimmedName = budgetForm.name.trimmingCharacters(in: .whitespacesAndNewlines)
 				guard !trimmedName.isEmpty else { return .none }
-				guard UIImage(systemName: editBudget.symbol) != nil else { return .none }
+				guard UIImage(systemName: budgetForm.symbol) != nil else { return .none }
 
 				let projectionHasChanged = {
 					if let projection = state.budget.projection {
-						if editBudget.projectionIsEnabled {
-							return projection.monthlyAllocation != editBudget.monthlyAllocation
+						if budgetForm.projectionIsEnabled {
+							return projection.monthlyAllocation != budgetForm.monthlyAllocation
 						} else {
 							return true
 						}
 					} else {
-						return editBudget.projectionIsEnabled
+						return budgetForm.projectionIsEnabled
 					}
 				}()
 				guard state.budget.name != trimmedName
-							|| state.budget.symbol != editBudget.symbol
-							|| state.budget.color != editBudget.color
+							|| state.budget.symbol != budgetForm.symbol
+							|| state.budget.color != budgetForm.color
 							|| projectionHasChanged
 				else { return .none }
 
 				state.budget.name = trimmedName
-				state.budget.symbol = editBudget.symbol
-				state.budget.color = editBudget.color
-				if editBudget.projectionIsEnabled {
-					state.budget.setMonthlyAllocation(editBudget.monthlyAllocation)
+				state.budget.symbol = budgetForm.symbol
+				state.budget.color = budgetForm.color
+				if budgetForm.projectionIsEnabled {
+					state.budget.setMonthlyAllocation(budgetForm.monthlyAllocation)
 				} else {
 					state.budget.removeMonthlyAllocation()
 				}
-				state.editBudget = nil
+				state.destination = nil
+				return .none
+			case .delegate:
 				return .none
 			}
 		}
-		.ifLet(\.$editBudget, action: /Action.editBudget) {
-			BudgetFormFeature()
+		.ifLet(\.$destination, action: /Action.destination) {
+			Destination()
+		}
+		.onChange(of: \.budget) { oldValue, newBudget in
+			Reduce { state, action in
+					.send(.delegate(.budgetUpdated(newBudget)))
+			}
 		}
 	}
 }
@@ -82,121 +142,90 @@ struct BudgetDetailView: View {
 
 	var body: some View {
 		WithViewStore(self.store, observe: { $0 }) { viewStore in
-			NavigationStack {
-				List {
-					Section {
-						HStack {
-							Label {
-								Text(viewStore.budget.name)
-									.multilineTextAlignment(.leading)
-							} icon: {
-								Image(systemName: viewStore.budget.symbol)
-									.foregroundStyle(viewStore.budget.color.swiftUIColor)
-							}
+			List {
+				Section {
+					HStack {
+						Label {
+							Text(viewStore.budget.name)
+								.multilineTextAlignment(.leading)
+						} icon: {
+							Image(systemName: viewStore.budget.symbol)
+								.foregroundStyle(viewStore.budget.color.swiftUIColor)
 						}
-					}
-					BudgetView(budget: viewStore.budget)
-					Section("Verlauf") {
-						BalanceAdjustmentList(
-							balanceAdjustments: viewStore.budget.balanceAdjustments
-						)
 					}
 				}
-				.toolbar {
-					ToolbarItem(placement: .navigationBarTrailing) {
-						Menu {
-							Button {
-								viewStore.send(.editButtonTapped)
-							} label: {
-								Label("Bearbeiten", systemImage: "pencil")
-							}
-							Button(role: .destructive) {
-								viewStore.send(.deleteButtonTapped)
-							} label: {
-								Label("Löschen", systemImage: "trash")
-							}
-						} label: {
-							Text("Bearbeiten")
-						}
-					}
-					ToolbarItemGroup(placement: .bottomBar) {
-						Spacer()
-						Button("Saldo anpassen", systemImage: "eurosign") {
-							viewStore.send(.balanceOperationButtonTapped)
-						}
-						.symbolVariant(.circle)
-					}
-				}
-				.navigationTitle(viewStore.budget.name)
-				.navigationBarTitleDisplayMode(.inline)
-				.sheet(
-					store: self.store.scope(
-						state: \.$editBudget,
-						action: { .editBudget($0) }
+				BudgetView(budget: viewStore.budget)
+				Section("Verlauf") {
+					BalanceAdjustmentList(
+						balanceAdjustments: viewStore.budget.balanceAdjustments
 					)
-				) { store in
-					NavigationStack {
-						BudgetFormView(store: store)
-							.navigationTitle("Budget bearbeiten")
-							.navigationBarTitleDisplayMode(.inline)
-							.toolbar {
-								ToolbarItem(placement: .cancellationAction) {
-									Button("Abbrechen") {
-										viewStore.send(.cancelEditButtonTapped)
-									}
-								}
-								ToolbarItem(placement: .confirmationAction) {
-									Button("Fertig") {
-										viewStore.send(.saveBudgetButtonTapped)
-									}
-									//	private var changesArePresent: Bool {
-									//		budget.name != name || budget.symbol != symbol || budget.color != color || projectionHasChanged
-									//	private var changesArePresent: Bool {
-									//		budget.name != name || budget.symbol != symbol || budget.color != color || projectionHasChanged
-									//	}
-									//
-									//	private var projectionHasChanged: Bool {
-									//		if let projection = budget.projection {
-									//			if projectionIsEnabled {
-									//				return projection.monthlyAllocation != monthlyAllocation
-									//			} else {
-									//				return true
-									//			}
-									//		} else {
-									//			return projectionIsEnabled
-									//		}
-									//	}
-									//	}
-									//								.disabled(
-									//									viewStore.addBudget?.name.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-									//									viewStore.addBudget?.symbol.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-									//								)
-								}
-							}
+				}
+			}
+			.toolbar {
+				ToolbarItem(placement: .navigationBarTrailing) {
+					Menu {
+						Button {
+							viewStore.send(.editButtonTapped)
+						} label: {
+							Label("Bearbeiten", systemImage: "pencil")
+						}
+						Button(role: .destructive) {
+							viewStore.send(.deleteButtonTapped)
+						} label: {
+							Label("Löschen", systemImage: "trash")
+						}
+					} label: {
+						Text("Bearbeiten")
 					}
 				}
-				//				.sheet(isPresented: $isEditing) {
-				//					BudgetEditor(budget: budget)
-				//						.environmentObject(model)
-				//				}
-				//				.fullScreenCover(isPresented: $isOperatingOnBalance) {
-				//					BalanceOperator(primaryBudgetID: budget.id)
-				//						.environmentObject(model)
-				//				}
-				//				.actionSheet(isPresented: $isBeingDeleted) {
-				//					ActionSheet(
-				//						title: Text("\(budget.name) löschen"),
-				//						message: Text("Möchtest das Budget \(budget.name) wirklich löschen? Dieser Vorgang kann nicht widerrufen werden."),
-				//						buttons: [
-				//							.destructive(Text("Budget löschen")) {
-				//								model.delete(budget: budget.id)
-				//								dismiss()
-				//							},
-				//							.cancel()
-				//						]
-				//					)
-				//				}
+				ToolbarItemGroup(placement: .bottomBar) {
+					Spacer()
+					Button("Saldo anpassen", systemImage: "eurosign") {
+						viewStore.send(.balanceOperationButtonTapped)
+					}
+					.symbolVariant(.circle)
+				}
 			}
+			.navigationTitle(viewStore.budget.name)
+			.navigationBarTitleDisplayMode(.inline)
+			.sheet(
+				store: self.store.scope(
+					state: \.$destination,
+					action: { .destination($0) }
+				),
+				state: /BudgetDetailFeature.Destination.State.editBudget,
+				action: BudgetDetailFeature.Destination.Action.editBudget
+			) { store in
+				NavigationStack {
+					BudgetFormView(store: store)
+						.navigationTitle("Budget bearbeiten")
+						.navigationBarTitleDisplayMode(.inline)
+						.toolbar {
+							ToolbarItem(placement: .cancellationAction) {
+								Button("Abbrechen") {
+									viewStore.send(.cancelEditButtonTapped)
+								}
+							}
+							ToolbarItem(placement: .confirmationAction) {
+								Button("Fertig") {
+									viewStore.send(.saveBudgetButtonTapped)
+								}
+							}
+						}
+				}
+			}
+			.confirmationDialog(
+				store: self.store.scope(
+					state: \.$destination,
+					action: { .destination($0) }
+				),
+				state: /BudgetDetailFeature.Destination.State.confirmationDialog,
+				action: BudgetDetailFeature.Destination.Action.confirmationDialog
+			)
+			//				.fullScreenCover(isPresented: $isOperatingOnBalance) {
+			//					BalanceOperator(primaryBudgetID: budget.id)
+			//						.environmentObject(model)
+			//				}
 		}
 	}
 }

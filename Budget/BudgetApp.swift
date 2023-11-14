@@ -5,15 +5,18 @@ import SwiftUI
 struct BudgetApp: App {
 	var body: some Scene {
 		WindowGroup {
-			NavigationStack {
-				OverviewView(
-					store: Store(
-						initialState: OverviewFeature.State()
-					) {
-						OverviewFeature()
-					}
-				)
-			}
+			AppView(
+				store: Store(
+					initialState: AppFeature.State(
+						overview: OverviewFeature.State(
+							budgets: [.mock]
+						)
+					)
+				) {
+					AppFeature()
+//						._printChanges()
+				}
+			)
 		}
 	}
 }

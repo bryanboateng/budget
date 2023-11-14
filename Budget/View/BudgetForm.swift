@@ -10,7 +10,7 @@ struct BudgetFormFeature: Reducer {
 		@BindingState var monthlyAllocation: Decimal
 		@BindingState var nameFieldIsFocused: Bool = true
 	}
-	enum Action: BindableAction {
+	enum Action: BindableAction, Equatable {
 		case binding(BindingAction<State>)
 	}
 	var body: some ReducerOf<Self> {
