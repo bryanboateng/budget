@@ -131,12 +131,12 @@ struct OverviewFeature: Reducer {
 				let trimmedName = addBudget.name.trimmingCharacters(in: .whitespacesAndNewlines)
 				guard !trimmedName.isEmpty else { return .none }
 				guard UIImage(systemName: addBudget.symbol) != nil else { return .none }
-					var newBudget = Budget(
-						id: self.uuid(),
-						name: trimmedName,
-						symbol: addBudget.symbol,
-						color: addBudget.color
-					)
+				var newBudget = Budget(
+					id: self.uuid(),
+					name: trimmedName,
+					symbol: addBudget.symbol,
+					color: addBudget.color
+				)
 				if addBudget.projectionIsEnabled {
 					newBudget.setMonthlyAllocation(addBudget.monthlyAllocation)
 				}
