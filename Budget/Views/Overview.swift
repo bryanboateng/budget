@@ -40,9 +40,7 @@ struct OverviewFeature: Reducer {
 		case balanceHistoryDoneButtonTapped
 		case balanceOperationButtonTapped
 		case binding(BindingAction<State>)
-		case cancelBalanceOperationButtonTapped
 		case cancelBudgetButtonTapped
-		case confirmBalanceOperationButtonTapped
 		case historyButtonTapped
 		case operateBalance(
 			PresentationAction<BalanceOperatorFeature.Action>
@@ -73,56 +71,59 @@ struct OverviewFeature: Reducer {
 				return .none
 			case .binding:
 				return .none
-			case .cancelBalanceOperationButtonTapped:
-				state.operateBalance = nil
-				return .none
 			case .cancelBudgetButtonTapped:
 				state.addBudget = nil
 				return .none
-			case .confirmBalanceOperationButtonTapped:
-				guard let operateBalance = state.operateBalance else { return .none }
-				switch operateBalance.operation {
-				case .adjustment:
-					let amount: Decimal = {
-						switch operateBalance.direction {
-						case .outgoing: -1 * operateBalance.absoluteAmount
-						case .incoming: operateBalance.absoluteAmount
-						}
-					}()
-					guard let id = operateBalance.primaryBudgetID else { return .none }
-					guard var budget = state.budgets[id: id] else { return .none }
-					budget.balanceAdjustments.insert(
-						Budget.BalanceAdjustment(id: UUID(), date: .now, amount: amount)
-					)
-					state.budgets[id: id] = budget
-				case .transfer:
-					guard let primaryBudgetID = operateBalance.primaryBudgetID else { return .none }
-					guard let secondaryBudgetID = operateBalance.secondaryBudgetID else { return .none }
-
-					guard var primaryBudget = state.budgets[id: primaryBudgetID] else { return .none }
-					guard var secondaryBudget = state.budgets[id: secondaryBudgetID] else { return .none }
-
-					primaryBudget.balanceAdjustments.insert(
-						Budget.BalanceAdjustment(
-							id: UUID(),
-							date: .now,
-							amount: -1 * operateBalance.absoluteAmount
-						)
-					)
-					secondaryBudget.balanceAdjustments.insert(
-						Budget.BalanceAdjustment(
-							id: UUID(),
-							date: .now,
-							amount: operateBalance.absoluteAmount
-						)
-					)
-					state.budgets[id: primaryBudgetID] = primaryBudget
-					state.budgets[id: secondaryBudgetID] = secondaryBudget
-				}
-				state.operateBalance = nil
-				return .none
 			case .historyButtonTapped:
 				state.historyIsOpen = true
+				return .none
+			case .operateBalance(.presented(.delegate(let delegate))):
+				switch delegate {
+				case .cancelled: break
+				case .confirmed:
+					guard let operateBalance = state.operateBalance else { return .none }
+					switch operateBalance.operation {
+					case .adjustment:
+						let amount: Decimal = {
+							switch operateBalance.direction {
+							case .outgoing: -1 * operateBalance.absoluteAmount
+							case .incoming: operateBalance.absoluteAmount
+							}
+						}()
+						guard let id = operateBalance.primaryBudgetID else { return .none }
+						guard var budget = state.budgets[id: id] else { return .none }
+						budget.balanceAdjustments.insert(
+							Budget.BalanceAdjustment(id: UUID(), date: .now, amount: amount)
+						)
+						state.budgets[id: id] = budget
+					case .transfer:
+						guard let primaryBudgetID = operateBalance.primaryBudgetID else { return .none }
+						guard let secondaryBudgetID = operateBalance.secondaryBudgetID else { return .none }
+
+						guard primaryBudgetID != secondaryBudgetID else { return .none }
+
+						guard var primaryBudget = state.budgets[id: primaryBudgetID] else { return .none }
+						guard var secondaryBudget = state.budgets[id: secondaryBudgetID] else { return .none }
+
+						primaryBudget.balanceAdjustments.insert(
+							Budget.BalanceAdjustment(
+								id: UUID(),
+								date: .now,
+								amount: -1 * operateBalance.absoluteAmount
+							)
+						)
+						secondaryBudget.balanceAdjustments.insert(
+							Budget.BalanceAdjustment(
+								id: UUID(),
+								date: .now,
+								amount: operateBalance.absoluteAmount
+							)
+						)
+						state.budgets[id: primaryBudgetID] = primaryBudget
+						state.budgets[id: secondaryBudgetID] = secondaryBudget
+					}
+				}
+				state.operateBalance = nil
 				return .none
 			case .operateBalance:
 				return .none
@@ -251,23 +252,7 @@ struct OverviewView: View {
 					action: { .operateBalance($0) }
 				)
 			) { store in
-				NavigationStack {
-					BalanceOperatorView(store: store)
-						.navigationTitle("Saldo-Operation")
-						.navigationBarTitleDisplayMode(.inline)
-						.toolbar {
-							ToolbarItem(placement: .cancellationAction) {
-								Button("Abbrechen") {
-									viewStore.send(.cancelBalanceOperationButtonTapped)
-								}
-							}
-							ToolbarItem(placement: .confirmationAction) {
-								Button("Fertig") {
-									viewStore.send(.confirmBalanceOperationButtonTapped)
-								}
-							}
-						}
-				}
+				BalanceOperatorView(store: store)
 			}
 		}
 	}
