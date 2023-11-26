@@ -1,225 +1,250 @@
-//import SwiftUI
-//
-//struct BalanceOperator: View {
-//	private enum Direction: CaseIterable {
-//		case outgoing
-//		case incoming
-//
-//		mutating func toggle() {
-//			switch self {
-//			case .outgoing:
-//				self = .incoming
-//			case .incoming:
-//				self = .outgoing
-//			}
-//		}
-//	}
-//
-//	private enum Operation: CaseIterable {
-//		case adjustment
-//		case transfer
-//	}
-//
-//	@Environment(\.dismiss) private var dismiss
-//	@EnvironmentObject private var model: Model
-//
-//	@ScaledMetric private var fontSize: CGFloat = 65
-//
-//	@State private var absoluteAmount: Decimal = 0
-//	@State private var direction = Direction.outgoing
-//	@State private var operation = Operation.adjustment
-//
-//	@State private var primaryBudgetID: Budget.ID
-//	@State private var secondaryBudgetID: Budget.ID
-//	@FocusState var currencyFieldIsFocused: Bool
-//
-//	init(primaryBudgetID: Budget.ID) {
-//		_primaryBudgetID = State(initialValue: primaryBudgetID)
-//
-//		if let uuidString = UserDefaults
-//			.standard
-//			.string(
-//				forKey: UserDefaultKeys.idOfLastBudgetReceivingTransfer.rawValue
-//			)
-//		{
-//			_secondaryBudgetID = State(initialValue: UUID(uuidString: uuidString)!)
-//		} else {
-//			_secondaryBudgetID = State(initialValue: primaryBudgetID)
-//		}
-//	}
-//
-//	var body: some View {
-//		NavigationStack {
-//			Form {
-//				CurrencyField(
-//					amount: $absoluteAmount,
-//					sign: {
-//						switch operation {
-//						case .adjustment:
-//							switch direction {
-//							case .outgoing: return .minus
-//							case .incoming: return .plus
-//							}
-//						case .transfer:
-//							return nil
-//						}
-//					}(),
-//					fontSize: fontSize
-//				)
-//				.focused($currencyFieldIsFocused)
-//				.frame(maxWidth: .infinity, alignment: .center)
-//				.listRowBackground(Color(UIColor.systemGroupedBackground))
-//				switch operation {
-//				case .adjustment:
-//					AdjustmentView(
-//						budgetID: $primaryBudgetID,
-//						direction: $direction
-//					)
-//				case .transfer:
-//					TransferView(
-//						senderID: $primaryBudgetID,
-//						receiverID: $secondaryBudgetID
-//					)
-//				}
-//				Section {
-//					doneButton
-//				}
-//			}
-//			.onAppear {
-//				currencyFieldIsFocused = true
-//			}
-//			.navigationTitle("Saldo-Operation")
-//			.navigationBarTitleDisplayMode(.inline)
-//			.toolbar {
-//				ToolbarItem(placement: .cancellationAction) {
-//					Button("Abbrechen") {
-//						dismiss()
-//					}
-//				}
-//				ToolbarItem(placement: .confirmationAction) {
-//					doneButton
-//				}
-//				ToolbarItem(placement: .principal) {
-//					Picker("Saldo-Operation", selection: $operation) {
-//						Text("Anpassung").tag(Operation.adjustment)
-//						Text("Umbuchung").tag(Operation.transfer)
-//					}
-//					.pickerStyle(.segmented)
-//				}
-//			}
-//		}
-//	}
-//
-//	private var doneButton: some View {
-//		Button("Fertig") {
-//			UserDefaults
-//				.standard
-//				.set(
-//					primaryBudgetID.uuidString,
-//					forKey: UserDefaultKeys.latestPrimaryBudgetID.rawValue
-//				)
-//			switch operation {
-//			case .adjustment:
-//				let amount: Decimal = {
-//					switch direction {
-//					case .outgoing: -1 * absoluteAmount
-//					case .incoming: absoluteAmount
-//					}
-//				}()
-//				model.adjustBalance(ofBudget: primaryBudgetID, by: amount)
-//			case .transfer:
-//				UserDefaults
-//					.standard
-//					.set(
-//						secondaryBudgetID.uuidString,
-//						forKey: UserDefaultKeys.idOfLastBudgetReceivingTransfer.rawValue
-//					)
-//				model.adjustBalance(ofBudget: primaryBudgetID, by: -1 * absoluteAmount)
-//				model.adjustBalance(ofBudget: secondaryBudgetID, by:  absoluteAmount)
-//			}
-//			dismiss()
-//		}
-//		.disabled(absoluteAmount == 0.0)
-//	}
-//
-//	private struct BudgetPicker: View {
-//		@EnvironmentObject private var model: Model
-//		@Binding var budgetID: Budget.ID
-//
-//		private var groupedBudgets: [Budget.Color: [Budget]] {
-//			.init(grouping: model.budgets) { budget in
-//				budget.color
-//			}
-//		}
-//		private func comparisonValue(_ budget: Budget) -> Decimal {
-//			if let projection = budget.projection {
-//				return projection.discretionaryFunds
-//			} else {
-//				return budget.balance
-//			}
-//		}
-//		var body: some View {
-//			Picker(selection: $budgetID, label: EmptyView()) {
-//				ForEach(
-//					Budget.Color.allCases.filter { color in
-//						groupedBudgets.keys.contains(color)
-//					}
-//					, id: \.self
-//				) { color in
-//					ForEach(
-//						groupedBudgets[color]!.sorted { lhs, rhs in
-//							if comparisonValue(lhs) == comparisonValue(rhs) {
-//								return lhs.name < rhs.name
-//							}
-//							return comparisonValue(lhs) > comparisonValue(rhs)
-//						}
-//					) { budget in
-//						BudgetRow(budget: budget)
-//							.tag(budget.id)
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//	private struct AdjustmentView: View {
-//		@Binding var budgetID: Budget.ID
-//		@Binding var direction: Direction
-//
-//		private func directionString(_ direction: Direction) -> String {
-//			switch direction {
-//			case .outgoing: "Ausgabe"
-//			case .incoming: "Einnahme"
-//			}
-//		}
-//
-//		var body: some View {
-//			Section("Budget") {
-//				BudgetPicker(budgetID: $budgetID)
-//			}
-//			.pickerStyle(.navigationLink)
-//			Picker("Richtung", selection: $direction) {
-//				ForEach(Direction.allCases, id: \.self) { color in
-//					Text(directionString(color))
-//				}
-//			}
-//			.pickerStyle(.menu)
-//		}
-//	}
-//
-//	private struct TransferView: View {
-//		@Binding var senderID: Budget.ID
-//		@Binding var receiverID: Budget.ID
-//
-//		var body: some View {
-//			Section("Sender") {
-//				BudgetPicker(budgetID: $senderID)
-//			}
-//			.pickerStyle(.navigationLink)
-//			Section("Empfänger") {
-//				BudgetPicker(budgetID: $receiverID)
-//			}
-//			.pickerStyle(.navigationLink)
-//		}
-//	}
-//}
+import ComposableArchitecture
+import SwiftUI
+
+struct BalanceOperatorFeature: Reducer {
+	struct State: Equatable {
+		init() {
+			do {
+				@Dependency(\.dataManager.load) var loadData
+				self.budgets = try JSONDecoder().decode(
+					IdentifiedArrayOf<Budget>.self,
+					from: loadData(.budgets)
+				)
+			} catch {
+				self.budgets = []
+			}
+		}
+		var budgets: IdentifiedArrayOf<Budget> = []
+		@BindingState var absoluteAmount: Decimal = 0
+		@BindingState var operation: BalanceOperation = .adjustment
+		@BindingState var direction: AdjustmentBalanceOperationDirection = .outgoing
+		@BindingState var currencyFieldIsFocused: Bool = true
+		@BindingState var primaryBudgetID: Budget.ID?
+		@BindingState var secondaryBudgetID: Budget.ID?
+
+		@PresentationState var pickPrimaryBudget: BudgetPickerBudgetListFeature.State?
+		@PresentationState var pickSecondaryBudget: BudgetPickerBudgetListFeature.State?
+	}
+	enum Action: BindableAction, Equatable {
+		case binding(BindingAction<State>)
+		case budgetFieldTapped(BudgetField)
+		case cancelPickingBudgetButtonTapped
+		case pickPrimaryBudget(PresentationAction<BudgetPickerBudgetListFeature.Action>)
+		case pickSecondaryBudget(PresentationAction<BudgetPickerBudgetListFeature.Action>)
+		enum BudgetField {
+			case adjustment
+			case transferSender
+			case transferReceiver
+		}
+	}
+	var body: some ReducerOf<Self> {
+		BindingReducer()
+		Reduce { state, action in
+			switch action {
+			case .binding:
+				return .none
+			case .budgetFieldTapped(let budgetField):
+				switch budgetField {
+				case .adjustment, .transferSender:
+					state.pickPrimaryBudget = BudgetPickerBudgetListFeature.State(
+						budgets: state.budgets,
+						chosenBudgetID: state.primaryBudgetID
+					)
+				case .transferReceiver:
+					state.pickSecondaryBudget = BudgetPickerBudgetListFeature.State(
+						budgets: state.budgets,
+						chosenBudgetID: state.secondaryBudgetID
+					)
+				}
+				return .none
+			case .cancelPickingBudgetButtonTapped:
+				state.pickPrimaryBudget = nil
+				state.pickSecondaryBudget = nil
+				return .none
+			case .pickPrimaryBudget(.presented(.delegate(let delegate))):
+				switch delegate {
+				case .budgetPicked(let id):
+					state.primaryBudgetID = id
+					state.pickPrimaryBudget = nil
+				}
+				return .none
+			case .pickPrimaryBudget:
+				return .none
+			case .pickSecondaryBudget(.presented(.delegate(let delegate))):
+				switch delegate {
+				case .budgetPicked(let id):
+					state.secondaryBudgetID = id
+					state.pickSecondaryBudget = nil
+				}
+				return .none
+			case .pickSecondaryBudget:
+				return .none
+			}
+		}
+		.ifLet(\.$pickPrimaryBudget, action: /Action.pickPrimaryBudget) {
+			BudgetPickerBudgetListFeature()
+		}
+		.ifLet(\.$pickSecondaryBudget, action: /Action.pickSecondaryBudget) {
+			BudgetPickerBudgetListFeature()
+		}
+	}
+}
+
+struct BalanceOperatorView: View {
+	let store: StoreOf<BalanceOperatorFeature>
+	@FocusState var currencyFieldIsFocused: Bool
+	@ScaledMetric private var fontSize: CGFloat = 65
+
+	func woefn(
+		viewStore: ViewStore<BalanceOperatorFeature.State, BalanceOperatorFeature.Action>,
+		state: BalanceOperatorFeature.State,
+		budgetField: BalanceOperatorFeature.Action.BudgetField
+	) -> some View {
+		return Button(
+			action: {
+				viewStore.send(.budgetFieldTapped(budgetField))
+			},
+			label: {
+				let budgetID = {
+					switch budgetField {
+					case .adjustment, .transferSender:
+						return state.primaryBudgetID
+					case .transferReceiver:
+						return state.secondaryBudgetID
+					}
+				}()
+
+				if let budgetID, let budget = viewStore.budgets[id: budgetID] {
+					BudgetRow(budget: budget)
+				} else {
+					Label("Budget auswählen", systemImage: "square.dashed")
+				}
+			}
+		)
+	}
+
+	var body: some View {
+		WithViewStore(self.store, observe: { $0 }) { viewStore in
+			Form {
+				CurrencyField(
+					amount: viewStore.$absoluteAmount,
+					sign: {
+						switch viewStore.operation {
+						case .adjustment:
+							switch viewStore.direction {
+							case .outgoing: return .minus
+							case .incoming: return .plus
+							}
+						case .transfer:
+							return nil
+						}
+					}(),
+					fontSize: fontSize
+				)
+				.focused($currencyFieldIsFocused)
+				.frame(maxWidth: .infinity, alignment: .center)
+				.listRowBackground(Color(UIColor.systemGroupedBackground))
+				switch viewStore.operation {
+				case .adjustment:
+					Section("Budget") {
+						woefn(viewStore: viewStore, state: viewStore.state, budgetField: .adjustment)
+					}
+					Picker("Richtung", selection: viewStore.$direction) {
+						ForEach(AdjustmentBalanceOperationDirection.allCases, id: \.self) { color in
+							Text(
+								{
+									switch color {
+									case .outgoing: "Ausgabe"
+									case .incoming: "Einnahme"
+									}
+								}()
+							)
+						}
+					}
+					.pickerStyle(.menu)
+				case .transfer:
+					Section("Sender") {
+						woefn(viewStore: viewStore, state: viewStore.state, budgetField: .transferSender)
+					}
+					Section("Empfänger") {
+						woefn(viewStore: viewStore, state: viewStore.state, budgetField: .transferReceiver)
+					}
+				}
+			}
+			.bind(viewStore.$currencyFieldIsFocused, to: self.$currencyFieldIsFocused)
+			.toolbar {
+				ToolbarItem(placement: .principal) {
+					Picker("Saldo-Operation", selection: viewStore.$operation) {
+						Text("Anpassung").tag(BalanceOperation.adjustment)
+						Text("Umbuchung").tag(BalanceOperation.transfer)
+					}
+					.pickerStyle(.segmented)
+				}
+			}
+			.sheet(
+				store: self.store.scope(
+					state: \.$pickPrimaryBudget,
+					action: { .pickPrimaryBudget($0) }
+				)
+			) { store in
+				NavigationStack {
+					BudgetPickerBudgetListView(store: store)
+						.navigationTitle("Budget auswählen")
+						.navigationBarTitleDisplayMode(.inline)
+						.toolbar {
+							ToolbarItem(placement: .cancellationAction) {
+								Button("Abbrechen") {
+									viewStore.send(.cancelPickingBudgetButtonTapped)
+								}
+							}
+						}
+				}
+			}
+			.sheet(
+				store: self.store.scope(
+					state: \.$pickSecondaryBudget,
+					action: { .pickSecondaryBudget($0) }
+				)
+			) { store in
+				NavigationStack {
+					BudgetPickerBudgetListView(store: store)
+						.navigationTitle("Budget auswählen")
+						.navigationBarTitleDisplayMode(.inline)
+						.toolbar {
+							ToolbarItem(placement: .cancellationAction) {
+								Button("Abbrechen") {
+									viewStore.send(.cancelPickingBudgetButtonTapped)
+								}
+							}
+						}
+				}
+			}
+		}
+	}
+}
+
+#Preview {
+	NavigationStack {
+		BalanceOperatorView(
+			store: Store(
+				initialState: BalanceOperatorFeature.State()
+			) {
+				BalanceOperatorFeature()
+			} withDependencies: {
+				$0.dataManager = .mock(
+					initialData: try? JSONEncoder().encode([
+						Budget.mock,
+						Budget(
+							id: UUID(),
+							name: "Bolzen",
+							symbol: "steeringwheel",
+							color: .red,
+							balanceAdjustments: [.init(id: UUID(), date: .now, amount: 402)],
+							monthlyAllocation: 90
+						)
+					])
+				)
+			}
+		)
+	}
+}

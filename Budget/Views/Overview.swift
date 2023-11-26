@@ -26,37 +26,7 @@ struct OverviewFeature: Reducer {
 		@PresentationState var addBudget: BudgetFormFeature.State?
 		var budgets: IdentifiedArrayOf<Budget> = []
 		@BindingState var historyIsOpen = false
-
-		var groupedBudgets: OrderedDictionary<Budget.Color, [Budget]> {
-			func comparisonValue(_ budget: Budget) -> Decimal {
-				if let projection = budget.projection {
-					return projection.discretionaryFunds
-				} else {
-					return budget.balance
-				}
-			}
-
-			let hello = Dictionary(grouping: budgets) { budget in
-				budget.color
-			}
-				.mapValues { budgets in
-					budgets.sorted { lhs, rhs in
-						if comparisonValue(lhs) == comparisonValue(rhs) {
-							return lhs.name < rhs.name
-						}
-						return comparisonValue(lhs) > comparisonValue(rhs)
-					}
-				}
-
-			return OrderedDictionary(
-				Budget.Color.allCases.compactMap { color in
-					hello[color].map { budgets in
-						(color, budgets)
-					}
-				},
-				uniquingKeysWith: { (first, _) in first }
-			)
-		}
+		@PresentationState var operateBalance: BalanceOperatorFeature.State?
 
 		var totalBalance: Decimal {
 			budgets.reduce(0) { partialResult, budget in
@@ -70,8 +40,13 @@ struct OverviewFeature: Reducer {
 		case balanceHistoryDoneButtonTapped
 		case balanceOperationButtonTapped
 		case binding(BindingAction<State>)
+		case cancelBalanceOperationButtonTapped
 		case cancelBudgetButtonTapped
+		case confirmBalanceOperationButtonTapped
 		case historyButtonTapped
+		case operateBalance(
+			PresentationAction<BalanceOperatorFeature.Action>
+		)
 		case saveBudgetButtonTapped
 	}
 	@Dependency(\.uuid) var uuid
@@ -94,14 +69,62 @@ struct OverviewFeature: Reducer {
 				state.historyIsOpen = false
 				return .none
 			case .balanceOperationButtonTapped:
+				state.operateBalance = BalanceOperatorFeature.State()
 				return .none
 			case .binding:
+				return .none
+			case .cancelBalanceOperationButtonTapped:
+				state.operateBalance = nil
 				return .none
 			case .cancelBudgetButtonTapped:
 				state.addBudget = nil
 				return .none
+			case .confirmBalanceOperationButtonTapped:
+				guard let operateBalance = state.operateBalance else { return .none }
+				switch operateBalance.operation {
+				case .adjustment:
+					let amount: Decimal = {
+						switch operateBalance.direction {
+						case .outgoing: -1 * operateBalance.absoluteAmount
+						case .incoming: operateBalance.absoluteAmount
+						}
+					}()
+					guard let id = operateBalance.primaryBudgetID else { return .none }
+					guard var budget = state.budgets[id: id] else { return .none }
+					budget.balanceAdjustments.insert(
+						Budget.BalanceAdjustment(id: UUID(), date: .now, amount: amount)
+					)
+					state.budgets[id: id] = budget
+				case .transfer:
+					guard let primaryBudgetID = operateBalance.primaryBudgetID else { return .none }
+					guard let secondaryBudgetID = operateBalance.secondaryBudgetID else { return .none }
+
+					guard var primaryBudget = state.budgets[id: primaryBudgetID] else { return .none }
+					guard var secondaryBudget = state.budgets[id: secondaryBudgetID] else { return .none }
+
+					primaryBudget.balanceAdjustments.insert(
+						Budget.BalanceAdjustment(
+							id: UUID(),
+							date: .now,
+							amount: -1 * operateBalance.absoluteAmount
+						)
+					)
+					secondaryBudget.balanceAdjustments.insert(
+						Budget.BalanceAdjustment(
+							id: UUID(),
+							date: .now,
+							amount: operateBalance.absoluteAmount
+						)
+					)
+					state.budgets[id: primaryBudgetID] = primaryBudget
+					state.budgets[id: secondaryBudgetID] = secondaryBudget
+				}
+				state.operateBalance = nil
+				return .none
 			case .historyButtonTapped:
 				state.historyIsOpen = true
+				return .none
+			case .operateBalance:
 				return .none
 			case .saveBudgetButtonTapped:
 				guard let addBudget = state.addBudget else { return .none }
@@ -125,6 +148,9 @@ struct OverviewFeature: Reducer {
 		.ifLet(\.$addBudget, action: /Action.addBudget) {
 			BudgetFormFeature()
 		}
+		.ifLet(\.$operateBalance, action: /Action.operateBalance) {
+			BalanceOperatorFeature()
+		}
 	}
 }
 
@@ -139,7 +165,7 @@ struct OverviewView: View {
 				} else {
 					List {
 						BalanceDisplay(balance: viewStore.totalBalance)
-						ForEach(viewStore.groupedBudgets.elements, id: \.key) { color, budgets in
+						ForEach(groupBudgets(viewStore.budgets).elements, id: \.key) { color, budgets in
 							Section(color.localizedName) {
 								ForEach(budgets) { budget in
 									NavigationLink(
@@ -224,13 +250,30 @@ struct OverviewView: View {
 						}
 				}
 			}
-			//		.fullScreenCover(isPresented: $isOperatingOnBalance) {
-			//			BalanceOperator(
-			//				primaryBudgetID:
-			//					UUID(uuidString: lastUsedBudgetIDString) ?? model.budgets.randomElement()!.id
-			//			)
-			//			.environmentObject(model)
-			//		}
+			.fullScreenCover(
+				store: self.store.scope(
+					state: \.$operateBalance,
+					action: { .operateBalance($0) }
+				)
+			) { store in
+				NavigationStack {
+					BalanceOperatorView(store: store)
+						.navigationTitle("Saldo-Operation")
+						.navigationBarTitleDisplayMode(.inline)
+						.toolbar {
+							ToolbarItem(placement: .cancellationAction) {
+								Button("Abbrechen") {
+									viewStore.send(.cancelBalanceOperationButtonTapped)
+								}
+							}
+							ToolbarItem(placement: .confirmationAction) {
+								Button("Fertig") {
+									viewStore.send(.confirmBalanceOperationButtonTapped)
+								}
+							}
+						}
+				}
+			}
 		}
 	}
 }
