@@ -203,7 +203,6 @@ struct OverviewView: View {
 						viewStore.send(.balanceOperationButtonTapped)
 					}
 					.symbolVariant(.circle)
-					.disabled(viewStore.groupedBudgets.isEmpty)
 				}
 			}
 			.sheet(
