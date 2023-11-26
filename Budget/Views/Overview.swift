@@ -225,10 +225,6 @@ struct OverviewView: View {
 								Button("Fertig") {
 									viewStore.send(.saveBudgetButtonTapped)
 								}
-//								.disabled(
-//									viewStore.addBudget?.name.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-//									viewStore.addBudget?.symbol.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-//								)
 							}
 						}
 				}
