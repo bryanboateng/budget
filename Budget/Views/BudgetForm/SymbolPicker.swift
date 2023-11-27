@@ -18,7 +18,7 @@ struct SymbolPickerFeature: Reducer {
 					format: nil
 				) as! [String:[String:Any]]
 			let symbol_availability = root["symbols"] as! [String: String]
-			return Set(
+			let moinsen = Set(
 				symbol_availability
 					.keys
 					.map { symbol in
@@ -35,7 +35,16 @@ struct SymbolPickerFeature: Reducer {
 						symbol.hasSuffix(".\(suffix)")
 					}
 			}
-			.sorted()
+
+			return moinsen
+				.filter { symbol in
+					guard symbol.contains(".fill.") else { return true }
+					return !moinsen
+						.contains(
+							symbol.replacingOccurrences(of: ".fill.", with: ".")
+						)
+				}
+				.sorted()
 		}()
 
 		@BindingState var searchText: String = ""
