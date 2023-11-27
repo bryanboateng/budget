@@ -9,6 +9,20 @@ struct SymbolPickerFeature: Reducer {
 
 		let symbols: [Symbol] = {
 			let coreGlyphsBundle = Bundle(identifier: "com.apple.CoreGlyphs")!
+
+			let filledSymbols = (
+				try! PropertyListSerialization
+					.propertyList(
+						from: try! Data(
+							contentsOf: URL(
+								fileURLWithPath:
+									coreGlyphsBundle.path(forResource: "nofill_to_fill", ofType: "strings")!
+							)
+						),
+						format: nil
+					) as! [String: String]
+			).values
+
 			let symbolNames = (
 				try! PropertyListSerialization
 					.propertyList(
@@ -21,20 +35,14 @@ struct SymbolPickerFeature: Reducer {
 						format: nil
 					) as! [String]
 			)
-				.filter { symbol in
-					!["fill", "rtl", "ar", "he", "hi", "ja", "ko", "th", "zh"]
-						.contains { suffix in
-							symbol.hasSuffix(".\(suffix)")
-						}
-				}
-
-			let nwe = symbolNames
 				.filter { symbolName in
-					guard symbolName.contains(".fill.") else { return true }
-					return !symbolNames
-						.contains(
-							symbolName.replacingOccurrences(of: ".fill.", with: ".")
-						)
+					!(
+						filledSymbols.contains(symbolName) ||
+						["rtl", "ar", "he", "hi", "ja", "ko", "th", "zh"]
+							.contains { suffix in
+								symbolName.hasSuffix(".\(suffix)")
+							}
+					)
 				}
 
 			let symbolSearch = try! PropertyListSerialization
@@ -48,7 +56,7 @@ struct SymbolPickerFeature: Reducer {
 					format: nil
 				) as! [String:[String]]
 
-			return nwe
+			return symbolNames
 				.map { symbolName in
 					return Symbol(
 						name: symbolName,
