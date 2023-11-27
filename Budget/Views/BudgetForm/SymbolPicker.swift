@@ -30,12 +30,12 @@ struct SymbolPickerFeature: Reducer {
 						)
 					}
 			)
-			.filter { symbol in
-				!["fill", "rtl", "ar", "he", "hi", "ja", "ko", "th", "zh"]
-					.contains { suffix in
-						symbol.hasSuffix(".\(suffix)")
-					}
-			}
+				.filter { symbol in
+					!["fill", "rtl", "ar", "he", "hi", "ja", "ko", "th", "zh"]
+						.contains { suffix in
+							symbol.hasSuffix(".\(suffix)")
+						}
+				}
 
 			let nwe = symbolNames
 				.filter { symbolName in
@@ -64,7 +64,7 @@ struct SymbolPickerFeature: Reducer {
 						name: symbolName,
 						additionalSearchTerms: symbolSearch[symbolName] ?? []
 					)
-			}
+				}
 		}()
 
 		var searchResults: [String] {
