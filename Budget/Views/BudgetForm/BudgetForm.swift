@@ -85,10 +85,15 @@ struct BudgetFormView: View {
 				Section {
 					Picker("Farbe", selection: viewStore.$color) {
 						ForEach(Budget.Color.allCases, id: \.self) { color in
-							Text(color.localizedName)
+							HStack{
+								Image(systemName: "circlebadge")
+									.symbolVariant(.fill)
+									.foregroundStyle(color.swiftUIColor)
+								Text(color.localizedName)
+							}
 						}
 					}
-					.pickerStyle(.menu)
+					.pickerStyle(.navigationLink)
 				}
 				Section("Monatliche Zuweisung") {
 					Toggle("Monatliche Zuweisung", isOn: viewStore.$projectionIsEnabled)
