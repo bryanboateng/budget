@@ -5,8 +5,9 @@ struct SymbolPickerFeature: Reducer {
 	struct State: Equatable {
 		let color: Budget.Color
 		var pickedSymbol: String
+		@BindingState var searchText: String = ""
 
-		let symbols: [String] = {
+		let symbols: [Symbol] = {
 			let root = try! PropertyListSerialization
 				.propertyList(
 					from: try! Data(
@@ -17,9 +18,8 @@ struct SymbolPickerFeature: Reducer {
 					),
 					format: nil
 				) as! [String:[String:Any]]
-			let symbol_availability = root["symbols"] as! [String: String]
-			let moinsen = Set(
-				symbol_availability
+			let symbolNames = Set(
+				(root["symbols"] as! [String: String])
 					.keys
 					.map { symbol in
 						Bundle.main.localizedString(
@@ -36,30 +36,56 @@ struct SymbolPickerFeature: Reducer {
 					}
 			}
 
-			return moinsen
-				.filter { symbol in
-					guard symbol.contains(".fill.") else { return true }
-					return !moinsen
+			let nwe = symbolNames
+				.filter { symbolName in
+					guard symbolName.contains(".fill.") else { return true }
+					return !symbolNames
 						.contains(
-							symbol.replacingOccurrences(of: ".fill.", with: ".")
+							symbolName.replacingOccurrences(of: ".fill.", with: ".")
 						)
 				}
 				.sorted()
-		}()
 
-		@BindingState var searchText: String = ""
+			let symbolSearch = try! PropertyListSerialization
+				.propertyList(
+					from: try! Data(
+						contentsOf: URL(
+							fileURLWithPath:
+								Bundle.main.path(forResource: "symbol_search", ofType: "plist")!
+						)
+					),
+					format: nil
+				) as! [String:[String]]
+
+			return nwe
+				.map { symbolName in
+					return Symbol(
+						name: symbolName,
+						additionalSearchTerms: symbolSearch[symbolName] ?? []
+					)
+			}
+		}()
 
 		var searchResults: [String] {
 			let trimmedSearchText = searchText
 				.trimmingCharacters(in: .whitespacesAndNewlines)
 			if trimmedSearchText.isEmpty {
-				return symbols
+				return symbols.map(\.name)
 			} else {
 				return symbols
 					.filter { symbol in
-						symbol.localizedStandardContains(trimmedSearchText)
+						symbol.name.localizedStandardContains(trimmedSearchText) ||
+						symbol.additionalSearchTerms.contains { searchTerm in
+							searchTerm.localizedStandardContains(trimmedSearchText)
+						}
 					}
+					.map(\.name)
 			}
+		}
+
+		struct Symbol: Equatable {
+			let name: String
+			let additionalSearchTerms: [String]
 		}
 	}
 	enum Action: BindableAction, Equatable {
