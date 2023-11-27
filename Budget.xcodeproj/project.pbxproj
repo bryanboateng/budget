@@ -13,6 +13,10 @@
 		B66C60342AFAF725001C07D4 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66C60332AFAF725001C07D4 /* App.swift */; };
 		B683B27826069F7800F7F347 /* Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683B27726069F7800F7F347 /* Overview.swift */; };
 		B687B7C92AF1AADC00AA4A1E /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = B687B7C82AF1AADC00AA4A1E /* OrderedCollections */; };
+		B687F2502B141E02001F72DE /* SymbolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B687F24F2B141E01001F72DE /* SymbolCell.swift */; };
+		B687F2522B141FA9001F72DE /* SymbolPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B687F2512B141FA9001F72DE /* SymbolPicker.swift */; };
+		B687F25A2B14352C001F72DE /* name_availability.plist in Resources */ = {isa = PBXBuildFile; fileRef = B687F2592B14352C001F72DE /* name_availability.plist */; };
+		B687F25E2B143719001F72DE /* name_aliases.strings in Resources */ = {isa = PBXBuildFile; fileRef = B687F25C2B143719001F72DE /* name_aliases.strings */; };
 		B6982BD92B041AFB008190A0 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6982BD82B041AFB008190A0 /* DataManager.swift */; };
 		B6982BDB2B042020008190A0 /* URL+budgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6982BDA2B04201F008190A0 /* URL+budgets.swift */; };
 		B6C1FA0127C638DE00758BE4 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C1FA0027C638DD00758BE4 /* Models.swift */; };
@@ -37,6 +41,10 @@
 		B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormatStyle+Euro.swift"; sourceTree = "<group>"; };
 		B66C60332AFAF725001C07D4 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		B683B27726069F7800F7F347 /* Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overview.swift; sourceTree = "<group>"; };
+		B687F24F2B141E01001F72DE /* SymbolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolCell.swift; sourceTree = "<group>"; };
+		B687F2512B141FA9001F72DE /* SymbolPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolPicker.swift; sourceTree = "<group>"; };
+		B687F2592B14352C001F72DE /* name_availability.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = name_availability.plist; sourceTree = "<group>"; };
+		B687F25C2B143719001F72DE /* name_aliases.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = name_aliases.strings; sourceTree = "<group>"; };
 		B6982BD82B041AFB008190A0 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		B6982BDA2B04201F008190A0 /* URL+budgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+budgets.swift"; sourceTree = "<group>"; };
 		B6C1FA0027C638DD00758BE4 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
@@ -77,7 +85,7 @@
 				B6DD5AB12ACB70C500FC927F /* BalanceHistory.swift */,
 				B6F504BD260695E5005E20A5 /* BudgetRow.swift */,
 				B605B78C27EDD092008DA364 /* BudgetDetail.swift */,
-				B6FC07242AFA9D1A00E425DB /* BudgetForm.swift */,
+				B687F24E2B141DE7001F72DE /* BudgetForm */,
 				B67A913D2659AFC1003AADD8 /* BalanceOperator */,
 			);
 			path = Views;
@@ -91,6 +99,18 @@
 				B61DA5D126299259008CADBF /* CurrencyField.swift */,
 			);
 			path = BalanceOperator;
+			sourceTree = "<group>";
+		};
+		B687F24E2B141DE7001F72DE /* BudgetForm */ = {
+			isa = PBXGroup;
+			children = (
+				B6FC07242AFA9D1A00E425DB /* BudgetForm.swift */,
+				B687F2512B141FA9001F72DE /* SymbolPicker.swift */,
+				B687F2592B14352C001F72DE /* name_availability.plist */,
+				B687F25C2B143719001F72DE /* name_aliases.strings */,
+				B687F24F2B141E01001F72DE /* SymbolCell.swift */,
+			);
+			path = BudgetForm;
 			sourceTree = "<group>";
 		};
 		B6F504AF260695E5005E20A5 = {
@@ -207,6 +227,8 @@
 				B6CFEAE0286B4C820011B82E /* .swiftlint.yml in Resources */,
 				B6CA77E5287C8A8E0052CE8B /* InfoPlist.strings in Resources */,
 				B6F504C3260695E7005E20A5 /* Preview Assets.xcassets in Resources */,
+				B687F25A2B14352C001F72DE /* name_availability.plist in Resources */,
+				B687F25E2B143719001F72DE /* name_aliases.strings in Resources */,
 				B6F504C0260695E7005E20A5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -242,6 +264,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6F504BE260695E5005E20A5 /* BudgetRow.swift in Sources */,
+				B687F2522B141FA9001F72DE /* SymbolPicker.swift in Sources */,
+				B687F2502B141E02001F72DE /* SymbolCell.swift in Sources */,
 				B6F504BC260695E5005E20A5 /* BudgetApp.swift in Sources */,
 				B6FC07252AFA9D1A00E425DB /* BudgetForm.swift in Sources */,
 				B6982BDB2B042020008190A0 /* URL+budgets.swift in Sources */,
