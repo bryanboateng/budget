@@ -15,11 +15,8 @@
 		B687B7C92AF1AADC00AA4A1E /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = B687B7C82AF1AADC00AA4A1E /* OrderedCollections */; };
 		B687F2502B141E02001F72DE /* SymbolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B687F24F2B141E01001F72DE /* SymbolCell.swift */; };
 		B687F2522B141FA9001F72DE /* SymbolPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B687F2512B141FA9001F72DE /* SymbolPicker.swift */; };
-		B687F25A2B14352C001F72DE /* name_availability.plist in Resources */ = {isa = PBXBuildFile; fileRef = B687F2592B14352C001F72DE /* name_availability.plist */; };
-		B687F25E2B143719001F72DE /* name_aliases.strings in Resources */ = {isa = PBXBuildFile; fileRef = B687F25C2B143719001F72DE /* name_aliases.strings */; };
 		B6982BD92B041AFB008190A0 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6982BD82B041AFB008190A0 /* DataManager.swift */; };
 		B6982BDB2B042020008190A0 /* URL+budgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6982BDA2B04201F008190A0 /* URL+budgets.swift */; };
-		B69B0A522B14EDAC00A1ABA6 /* symbol_search.plist in Resources */ = {isa = PBXBuildFile; fileRef = B69B0A512B14EDAC00A1ABA6 /* symbol_search.plist */; };
 		B6C1FA0127C638DE00758BE4 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C1FA0027C638DD00758BE4 /* Models.swift */; };
 		B6C3C9822B1166B400D14E50 /* BudgetPickerBudgetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C3C9812B1166B400D14E50 /* BudgetPickerBudgetList.swift */; };
 		B6C3C9842B1167DF00D14E50 /* Function+groupBudgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C3C9832B1167DD00D14E50 /* Function+groupBudgets.swift */; };
@@ -44,11 +41,8 @@
 		B683B27726069F7800F7F347 /* Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overview.swift; sourceTree = "<group>"; };
 		B687F24F2B141E01001F72DE /* SymbolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolCell.swift; sourceTree = "<group>"; };
 		B687F2512B141FA9001F72DE /* SymbolPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolPicker.swift; sourceTree = "<group>"; };
-		B687F2592B14352C001F72DE /* name_availability.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = name_availability.plist; sourceTree = "<group>"; };
-		B687F25C2B143719001F72DE /* name_aliases.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = name_aliases.strings; sourceTree = "<group>"; };
 		B6982BD82B041AFB008190A0 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		B6982BDA2B04201F008190A0 /* URL+budgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+budgets.swift"; sourceTree = "<group>"; };
-		B69B0A512B14EDAC00A1ABA6 /* symbol_search.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = symbol_search.plist; sourceTree = "<group>"; };
 		B6C1FA0027C638DD00758BE4 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		B6C3C9812B1166B400D14E50 /* BudgetPickerBudgetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetPickerBudgetList.swift; sourceTree = "<group>"; };
 		B6C3C9832B1167DD00D14E50 /* Function+groupBudgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Function+groupBudgets.swift"; sourceTree = "<group>"; };
@@ -108,9 +102,6 @@
 			children = (
 				B6FC07242AFA9D1A00E425DB /* BudgetForm.swift */,
 				B687F2512B141FA9001F72DE /* SymbolPicker.swift */,
-				B687F2592B14352C001F72DE /* name_availability.plist */,
-				B687F25C2B143719001F72DE /* name_aliases.strings */,
-				B69B0A512B14EDAC00A1ABA6 /* symbol_search.plist */,
 				B687F24F2B141E01001F72DE /* SymbolCell.swift */,
 			);
 			path = BudgetForm;
@@ -230,9 +221,6 @@
 				B6CFEAE0286B4C820011B82E /* .swiftlint.yml in Resources */,
 				B6CA77E5287C8A8E0052CE8B /* InfoPlist.strings in Resources */,
 				B6F504C3260695E7005E20A5 /* Preview Assets.xcassets in Resources */,
-				B687F25A2B14352C001F72DE /* name_availability.plist in Resources */,
-				B69B0A522B14EDAC00A1ABA6 /* symbol_search.plist in Resources */,
-				B687F25E2B143719001F72DE /* name_aliases.strings in Resources */,
 				B6F504C0260695E7005E20A5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

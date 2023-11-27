@@ -8,12 +8,13 @@ struct SymbolPickerFeature: Reducer {
 		@BindingState var searchText: String = ""
 
 		let symbols: [Symbol] = {
+			let coreGlyphsBundle = Bundle(identifier: "com.apple.CoreGlyphs")!
 			let root = try! PropertyListSerialization
 				.propertyList(
 					from: try! Data(
 						contentsOf: URL(
 							fileURLWithPath:
-								Bundle.main.path(forResource: "name_availability", ofType: "plist")!
+								coreGlyphsBundle.path(forResource: "name_availability", ofType: "plist")!
 						)
 					),
 					format: nil
@@ -22,7 +23,7 @@ struct SymbolPickerFeature: Reducer {
 				(root["symbols"] as! [String: String])
 					.keys
 					.map { symbol in
-						Bundle.main.localizedString(
+						coreGlyphsBundle.localizedString(
 							forKey: symbol,
 							value: nil,
 							table: "name_aliases"
@@ -51,7 +52,7 @@ struct SymbolPickerFeature: Reducer {
 					from: try! Data(
 						contentsOf: URL(
 							fileURLWithPath:
-								Bundle.main.path(forResource: "symbol_search", ofType: "plist")!
+								coreGlyphsBundle.path(forResource: "symbol_search", ofType: "plist")!
 						)
 					),
 					format: nil
