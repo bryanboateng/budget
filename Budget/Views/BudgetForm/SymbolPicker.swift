@@ -9,26 +9,17 @@ struct SymbolPickerFeature: Reducer {
 
 		let symbols: [Symbol] = {
 			let coreGlyphsBundle = Bundle(identifier: "com.apple.CoreGlyphs")!
-			let root = try! PropertyListSerialization
-				.propertyList(
-					from: try! Data(
-						contentsOf: URL(
-							fileURLWithPath:
-								coreGlyphsBundle.path(forResource: "name_availability", ofType: "plist")!
-						)
-					),
-					format: nil
-				) as! [String:[String:Any]]
-			let symbolNames = Set(
-				(root["symbols"] as! [String: String])
-					.keys
-					.map { symbol in
-						coreGlyphsBundle.localizedString(
-							forKey: symbol,
-							value: nil,
-							table: "name_aliases"
-						)
-					}
+			let symbolNames = (
+				try! PropertyListSerialization
+					.propertyList(
+						from: try! Data(
+							contentsOf: URL(
+								fileURLWithPath:
+									coreGlyphsBundle.path(forResource: "symbol_order", ofType: "plist")!
+							)
+						),
+						format: nil
+					) as! [String]
 			)
 				.filter { symbol in
 					!["fill", "rtl", "ar", "he", "hi", "ja", "ko", "th", "zh"]
@@ -45,7 +36,6 @@ struct SymbolPickerFeature: Reducer {
 							symbolName.replacingOccurrences(of: ".fill.", with: ".")
 						)
 				}
-				.sorted()
 
 			let symbolSearch = try! PropertyListSerialization
 				.propertyList(
