@@ -55,7 +55,11 @@ struct SymbolPickerFeature: Reducer {
 	}
 	enum Action: BindableAction, Equatable {
 		case binding(BindingAction<State>)
+		case delegate(Delegate)
 		case symbolPressed(symbol: String)
+		enum Delegate {
+			case symbolPicked
+		}
 	}
 	var body: some ReducerOf<Self> {
 		BindingReducer()
@@ -63,9 +67,13 @@ struct SymbolPickerFeature: Reducer {
 			switch action {
 			case .binding:
 				return .none
+			case .delegate:
+				return .none
 			case .symbolPressed(let symbol):
 				state.pickedSymbol = symbol
-				return .none
+				return .run { send in
+					await send(.delegate(.symbolPicked))
+				}
 			}
 		}
 	}

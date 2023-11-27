@@ -16,13 +16,20 @@ struct BudgetFormFeature: Reducer {
 		case pickSymbol(PresentationAction<SymbolPickerFeature.Action>)
 		case pickSymbolButtonTapped
 		case symbolPickerCancelButtonTapped
-		case symbolPickerConfirmButtonTapped
 	}
 	var body: some ReducerOf<Self> {
 		BindingReducer()
 		Reduce { state, action in
 			switch action {
 			case .binding:
+				return .none
+			case .pickSymbol(.presented(.delegate(let delegate))):
+				switch delegate {
+				case .symbolPicked:
+					guard let pickSymbol = state.pickSymbol else { return .none }
+					state.symbol = pickSymbol.pickedSymbol
+					state.pickSymbol = nil
+				}
 				return .none
 			case .pickSymbol:
 				return .none
@@ -33,11 +40,6 @@ struct BudgetFormFeature: Reducer {
 				)
 				return .none
 			case .symbolPickerCancelButtonTapped:
-				state.pickSymbol = nil
-				return .none
-			case .symbolPickerConfirmButtonTapped:
-				guard let pickSymbol = state.pickSymbol else { return .none }
-				state.symbol = pickSymbol.pickedSymbol
 				state.pickSymbol = nil
 				return .none
 			}
@@ -115,11 +117,6 @@ struct BudgetFormView: View {
 							ToolbarItem(placement: .cancellationAction) {
 								Button("Abbrechen") {
 									viewStore.send(.symbolPickerCancelButtonTapped)
-								}
-							}
-							ToolbarItem(placement: .confirmationAction) {
-								Button("Fertig") {
-									viewStore.send(.symbolPickerConfirmButtonTapped)
 								}
 							}
 						}
