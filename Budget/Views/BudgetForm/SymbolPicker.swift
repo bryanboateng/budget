@@ -1,11 +1,13 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct SymbolPickerFeature: Reducer {
-	struct State: Equatable {
+@Reducer
+struct SymbolPickerFeature {
+	@ObservableState
+	struct State {
 		let color: Budget.Color
 		var pickedSymbol: String
-		@BindingState var searchText: String = ""
+		var searchText: String = ""
 
 		let symbols: [Symbol] = {
 			let coreGlyphsBundle = Bundle(identifier: "com.apple.CoreGlyphs")!
@@ -82,12 +84,12 @@ struct SymbolPickerFeature: Reducer {
 			}
 		}
 
-		struct Symbol: Equatable {
+		struct Symbol {
 			let name: String
 			let additionalSearchTerms: [String]
 		}
 	}
-	enum Action: BindableAction, Equatable {
+	enum Action: BindableAction {
 		case binding(BindingAction<State>)
 		case delegate(Delegate)
 		case symbolPressed(symbol: String)
@@ -114,7 +116,7 @@ struct SymbolPickerFeature: Reducer {
 }
 
 struct SymbolPickerView: View {
-	let store: StoreOf<SymbolPickerFeature>
+	@Bindable var store: StoreOf<SymbolPickerFeature>
 	static let spacing: CGFloat = 8
 
 	let columns = [
@@ -122,32 +124,30 @@ struct SymbolPickerView: View {
 	]
 
 	var body: some View {
-		WithViewStore(self.store, observe: { $0 }) { viewStore in
-			ScrollView {
-				LazyVGrid(columns: columns, spacing: Self.spacing) {
-					ForEach(viewStore.searchResults, id: \.self) { symbol in
-						Button {
-							viewStore.send(.symbolPressed(symbol: symbol))
-						} label: {
-							SymbolCell(
-								isSelected: viewStore.pickedSymbol == symbol,
-								symbol: symbol,
-								color: viewStore.color
-							)
-						}
-						.buttonStyle(.plain)
+		ScrollView {
+			LazyVGrid(columns: columns, spacing: Self.spacing) {
+				ForEach(self.store.searchResults, id: \.self) { symbol in
+					Button {
+						self.store.send(.symbolPressed(symbol: symbol))
+					} label: {
+						SymbolCell(
+							isSelected: self.store.pickedSymbol == symbol,
+							symbol: symbol,
+							color: self.store.color
+						)
 					}
+					.buttonStyle(.plain)
 				}
-				.padding()
 			}
-			.scrollContentBackground(.hidden)
-			.background(Color(UIColor.systemGroupedBackground))
-			.navigationBarTitleDisplayMode(.inline)
-			.searchable(
-				text: viewStore.$searchText,
-				placement: .navigationBarDrawer(displayMode: .always)
-			)
+			.padding()
 		}
+		.scrollContentBackground(.hidden)
+		.background(Color(UIColor.systemGroupedBackground))
+		.navigationBarTitleDisplayMode(.inline)
+		.searchable(
+			text: self.$store.searchText,
+			placement: .navigationBarDrawer(displayMode: .always)
+		)
 	}
 }
 

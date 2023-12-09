@@ -1,17 +1,38 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct BudgetFormFeature: Reducer {
-	struct State: Equatable {
-		@BindingState var name: String
-		@BindingState var symbol: String
-		@BindingState var color: Budget.Color
-		@BindingState var projectionIsEnabled: Bool
-		@BindingState var monthlyAllocation: Decimal
-		@BindingState var nameFieldIsFocused: Bool = true
-		@PresentationState var pickSymbol: SymbolPickerFeature.State?
+@Reducer
+struct BudgetFormFeature {
+	@ObservableState
+	struct State {
+		var name: String
+		var symbol: String
+		var color: Budget.Color
+		var projectionIsEnabled: Bool
+		var monthlyAllocation: Decimal
+		var nameFieldIsFocused: Bool
+		@Presents var pickSymbol: SymbolPickerFeature.State?
+
+		// TODO: Hopefully remove this init in the future and use generated one
+		init(
+			name: String,
+			symbol: String,
+			color: Budget.Color,
+			projectionIsEnabled: Bool,
+			monthlyAllocation: Decimal,
+			nameFieldIsFocused: Bool = true,
+			pickSymbol: SymbolPickerFeature.State? = nil
+		) {
+			self.name = name
+			self.symbol = symbol
+			self.color = color
+			self.projectionIsEnabled = projectionIsEnabled
+			self.monthlyAllocation = monthlyAllocation
+			self.nameFieldIsFocused = nameFieldIsFocused
+			self.pickSymbol = pickSymbol
+		}
 	}
-	enum Action: BindableAction, Equatable {
+	enum Action: BindableAction {
 		case binding(BindingAction<State>)
 		case pickSymbol(PresentationAction<SymbolPickerFeature.Action>)
 		case pickSymbolButtonTapped
@@ -44,88 +65,86 @@ struct BudgetFormFeature: Reducer {
 				return .none
 			}
 		}
-		.ifLet(\.$pickSymbol, action: /Action.pickSymbol) {
+		.ifLet(\.$pickSymbol, action: \.pickSymbol) {
 			SymbolPickerFeature()
 		}
 	}
 }
 
 struct BudgetFormView: View {
-	let store: StoreOf<BudgetFormFeature>
+	@Bindable var store: StoreOf<BudgetFormFeature>
 	@FocusState var nameFieldIsFocused: Bool
 
 	var body: some View {
-		WithViewStore(self.store, observe: { $0 }) { viewStore in
-			Form {
-				Section {
-					VStack(alignment: .center) {
-						Group {
-							if UIImage(systemName: viewStore.symbol) != nil {
-								Image(systemName: viewStore.symbol)
-							} else {
-								Image(systemName: "questionmark.square.dashed")
-									.foregroundStyle(.secondary)
-							}
-						}
-						.foregroundStyle(viewStore.color.swiftUIColor)
-						.font(.system(size: 100))
-						.frame(maxWidth: .infinity, alignment: .center)
-						Button("Symbol auswählen") {
-							viewStore.send(.pickSymbolButtonTapped)
-						}
-						.buttonStyle(.bordered)
-						.buttonBorderShape(.capsule)
-					}
-				}
-				.listRowBackground(Color(UIColor.systemGroupedBackground))
-				Section("Name") {
-					TextField("Name", text: viewStore.$name, axis: .vertical)
-						.focused($nameFieldIsFocused)
-				}
-				Section {
-					Picker("Farbe", selection: viewStore.$color) {
-						ForEach(Budget.Color.allCases, id: \.self) { color in
-							HStack{
-								Image(systemName: "circlebadge")
-									.symbolVariant(.fill)
-									.foregroundStyle(color.swiftUIColor)
-								Text(color.localizedName)
-							}
+		Form {
+			Section {
+				VStack(alignment: .center) {
+					Group {
+						if UIImage(systemName: self.store.symbol) != nil {
+							Image(systemName: self.store.symbol)
+						} else {
+							Image(systemName: "questionmark.square.dashed")
+								.foregroundStyle(.secondary)
 						}
 					}
-					.pickerStyle(.navigationLink)
-				}
-				Section("Monatliche Zuweisung") {
-					Toggle("Monatliche Zuweisung", isOn: viewStore.$projectionIsEnabled)
-					if viewStore.projectionIsEnabled {
-						TextField(
-							"Monatliche Zuweisung",
-							value: viewStore.$monthlyAllocation,
-							format: .number.precision(.fractionLength(2))
-						)
-						.keyboardType(.decimalPad)
+					.foregroundStyle(self.store.color.swiftUIColor)
+					.font(.system(size: 100))
+					.frame(maxWidth: .infinity, alignment: .center)
+					Button("Symbol auswählen") {
+						self.store.send(.pickSymbolButtonTapped)
 					}
+					.buttonStyle(.bordered)
+					.buttonBorderShape(.capsule)
 				}
 			}
-			.bind(viewStore.$nameFieldIsFocused, to: self.$nameFieldIsFocused)
-			.sheet(
-				store: self.store.scope(
-					state: \.$pickSymbol,
-					action: { .pickSymbol($0) }
-				)
-			) { store in
-				NavigationStack {
-					SymbolPickerView(store: store)
-						.navigationTitle("Symbol auswählen")
-						.navigationBarTitleDisplayMode(.inline)
-						.toolbar {
-							ToolbarItem(placement: .cancellationAction) {
-								Button("Abbrechen") {
-									viewStore.send(.symbolPickerCancelButtonTapped)
-								}
+			.listRowBackground(Color(UIColor.systemGroupedBackground))
+			Section("Name") {
+				TextField("Name", text: self.$store.name, axis: .vertical)
+					.focused($nameFieldIsFocused)
+			}
+			Section {
+				Picker("Farbe", selection: self.$store.color) {
+					ForEach(Budget.Color.allCases, id: \.self) { color in
+						HStack{
+							Image(systemName: "circlebadge")
+								.symbolVariant(.fill)
+								.foregroundStyle(color.swiftUIColor)
+							Text(color.localizedName)
+						}
+					}
+				}
+				.pickerStyle(.navigationLink)
+			}
+			Section("Monatliche Zuweisung") {
+				Toggle("Monatliche Zuweisung", isOn: self.$store.projectionIsEnabled)
+				if self.store.projectionIsEnabled {
+					TextField(
+						"Monatliche Zuweisung",
+						value: self.$store.monthlyAllocation,
+						format: .number.precision(.fractionLength(2))
+					)
+					.keyboardType(.decimalPad)
+				}
+			}
+		}
+		.bind(self.$store.nameFieldIsFocused, to: self.$nameFieldIsFocused)
+		.sheet(
+			item: self.$store.scope(
+				state: \.pickSymbol,
+				action: \.pickSymbol
+			)
+		) { store in
+			NavigationStack {
+				SymbolPickerView(store: store)
+					.navigationTitle("Symbol auswählen")
+					.navigationBarTitleDisplayMode(.inline)
+					.toolbar {
+						ToolbarItem(placement: .cancellationAction) {
+							Button("Abbrechen") {
+								self.store.send(.symbolPickerCancelButtonTapped)
 							}
 						}
-				}
+					}
 			}
 		}
 	}

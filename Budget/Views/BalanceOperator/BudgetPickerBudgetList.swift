@@ -2,19 +2,21 @@ import ComposableArchitecture
 import OrderedCollections
 import SwiftUI
 
-struct BudgetPickerBudgetListFeature: Reducer {
-	struct State: Equatable {
+@Reducer
+struct BudgetPickerBudgetListFeature {
+	@ObservableState
+	struct State {
 		let budgets: IdentifiedArrayOf<Budget>
 		var chosenBudgetID: Budget.ID?
 	}
-	enum Action: Equatable {
+	enum Action {
 		case budgetTapped(Budget.ID)
 		case delegate(Delegate)
-		enum Delegate: Equatable {
+		enum Delegate {
 			case budgetPicked(Budget.ID)
 		}
 	}
-	
+
 	var body: some ReducerOf<Self> {
 		Reduce { state, action in
 			switch action {
@@ -32,30 +34,28 @@ struct BudgetPickerBudgetListFeature: Reducer {
 
 struct BudgetPickerBudgetListView: View {
 	let store: StoreOf<BudgetPickerBudgetListFeature>
-	
+
 	var body: some View {
-		WithViewStore(self.store, observe: { $0 }) { viewStore in
-			if viewStore.budgets.isEmpty {
-				ContentUnavailableView("Keine Budgets", systemImage: "folder")
-			} else {
-				List {
-					ForEach(groupBudgets(viewStore.budgets).elements, id: \.key) { color, budgets in
-						Section(color.localizedName) {
-							ForEach(budgets) { budget in
-								Button(
-									action: {
-										viewStore.send(.budgetTapped(budget.id))
-									},
-									label: {
-										HStack {
-											BudgetRow(budget: budget)
-											Image(systemName: "checkmark")
-												.opacity(budget.id == viewStore.chosenBudgetID ? 1 : 0)
-												.fontWeight(.semibold)
-										}
+		if self.store.budgets.isEmpty {
+			ContentUnavailableView("Keine Budgets", systemImage: "folder")
+		} else {
+			List {
+				ForEach(groupBudgets(self.store.budgets).elements, id: \.key) { color, budgets in
+					Section(color.localizedName) {
+						ForEach(budgets) { budget in
+							Button(
+								action: {
+									self.store.send(.budgetTapped(budget.id))
+								},
+								label: {
+									HStack {
+										BudgetRow(budget: budget)
+										Image(systemName: "checkmark")
+											.opacity(budget.id == self.store.chosenBudgetID ? 1 : 0)
+											.fontWeight(.semibold)
 									}
-								)
-							}
+								}
+							)
 						}
 					}
 				}

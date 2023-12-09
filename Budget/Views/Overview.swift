@@ -2,8 +2,10 @@ import ComposableArchitecture
 import OrderedCollections
 import SwiftUI
 
-struct OverviewFeature: Reducer {
-	struct State: Equatable {
+@Reducer
+struct OverviewFeature {
+	@ObservableState
+	struct State {
 
 		init(
 			addBudget: BudgetFormFeature.State? = nil,
@@ -23,10 +25,10 @@ struct OverviewFeature: Reducer {
 			}
 		}
 
-		@PresentationState var addBudget: BudgetFormFeature.State?
+		@Presents var addBudget: BudgetFormFeature.State?
 		var budgets: IdentifiedArrayOf<Budget> = []
-		@BindingState var historyIsOpen = false
-		@PresentationState var operateBalance: BalanceOperatorFeature.State?
+		var historyIsOpen = false
+		@Presents var operateBalance: BalanceOperatorFeature.State?
 
 		var totalBalance: Decimal {
 			budgets.reduce(0) { partialResult, budget in
@@ -146,114 +148,112 @@ struct OverviewFeature: Reducer {
 				return .none
 			}
 		}
-		.ifLet(\.$addBudget, action: /Action.addBudget) {
+		.ifLet(\.$addBudget, action: \.addBudget) {
 			BudgetFormFeature()
 		}
-		.ifLet(\.$operateBalance, action: /Action.operateBalance) {
+		.ifLet(\.$operateBalance, action: \.operateBalance) {
 			BalanceOperatorFeature()
 		}
 	}
 }
 
 struct OverviewView: View {
-	let store: StoreOf<OverviewFeature>
+	@Bindable var store: StoreOf<OverviewFeature>
 
 	var body: some View {
-		WithViewStore(self.store, observe: { $0 }) { viewStore in
-			Group {
-				if viewStore.budgets.isEmpty {
-					ContentUnavailableView("Keine Budgets", systemImage: "folder")
-				} else {
-					List {
-						BalanceDisplay(balance: viewStore.totalBalance)
-						ForEach(groupBudgets(viewStore.budgets).elements, id: \.key) { color, budgets in
-							Section(color.localizedName) {
-								ForEach(budgets) { budget in
-									NavigationLink(
-										state: AppFeature.Path.State.detail(
-											BudgetDetailFeature.State(budget: budget)
-										)
-									) {
-										BudgetRow(budget: budget)
-									}
+		Group {
+			if self.store.budgets.isEmpty {
+				ContentUnavailableView("Keine Budgets", systemImage: "folder")
+			} else {
+				List {
+					BalanceDisplay(balance: self.store.totalBalance)
+					ForEach(groupBudgets(self.store.budgets).elements, id: \.key) { color, budgets in
+						Section(color.localizedName) {
+							ForEach(budgets) { budget in
+								NavigationLink(
+									state: AppFeature.Path.State.detail(
+										BudgetDetailFeature.State(budget: budget)
+									)
+								) {
+									BudgetRow(budget: budget)
 								}
 							}
 						}
 					}
 				}
 			}
-			.navigationTitle("Konto")
-			.toolbar {
-				ToolbarItem(placement: .topBarTrailing) {
-					Button {
-						viewStore.send(.historyButtonTapped)
-					} label: {
-						Label("Verlauf", systemImage: "clock")
-					}
-				}
-				ToolbarItem(placement: .bottomBar) {
-					Button {
-						viewStore.send(.addBudgetButtonTapped)
-					} label: {
-						Label("Kategorien", systemImage: "folder.badge.plus")
-					}
-				}
-				ToolbarItemGroup(placement: .bottomBar) {
-					Spacer()
-					Button("Saldo anpassen", systemImage: "eurosign") {
-						viewStore.send(.balanceOperationButtonTapped)
-					}
-					.symbolVariant(.circle)
+		}
+		.navigationTitle("Konto")
+		.toolbar {
+			ToolbarItem(placement: .topBarTrailing) {
+				Button {
+					self.store.send(.historyButtonTapped)
+				} label: {
+					Label("Verlauf", systemImage: "clock")
 				}
 			}
-			.sheet(
-				store: self.store.scope(
-					state: \.$addBudget,
-					action: { .addBudget($0) }
-				)
-			) { store in
-				NavigationStack {
-					BudgetFormView(store: store)
-						.navigationTitle("Neues Budget")
-						.navigationBarTitleDisplayMode(.inline)
-						.toolbar {
-							ToolbarItem(placement: .cancellationAction) {
-								Button("Abbrechen") {
-									viewStore.send(.cancelBudgetButtonTapped)
-								}
-							}
-							ToolbarItem(placement: .confirmationAction) {
-								Button("Fertig") {
-									viewStore.send(.saveBudgetButtonTapped)
-								}
+			ToolbarItem(placement: .bottomBar) {
+				Button {
+					self.store.send(.addBudgetButtonTapped)
+				} label: {
+					Label("Kategorien", systemImage: "folder.badge.plus")
+				}
+			}
+			ToolbarItemGroup(placement: .bottomBar) {
+				Spacer()
+				Button("Saldo anpassen", systemImage: "eurosign") {
+					self.store.send(.balanceOperationButtonTapped)
+				}
+				.symbolVariant(.circle)
+			}
+		}
+		.sheet(
+			item: self.$store.scope(
+				state: \.addBudget,
+				action: \.addBudget
+			)
+		) { store in
+			NavigationStack {
+				BudgetFormView(store: store)
+					.navigationTitle("Neues Budget")
+					.navigationBarTitleDisplayMode(.inline)
+					.toolbar {
+						ToolbarItem(placement: .cancellationAction) {
+							Button("Abbrechen") {
+								self.store.send(.cancelBudgetButtonTapped)
 							}
 						}
-				}
-			}
-			.fullScreenCover(
-				isPresented: viewStore.$historyIsOpen
-			) {
-				NavigationStack {
-					BalanceHistory(budgets: viewStore.budgets)
-						.navigationTitle("Verlauf")
-						.navigationBarTitleDisplayMode(.inline)
-						.toolbar {
-							ToolbarItem(placement: .confirmationAction) {
-								Button("Fertig") {
-									viewStore.send(.balanceHistoryDoneButtonTapped)
-								}
+						ToolbarItem(placement: .confirmationAction) {
+							Button("Fertig") {
+								self.store.send(.saveBudgetButtonTapped)
 							}
 						}
-				}
+					}
 			}
-			.fullScreenCover(
-				store: self.store.scope(
-					state: \.$operateBalance,
-					action: { .operateBalance($0) }
-				)
-			) { store in
-				BalanceOperatorView(store: store)
+		}
+		.fullScreenCover(
+			isPresented: self.$store.historyIsOpen
+		) {
+			NavigationStack {
+				BalanceHistory(budgets: self.store.budgets)
+					.navigationTitle("Verlauf")
+					.navigationBarTitleDisplayMode(.inline)
+					.toolbar {
+						ToolbarItem(placement: .confirmationAction) {
+							Button("Fertig") {
+								self.store.send(.balanceHistoryDoneButtonTapped)
+							}
+						}
+					}
 			}
+		}
+		.fullScreenCover(
+			item: self.$store.scope(
+				state: \.operateBalance,
+				action: \.operateBalance
+			)
+		) { store in
+			BalanceOperatorView(store: store)
 		}
 	}
 }

@@ -1,7 +1,9 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct AppFeature: Reducer {
+@Reducer
+struct AppFeature {
+	@ObservableState
 	struct State {
 		var overview = OverviewFeature.State()
 		var path = StackState<Path.State>()
@@ -10,8 +12,9 @@ struct AppFeature: Reducer {
 		case overview(OverviewFeature.Action)
 		case path(StackAction<Path.State, Path.Action>)
 	}
-
-	struct Path: Reducer {
+	@Reducer
+	struct Path {
+		@ObservableState
 		enum State {
 			case detail(BudgetDetailFeature.State)
 		}
@@ -19,7 +22,7 @@ struct AppFeature: Reducer {
 			case detail(BudgetDetailFeature.Action)
 		}
 		var body: some ReducerOf<Self> {
-			Scope(state: /State.detail, action: /Action.detail) {
+			Scope(state: \.detail, action: \.detail) {
 				BudgetDetailFeature()
 			}
 		}
@@ -29,7 +32,7 @@ struct AppFeature: Reducer {
 	@Dependency(\.dataManager.save) var saveData
 
 	var body: some ReducerOf<Self> {
-		Scope(state: \.overview, action: /Action.overview) {
+		Scope(state: \.overview, action: \.overview) {
 			OverviewFeature()
 		}
 
@@ -50,7 +53,7 @@ struct AppFeature: Reducer {
 				return .none
 			}
 		}
-		.forEach(\.path, action: /Action.path) {
+		.forEach(\.path, action: \.path) {
 			Path()
 		}
 
@@ -72,26 +75,22 @@ struct AppFeature: Reducer {
 }
 
 struct AppView: View {
-	let store: StoreOf<AppFeature>
+	@Bindable var store: StoreOf<AppFeature>
 
 	var body: some View {
-		NavigationStackStore(
-			self.store.scope(state: \.path, action: { .path($0) })
-		) {
+		NavigationStack(path: self.$store.scope(state: \.path, action: \.path)) {
 			OverviewView(
 				store: self.store.scope(
 					state: \.overview,
-					action: { .overview($0) }
+					action: \.overview
 				)
 			)
-		} destination: { state in
-			switch state {
+		} destination: { store in
+			switch store.state {
 			case .detail:
-				CaseLet(
-					/AppFeature.Path.State.detail,
-					 action: AppFeature.Path.Action.detail,
-					 then: BudgetDetailView.init(store:)
-				)
+				if let store = store.scope(state: \.detail, action: \.detail) {
+					BudgetDetailView(store: store)
+				}
 			}
 		}
 	}

@@ -1,10 +1,17 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct BudgetDetailFeature: Reducer {
-	struct State: Equatable {
+@Reducer
+struct BudgetDetailFeature {
+	@ObservableState
+	struct State {
 		var budget: Budget
-		@PresentationState var destination: Destination.State?
+		@Presents var destination: Destination.State?
+
+		init(budget: Budget, destination: Destination.State? = nil) {
+			self.budget = budget
+			self.destination = destination
+		}
 	}
 	enum Action {
 		case balanceOperationButtonTapped
@@ -21,12 +28,14 @@ struct BudgetDetailFeature: Reducer {
 	}
 	@Dependency(\.dismiss) var dismiss
 
-	struct Destination: Reducer {
-		enum State: Equatable {
+	@Reducer
+	struct Destination {
+		@ObservableState
+		enum State {
 			case confirmationDialog(ConfirmationDialogState<Action.ConfirmationDialog>)
 			case editBudget(BudgetFormFeature.State)
 		}
-		enum Action: Equatable {
+		enum Action {
 			case confirmationDialog(ConfirmationDialog)
 			case editBudget(BudgetFormFeature.Action)
 			enum ConfirmationDialog {
@@ -35,8 +44,8 @@ struct BudgetDetailFeature: Reducer {
 		}
 		var body: some ReducerOf<Self> {
 			Scope(
-				state: /State.editBudget,
-				action: /Action.editBudget
+				state: \.editBudget,
+				action: \.editBudget
 			) {
 				BudgetFormFeature()
 			}
@@ -127,7 +136,7 @@ struct BudgetDetailFeature: Reducer {
 				return .none
 			}
 		}
-		.ifLet(\.$destination, action: /Action.destination) {
+		.ifLet(\.$destination, action: \.destination) {
 			Destination()
 		}
 		.onChange(of: \.budget) { oldValue, newBudget in
@@ -138,95 +147,89 @@ struct BudgetDetailFeature: Reducer {
 	}
 }
 struct BudgetDetailView: View {
-	let store: StoreOf<BudgetDetailFeature>
+	@Bindable var store: StoreOf<BudgetDetailFeature>
 
 	var body: some View {
-		WithViewStore(self.store, observe: { $0 }) { viewStore in
-			List {
-				Section {
-					HStack {
-						Label {
-							Text(viewStore.budget.name)
-								.multilineTextAlignment(.leading)
-						} icon: {
-							Image(systemName: viewStore.budget.symbol)
-								.foregroundStyle(viewStore.budget.color.swiftUIColor)
-						}
+		List {
+			Section {
+				HStack {
+					Label {
+						Text(self.store.budget.name)
+							.multilineTextAlignment(.leading)
+					} icon: {
+						Image(systemName: self.store.budget.symbol)
+							.foregroundStyle(self.store.budget.color.swiftUIColor)
 					}
 				}
-				BudgetView(budget: viewStore.budget)
-				Section("Verlauf") {
-					BalanceAdjustmentList(
-						balanceAdjustments: viewStore.budget.balanceAdjustments
-					)
-				}
 			}
-			.toolbar {
-				ToolbarItem(placement: .navigationBarTrailing) {
-					Menu {
-						Button {
-							viewStore.send(.editButtonTapped)
-						} label: {
-							Label("Bearbeiten", systemImage: "pencil")
-						}
-						Button(role: .destructive) {
-							viewStore.send(.deleteButtonTapped)
-						} label: {
-							Label("Löschen", systemImage: "trash")
-						}
-					} label: {
-						Text("Bearbeiten")
-					}
-				}
-				ToolbarItemGroup(placement: .bottomBar) {
-					Spacer()
-					Button("Saldo anpassen", systemImage: "eurosign") {
-						viewStore.send(.balanceOperationButtonTapped)
-					}
-					.symbolVariant(.circle)
-				}
+			BudgetView(budget: self.store.budget)
+			Section("Verlauf") {
+				BalanceAdjustmentList(
+					balanceAdjustments: self.store.budget.balanceAdjustments
+				)
 			}
-			.navigationTitle(viewStore.budget.name)
-			.navigationBarTitleDisplayMode(.inline)
-			.sheet(
-				store: self.store.scope(
-					state: \.$destination,
-					action: { .destination($0) }
-				),
-				state: /BudgetDetailFeature.Destination.State.editBudget,
-				action: BudgetDetailFeature.Destination.Action.editBudget
-			) { store in
-				NavigationStack {
-					BudgetFormView(store: store)
-						.navigationTitle("Budget bearbeiten")
-						.navigationBarTitleDisplayMode(.inline)
-						.toolbar {
-							ToolbarItem(placement: .cancellationAction) {
-								Button("Abbrechen") {
-									viewStore.send(.cancelEditButtonTapped)
-								}
-							}
-							ToolbarItem(placement: .confirmationAction) {
-								Button("Fertig") {
-									viewStore.send(.saveBudgetButtonTapped)
-								}
-							}
-						}
-				}
-			}
-			.confirmationDialog(
-				store: self.store.scope(
-					state: \.$destination,
-					action: { .destination($0) }
-				),
-				state: /BudgetDetailFeature.Destination.State.confirmationDialog,
-				action: BudgetDetailFeature.Destination.Action.confirmationDialog
-			)
-			//				.fullScreenCover(isPresented: $isOperatingOnBalance) {
-			//					BalanceOperator(primaryBudgetID: budget.id)
-			//						.environmentObject(model)
-			//				}
 		}
+		.toolbar {
+			ToolbarItem(placement: .navigationBarTrailing) {
+				Menu {
+					Button {
+						self.store.send(.editButtonTapped)
+					} label: {
+						Label("Bearbeiten", systemImage: "pencil")
+					}
+					Button(role: .destructive) {
+						self.store.send(.deleteButtonTapped)
+					} label: {
+						Label("Löschen", systemImage: "trash")
+					}
+				} label: {
+					Text("Bearbeiten")
+				}
+			}
+			ToolbarItemGroup(placement: .bottomBar) {
+				Spacer()
+				Button("Saldo anpassen", systemImage: "eurosign") {
+					self.store.send(.balanceOperationButtonTapped)
+				}
+				.symbolVariant(.circle)
+			}
+		}
+		.navigationTitle(self.store.budget.name)
+		.navigationBarTitleDisplayMode(.inline)
+		.sheet(
+			item: self.$store.scope(
+				state: \.destination?.editBudget,
+				action: \.destination.editBudget
+			)
+		) { store in
+			NavigationStack {
+				BudgetFormView(store: store)
+					.navigationTitle("Budget bearbeiten")
+					.navigationBarTitleDisplayMode(.inline)
+					.toolbar {
+						ToolbarItem(placement: .cancellationAction) {
+							Button("Abbrechen") {
+								self.store.send(.cancelEditButtonTapped)
+							}
+						}
+						ToolbarItem(placement: .confirmationAction) {
+							Button("Fertig") {
+								self.store.send(.saveBudgetButtonTapped)
+							}
+						}
+					}
+			}
+		}
+		.confirmationDialog(
+			self.$store.scope(
+				state: \.destination?.confirmationDialog,
+				action: \.destination.confirmationDialog
+			)
+		)
+//		.fullScreenCover(isPresented: $isOperatingOnBalance) {
+//			BalanceOperator(primaryBudgetID: budget.id)
+//				.environmentObject(model)
+//		}
 	}
 }
 
