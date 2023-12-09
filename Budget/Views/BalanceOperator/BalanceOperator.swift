@@ -115,7 +115,6 @@ struct BalanceOperatorView: View {
 	@ScaledMetric private var fontSize: CGFloat = 65
 
 	func woefn(
-		state: BalanceOperatorFeature.State,
 		budgetField: BalanceOperatorFeature.Action.BudgetField
 	) -> some View {
 		return Button(
@@ -126,9 +125,9 @@ struct BalanceOperatorView: View {
 				let budgetID = {
 					switch budgetField {
 					case .adjustment, .transferSender:
-						return state.primaryBudgetID
+						return self.store.state.primaryBudgetID
 					case .transferReceiver:
-						return state.secondaryBudgetID
+						return self.store.state.secondaryBudgetID
 					}
 				}()
 
@@ -165,7 +164,7 @@ struct BalanceOperatorView: View {
 				switch self.store.operation {
 				case .adjustment:
 					Section("Budget") {
-						woefn(state: self.store.state, budgetField: .adjustment)
+						woefn(budgetField: .adjustment)
 					}
 					Picker("Richtung", selection: self.$store.direction) {
 						ForEach(AdjustmentBalanceOperationDirection.allCases, id: \.self) { color in
@@ -182,10 +181,10 @@ struct BalanceOperatorView: View {
 					.pickerStyle(.menu)
 				case .transfer:
 					Section("Sender") {
-						woefn(state: self.store.state, budgetField: .transferSender)
+						woefn(budgetField: .transferSender)
 					}
 					Section("Empfänger") {
-						woefn(state: self.store.state, budgetField: .transferReceiver)
+						woefn(budgetField: .transferReceiver)
 					}
 				}
 				Section {
