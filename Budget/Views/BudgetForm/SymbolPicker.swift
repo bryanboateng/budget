@@ -10,7 +10,10 @@ struct SymbolPickerFeature {
 		var searchText: String = ""
 
 		let symbols: [Symbol] = {
-			let coreGlyphsBundle = Bundle(identifier: "com.apple.CoreGlyphs")!
+			let sfSymbolsBundle = Bundle(identifier: "com.apple.SFSymbolsFramework")!
+			let coreGlyphsBundle = Bundle(
+				path: sfSymbolsBundle.path(forResource: "CoreGlyphs", ofType: "bundle")!
+			)!
 
 			let filledSymbols = (
 				try! PropertyListSerialization
