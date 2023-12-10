@@ -50,6 +50,7 @@ struct BudgetPickerBudgetListView: View {
 								label: {
 									HStack {
 										BudgetRow(budget: budget)
+											.foregroundColor(.primary)
 										Image(systemName: "checkmark")
 											.opacity(budget.id == self.store.chosenBudgetID ? 1 : 0)
 											.fontWeight(.semibold)
