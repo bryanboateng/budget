@@ -31,7 +31,6 @@ struct BalanceOperatorFeature {
 		case binding(BindingAction<State>)
 		case budgetFieldTapped(BudgetField)
 		case cancelButtonTapped
-		case cancelPickingBudgetButtonTapped
 		case confirmButtonTapped
 		case delegate(Delegate)
 		case pickPrimaryBudget(PresentationAction<BudgetPickerBudgetListFeature.Action>)
@@ -66,10 +65,6 @@ struct BalanceOperatorFeature {
 					)
 				}
 				return .none
-			case .cancelPickingBudgetButtonTapped:
-				state.pickPrimaryBudget = nil
-				state.pickSecondaryBudget = nil
-				return .none
 			case .cancelButtonTapped:
 				return .run { send in
 					await send(.delegate(.cancelled))
@@ -84,7 +79,9 @@ struct BalanceOperatorFeature {
 				switch delegate {
 				case .budgetPicked(let id):
 					state.primaryBudgetID = id
-					state.pickPrimaryBudget = nil
+
+					// TODO: Doesn't work. It only blanks the list but doenst pop the view. Don't know why.
+					//					state.pickPrimaryBudget = nil
 				}
 				return .none
 			case .pickPrimaryBudget:
@@ -93,7 +90,9 @@ struct BalanceOperatorFeature {
 				switch delegate {
 				case .budgetPicked(let id):
 					state.secondaryBudgetID = id
-					state.pickSecondaryBudget = nil
+
+					// TODO: Doesn't work. It only blanks the list but doenst pop the view. Don't know why.
+					//					state.pickSecondaryBudget = nil
 				}
 				return .none
 			case .pickSecondaryBudget:
@@ -114,30 +113,41 @@ struct BalanceOperatorView: View {
 	@FocusState var currencyFieldIsFocused: Bool
 	@ScaledMetric private var fontSize: CGFloat = 65
 
+	@MainActor
 	func woefn(
 		budgetField: BalanceOperatorFeature.Action.BudgetField
 	) -> some View {
-		return Button(
-			action: {
-				self.store.send(.budgetFieldTapped(budgetField))
-			},
-			label: {
-				let budgetID = {
-					switch budgetField {
-					case .adjustment, .transferSender:
-						return self.store.state.primaryBudgetID
-					case .transferReceiver:
-						return self.store.state.secondaryBudgetID
-					}
-				}()
-
-				if let budgetID, let budget = self.store.budgets[id: budgetID] {
-					BudgetRow(budget: budget)
-				} else {
-					Label("Budget auswählen", systemImage: "square.dashed")
+		return NavigationLinkStore(
+			{
+				switch budgetField {
+				case .adjustment, .transferSender:
+					return self.store.scope(state: \.$pickPrimaryBudget, action: \.pickPrimaryBudget)
+				case .transferReceiver:
+					return self.store.scope(state: \.$pickSecondaryBudget, action: \.pickSecondaryBudget)
 				}
+			}()
+		) {
+			self.store.send(.budgetFieldTapped(budgetField))
+		} destination: { store in
+			BudgetPickerBudgetListView(store: store)
+				.navigationTitle("Budget auswählen")
+				.navigationBarTitleDisplayMode(.inline)
+		} label: {
+			let budgetID = {
+				switch budgetField {
+				case .adjustment, .transferSender:
+					return self.store.state.primaryBudgetID
+				case .transferReceiver:
+					return self.store.state.secondaryBudgetID
+				}
+			}()
+			if let budgetID, let budget = self.store.budgets[id: budgetID] {
+				BudgetRow(budget: budget)
+			} else {
+				Text("Kein Budget")
+					.foregroundStyle(.secondary)
 			}
-		)
+		}
 	}
 
 	var body: some View {
@@ -209,44 +219,6 @@ struct BalanceOperatorView: View {
 				}
 				ToolbarItem(placement: .confirmationAction) {
 					doneButton
-				}
-			}
-			.sheet(
-				item: self.$store.scope(
-					state: \.pickPrimaryBudget,
-					action: \.pickPrimaryBudget
-				)
-			) { store in
-				NavigationStack {
-					BudgetPickerBudgetListView(store: store)
-						.navigationTitle("Budget auswählen")
-						.navigationBarTitleDisplayMode(.inline)
-						.toolbar {
-							ToolbarItem(placement: .cancellationAction) {
-								Button("Abbrechen") {
-									self.store.send(.cancelPickingBudgetButtonTapped)
-								}
-							}
-						}
-				}
-			}
-			.sheet(
-				item: self.$store.scope(
-					state: \.pickSecondaryBudget,
-					action: \.pickSecondaryBudget
-				)
-			) { store in
-				NavigationStack {
-					BudgetPickerBudgetListView(store: store)
-						.navigationTitle("Budget auswählen")
-						.navigationBarTitleDisplayMode(.inline)
-						.toolbar {
-							ToolbarItem(placement: .cancellationAction) {
-								Button("Abbrechen") {
-									self.store.send(.cancelPickingBudgetButtonTapped)
-								}
-							}
-						}
 				}
 			}
 		}
