@@ -81,8 +81,7 @@ struct BudgetDetailFeature {
 						symbol: state.budget.symbol,
 						color: state.budget.color,
 						projectionIsEnabled: projection != nil,
-						monthlyAllocation: projection?.monthlyAllocation ?? 0,
-						nameFieldIsFocused: true
+						monthlyAllocation: projection?.monthlyAllocation ?? 0
 					)
 				)
 				return .none

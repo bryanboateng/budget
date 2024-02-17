@@ -55,14 +55,7 @@ struct OverviewFeature {
 		Reduce { state, action in
 			switch action {
 			case .addBudgetButtonTapped:
-				state.addBudget = BudgetFormFeature.State(
-					name: "",
-					symbol: "",
-					color: .allCases.randomElement()!,
-					projectionIsEnabled: false,
-					monthlyAllocation: 0,
-					nameFieldIsFocused: true
-				)
+				state.addBudget = BudgetFormFeature.State()
 				return .none
 			case .addBudget:
 				return .none

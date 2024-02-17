@@ -5,12 +5,12 @@ import SwiftUI
 struct BudgetFormFeature {
 	@ObservableState
 	struct State {
-		var name: String
-		var symbol: String
-		var color: Budget.Color
-		var projectionIsEnabled: Bool
-		var monthlyAllocation: Decimal
-		var nameFieldIsFocused: Bool
+		var name = ""
+		var symbol = ""
+		var color = Budget.Color.allCases.randomElement()!
+		var projectionIsEnabled = false
+		var monthlyAllocation: Decimal = 0
+		var nameFieldIsFocused = true
 		@Presents var pickSymbol: SymbolPickerFeature.State?
 	}
 	enum Action: BindableAction {
@@ -142,8 +142,7 @@ struct BudgetFormView: View {
 					symbol: budget.symbol,
 					color: budget.color,
 					projectionIsEnabled: projection != nil,
-					monthlyAllocation: projection?.monthlyAllocation ?? 0,
-					nameFieldIsFocused: true
+					monthlyAllocation: projection?.monthlyAllocation ?? 0
 				)
 			) {
 				BudgetFormFeature()
