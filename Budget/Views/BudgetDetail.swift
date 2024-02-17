@@ -29,26 +29,11 @@ struct BudgetDetailFeature {
 	@Dependency(\.dismiss) var dismiss
 
 	@Reducer
-	struct Destination {
-		@ObservableState
-		enum State {
-			case confirmationDialog(ConfirmationDialogState<Action.ConfirmationDialog>)
-			case editBudget(BudgetFormFeature.State)
-		}
-		enum Action {
-			case confirmationDialog(ConfirmationDialog)
-			case editBudget(BudgetFormFeature.Action)
-			enum ConfirmationDialog {
-				case confirmDeletion
-			}
-		}
-		var body: some ReducerOf<Self> {
-			Scope(
-				state: \.editBudget,
-				action: \.editBudget
-			) {
-				BudgetFormFeature()
-			}
+	enum Destination {
+		case confirmationDialog(ConfirmationDialogState<ConfirmationDialog>)
+		case editBudget(BudgetFormFeature)
+		enum ConfirmationDialog {
+			case confirmDeletion
 		}
 	}
 
@@ -136,9 +121,7 @@ struct BudgetDetailFeature {
 				return .none
 			}
 		}
-		.ifLet(\.$destination, action: \.destination) {
-			Destination()
-		}
+		.ifLet(\.$destination, action: \.destination)
 		.onChange(of: \.budget) { oldValue, newBudget in
 			Reduce { state, action in
 					.send(.delegate(.budgetUpdated(newBudget)))

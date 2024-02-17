@@ -13,19 +13,8 @@ struct AppFeature {
 		case path(StackAction<Path.State, Path.Action>)
 	}
 	@Reducer
-	struct Path {
-		@ObservableState
-		enum State {
-			case detail(BudgetDetailFeature.State)
-		}
-		enum Action {
-			case detail(BudgetDetailFeature.Action)
-		}
-		var body: some ReducerOf<Self> {
-			Scope(state: \.detail, action: \.detail) {
-				BudgetDetailFeature()
-			}
-		}
+	enum Path {
+		case detail(BudgetDetailFeature)
 	}
 
 	@Dependency(\.continuousClock) var clock
@@ -53,9 +42,7 @@ struct AppFeature {
 				return .none
 			}
 		}
-		.forEach(\.path, action: \.path) {
-			Path()
-		}
+		.forEach(\.path, action: \.path)
 
 		Reduce { state, _ in
 				.run { [budgets = state.overview.budgets] _ in
@@ -86,11 +73,9 @@ struct AppView: View {
 				)
 			)
 		} destination: { store in
-			switch store.state {
-			case .detail:
-				if let store = store.scope(state: \.detail, action: \.detail) {
-					BudgetDetailView(store: store)
-				}
+			switch store.case {
+			case let .detail(store):
+				BudgetDetailView(store: store)
 			}
 		}
 	}
