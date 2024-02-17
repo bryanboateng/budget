@@ -10,6 +10,7 @@
 		B605B78D27EDD092008DA364 /* BudgetDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605B78C27EDD092008DA364 /* BudgetDetail.swift */; };
 		B61DA5D226299259008CADBF /* CurrencyField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA5D126299259008CADBF /* CurrencyField.swift */; };
 		B6514C43279B6965006E7A3E /* FormatStyle+Euro.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */; };
+		B677627A2B815CE000A18DD1 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B67762792B815CE000A18DD1 /* InfoPlist.xcstrings */; };
 		B683B27826069F7800F7F347 /* Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683B27726069F7800F7F347 /* Overview.swift */; };
 		B687B7C92AF1AADC00AA4A1E /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = B687B7C82AF1AADC00AA4A1E /* OrderedCollections */; };
 		B687F2502B141E02001F72DE /* SymbolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B687F24F2B141E01001F72DE /* SymbolCell.swift */; };
@@ -19,7 +20,6 @@
 		B6C1FA0127C638DE00758BE4 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C1FA0027C638DD00758BE4 /* Models.swift */; };
 		B6C3C9822B1166B400D14E50 /* BudgetPickerBudgetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C3C9812B1166B400D14E50 /* BudgetPickerBudgetList.swift */; };
 		B6C3C9842B1167DF00D14E50 /* Function+groupBudgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C3C9832B1167DD00D14E50 /* Function+groupBudgets.swift */; };
-		B6CA77E5287C8A8E0052CE8B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6CA77E3287C8A8E0052CE8B /* InfoPlist.strings */; };
 		B6CFEAE0286B4C820011B82E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B6CFEADF286B4C820011B82E /* .swiftlint.yml */; };
 		B6DD5AB22ACB70C500FC927F /* BalanceHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DD5AB12ACB70C500FC927F /* BalanceHistory.swift */; };
 		B6E093172628D8DD0091F9A6 /* BalanceOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E093162628D8DD0091F9A6 /* BalanceOperator.swift */; };
@@ -36,6 +36,7 @@
 		B605B78C27EDD092008DA364 /* BudgetDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetDetail.swift; sourceTree = "<group>"; };
 		B61DA5D126299259008CADBF /* CurrencyField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyField.swift; sourceTree = "<group>"; };
 		B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormatStyle+Euro.swift"; sourceTree = "<group>"; };
+		B67762792B815CE000A18DD1 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		B683B27726069F7800F7F347 /* Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overview.swift; sourceTree = "<group>"; };
 		B687F24F2B141E01001F72DE /* SymbolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolCell.swift; sourceTree = "<group>"; };
 		B687F2512B141FA9001F72DE /* SymbolPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolPicker.swift; sourceTree = "<group>"; };
@@ -44,7 +45,6 @@
 		B6C1FA0027C638DD00758BE4 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		B6C3C9812B1166B400D14E50 /* BudgetPickerBudgetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetPickerBudgetList.swift; sourceTree = "<group>"; };
 		B6C3C9832B1167DD00D14E50 /* Function+groupBudgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Function+groupBudgets.swift"; sourceTree = "<group>"; };
-		B6CA77E4287C8A8E0052CE8B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B6CFEADF286B4C820011B82E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B6DD5AB12ACB70C500FC927F /* BalanceHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceHistory.swift; sourceTree = "<group>"; };
 		B6E093162628D8DD0091F9A6 /* BalanceOperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceOperator.swift; sourceTree = "<group>"; };
@@ -134,7 +134,7 @@
 				B67A913C2659AF96003AADD8 /* Views */,
 				B6F504BF260695E7005E20A5 /* Assets.xcassets */,
 				B6F504C4260695E7005E20A5 /* Info.plist */,
-				B6CA77E3287C8A8E0052CE8B /* InfoPlist.strings */,
+				B67762792B815CE000A18DD1 /* InfoPlist.xcstrings */,
 				B6F504C1260695E7005E20A5 /* Preview Content */,
 			);
 			path = Budget;
@@ -216,7 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6CFEAE0286B4C820011B82E /* .swiftlint.yml in Resources */,
-				B6CA77E5287C8A8E0052CE8B /* InfoPlist.strings in Resources */,
+				B677627A2B815CE000A18DD1 /* InfoPlist.xcstrings in Resources */,
 				B6F504C3260695E7005E20A5 /* Preview Assets.xcassets in Resources */,
 				B6F504C0260695E7005E20A5 /* Assets.xcassets in Resources */,
 			);
@@ -274,17 +274,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		B6CA77E3287C8A8E0052CE8B /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B6CA77E4287C8A8E0052CE8B /* de */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		B6F504C5260695E7005E20A5 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -340,6 +329,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -397,6 +387,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -426,6 +417,7 @@
 				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bryanboateng.budget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -451,6 +443,7 @@
 				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bryanboateng.budget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
