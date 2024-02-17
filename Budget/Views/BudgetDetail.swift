@@ -7,11 +7,6 @@ struct BudgetDetailFeature {
 	struct State {
 		var budget: Budget
 		@Presents var destination: Destination.State?
-
-		init(budget: Budget, destination: Destination.State? = nil) {
-			self.budget = budget
-			self.destination = destination
-		}
 	}
 	enum Action {
 		case balanceOperationButtonTapped
