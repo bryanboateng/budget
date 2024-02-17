@@ -24,8 +24,7 @@ struct BalanceOperatorFeature {
 		var primaryBudgetID: Budget.ID?
 		var secondaryBudgetID: Budget.ID?
 
-		@Presents var pickPrimaryBudget: BudgetPickerBudgetListFeature.State?
-		@Presents var pickSecondaryBudget: BudgetPickerBudgetListFeature.State?
+		@Presents var destination: Destination.State?
 	}
 	enum Action: BindableAction {
 		case binding(BindingAction<State>)
@@ -33,8 +32,7 @@ struct BalanceOperatorFeature {
 		case cancelButtonTapped
 		case confirmButtonTapped
 		case delegate(Delegate)
-		case pickPrimaryBudget(PresentationAction<BudgetPickerBudgetListFeature.Action>)
-		case pickSecondaryBudget(PresentationAction<BudgetPickerBudgetListFeature.Action>)
+		case destination(PresentationAction<Destination.Action>)
 		enum BudgetField {
 			case adjustment
 			case transferSender
@@ -45,6 +43,11 @@ struct BalanceOperatorFeature {
 			case confirmed
 		}
 	}
+	@Reducer
+	enum Destination {
+		case pickPrimaryBudget(BudgetPickerBudgetListFeature)
+		case pickSecondaryBudget(BudgetPickerBudgetListFeature)
+	}
 	var body: some ReducerOf<Self> {
 		BindingReducer()
 		Reduce { state, action in
@@ -54,14 +57,18 @@ struct BalanceOperatorFeature {
 			case .budgetFieldTapped(let budgetField):
 				switch budgetField {
 				case .adjustment, .transferSender:
-					state.pickPrimaryBudget = BudgetPickerBudgetListFeature.State(
-						budgets: state.budgets,
-						chosenBudgetID: state.primaryBudgetID
+					state.destination = .pickPrimaryBudget(
+						BudgetPickerBudgetListFeature.State(
+							budgets: state.budgets,
+							chosenBudgetID: state.primaryBudgetID
+						)
 					)
 				case .transferReceiver:
-					state.pickSecondaryBudget = BudgetPickerBudgetListFeature.State(
-						budgets: state.budgets,
-						chosenBudgetID: state.secondaryBudgetID
+					state.destination = .pickSecondaryBudget(
+						BudgetPickerBudgetListFeature.State(
+							budgets: state.budgets,
+							chosenBudgetID: state.secondaryBudgetID
+						)
 					)
 				}
 				return .none
@@ -75,36 +82,19 @@ struct BalanceOperatorFeature {
 				}
 			case .delegate:
 				return .none
-			case .pickPrimaryBudget(.presented(.delegate(let delegate))):
-				switch delegate {
-				case .budgetPicked(let id):
-					state.primaryBudgetID = id
-
-					// TODO: Doesn't work. It only blanks the list but doenst pop the view. Don't know why.
-					//					state.pickPrimaryBudget = nil
-				}
+			case .destination(.presented(.pickPrimaryBudget(.delegate(.budgetPicked(let id))))):
+				state.primaryBudgetID = id
+				state.destination = nil
 				return .none
-			case .pickPrimaryBudget:
+			case .destination(.presented(.pickSecondaryBudget(.delegate(.budgetPicked(let id))))):
+				state.secondaryBudgetID = id
+				state.destination = nil
 				return .none
-			case .pickSecondaryBudget(.presented(.delegate(let delegate))):
-				switch delegate {
-				case .budgetPicked(let id):
-					state.secondaryBudgetID = id
-
-					// TODO: Doesn't work. It only blanks the list but doenst pop the view. Don't know why.
-					//					state.pickSecondaryBudget = nil
-				}
-				return .none
-			case .pickSecondaryBudget:
+			case .destination:
 				return .none
 			}
 		}
-		.ifLet(\.$pickPrimaryBudget, action: \.pickPrimaryBudget) {
-			BudgetPickerBudgetListFeature()
-		}
-		.ifLet(\.$pickSecondaryBudget, action: \.pickSecondaryBudget) {
-			BudgetPickerBudgetListFeature()
-		}
+		.ifLet(\.$destination, action: \.destination)
 	}
 }
 
@@ -117,37 +107,27 @@ struct BalanceOperatorView: View {
 	func woefn(
 		budgetField: BalanceOperatorFeature.Action.BudgetField
 	) -> some View {
-		return NavigationLinkStore(
-			{
-				switch budgetField {
-				case .adjustment, .transferSender:
-					return self.store.scope(state: \.$pickPrimaryBudget, action: \.pickPrimaryBudget)
-				case .transferReceiver:
-					return self.store.scope(state: \.$pickSecondaryBudget, action: \.pickSecondaryBudget)
-				}
-			}()
-		) {
+		return Button {
 			self.store.send(.budgetFieldTapped(budgetField))
-		} destination: { store in
-			BudgetPickerBudgetListView(store: store)
-				.navigationTitle("Budget auswählen")
-				.navigationBarTitleDisplayMode(.inline)
 		} label: {
-			let budgetID = {
-				switch budgetField {
-				case .adjustment, .transferSender:
-					return self.store.state.primaryBudgetID
-				case .transferReceiver:
-					return self.store.state.secondaryBudgetID
+			NavigationLink(destination: EmptyView()) {
+				let budgetID = {
+					switch budgetField {
+					case .adjustment, .transferSender:
+						return self.store.state.primaryBudgetID
+					case .transferReceiver:
+						return self.store.state.secondaryBudgetID
+					}
+				}()
+				if let budgetID, let budget = self.store.budgets[id: budgetID] {
+					BudgetRow(budget: budget)
+				} else {
+					Text("Kein Budget")
+						.foregroundStyle(.secondary)
 				}
-			}()
-			if let budgetID, let budget = self.store.budgets[id: budgetID] {
-				BudgetRow(budget: budget)
-			} else {
-				Text("Kein Budget")
-					.foregroundStyle(.secondary)
 			}
 		}
+		.foregroundColor(Color(uiColor: .label))
 	}
 
 	var body: some View {
@@ -220,6 +200,26 @@ struct BalanceOperatorView: View {
 				ToolbarItem(placement: .confirmationAction) {
 					doneButton
 				}
+			}
+			.navigationDestination(
+				item: self.$store.scope(
+					state: \.destination?.pickPrimaryBudget,
+					action: \.destination.pickPrimaryBudget
+				)
+			) { store in
+				BudgetPickerBudgetListView(store: store)
+					.navigationTitle("Budget auswählen")
+					.navigationBarTitleDisplayMode(.inline)
+			}
+			.navigationDestination(
+				item: self.$store.scope(
+					state: \.destination?.pickSecondaryBudget,
+					action: \.destination.pickSecondaryBudget
+				)
+			) { store in
+				BudgetPickerBudgetListView(store: store)
+					.navigationTitle("Budget auswählen")
+					.navigationBarTitleDisplayMode(.inline)
 			}
 		}
 	}
