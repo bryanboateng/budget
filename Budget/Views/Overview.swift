@@ -8,10 +8,10 @@ struct OverviewFeature {
 	struct State {
 
 		init(
-			addBudget: BudgetFormFeature.State? = nil,
+			destination: Destination.State? = nil,
 			historyIsOpen: Bool = false
 		) {
-			self.addBudget = addBudget
+			self.destination = destination
 			self.historyIsOpen = historyIsOpen
 
 			do {
@@ -25,10 +25,9 @@ struct OverviewFeature {
 			}
 		}
 
-		@Presents var addBudget: BudgetFormFeature.State?
 		var budgets: IdentifiedArrayOf<Budget> = []
+		@Presents var destination: Destination.State?
 		var historyIsOpen = false
-		@Presents var operateBalance: BalanceOperatorFeature.State?
 
 		var totalBalance: Decimal {
 			budgets.reduce(0) { partialResult, budget in
@@ -38,93 +37,57 @@ struct OverviewFeature {
 	}
 	enum Action: BindableAction {
 		case addBudgetButtonTapped
-		case addBudget(PresentationAction<BudgetFormFeature.Action>)
+		case budgetRowTapped(Budget.ID)
 		case balanceHistoryDoneButtonTapped
 		case balanceOperationButtonTapped
 		case binding(BindingAction<State>)
 		case cancelBudgetButtonTapped
+		case destination(PresentationAction<Destination.Action>)
 		case historyButtonTapped
-		case operateBalance(
-			PresentationAction<BalanceOperatorFeature.Action>
-		)
 		case saveBudgetButtonTapped
 	}
+	@Reducer
+	enum Destination {
+		case addBudget(BudgetFormFeature)
+		case detail(BudgetDetailFeature)
+		case operateBalance(BalanceOperatorFeature)
+	}
 	@Dependency(\.uuid) var uuid
+	@Dependency(\.continuousClock) var clock
+	@Dependency(\.dataManager.save) var saveData
 	var body: some ReducerOf<Self> {
 		BindingReducer()
 		Reduce { state, action in
 			switch action {
 			case .addBudgetButtonTapped:
-				state.addBudget = BudgetFormFeature.State()
-				return .none
-			case .addBudget:
+				state.destination = .addBudget(BudgetFormFeature.State())
 				return .none
 			case .balanceHistoryDoneButtonTapped:
 				state.historyIsOpen = false
 				return .none
 			case .balanceOperationButtonTapped:
-				state.operateBalance = BalanceOperatorFeature.State()
+				state.destination = .operateBalance(BalanceOperatorFeature.State())
 				return .none
 			case .binding:
 				return .none
+			case .budgetRowTapped(let budgetID):
+				guard let budget = state.budgets[id: budgetID] else { return .none }
+				state.destination = .detail(
+					BudgetDetailFeature.State(budget: budget)
+				)
+				return .none
 			case .cancelBudgetButtonTapped:
-				state.addBudget = nil
+				state.destination = nil
+				return .none
+			case .destination(.presented(let destination)):
+				return reduceDestination(state: &state, action: destination)
+			case .destination:
 				return .none
 			case .historyButtonTapped:
 				state.historyIsOpen = true
 				return .none
-			case .operateBalance(.presented(.delegate(let delegate))):
-				switch delegate {
-				case .cancelled: break
-				case .confirmed:
-					guard let operateBalance = state.operateBalance else { return .none }
-					switch operateBalance.operation {
-					case .adjustment:
-						let amount: Decimal = {
-							switch operateBalance.direction {
-							case .outgoing: -1 * operateBalance.absoluteAmount
-							case .incoming: operateBalance.absoluteAmount
-							}
-						}()
-						guard let id = operateBalance.primaryBudgetID else { return .none }
-						guard var budget = state.budgets[id: id] else { return .none }
-						budget.balanceAdjustments.insert(
-							Budget.BalanceAdjustment(id: UUID(), date: .now, amount: amount)
-						)
-						state.budgets[id: id] = budget
-					case .transfer:
-						guard let primaryBudgetID = operateBalance.primaryBudgetID else { return .none }
-						guard let secondaryBudgetID = operateBalance.secondaryBudgetID else { return .none }
-
-						guard primaryBudgetID != secondaryBudgetID else { return .none }
-
-						guard var primaryBudget = state.budgets[id: primaryBudgetID] else { return .none }
-						guard var secondaryBudget = state.budgets[id: secondaryBudgetID] else { return .none }
-
-						primaryBudget.balanceAdjustments.insert(
-							Budget.BalanceAdjustment(
-								id: UUID(),
-								date: .now,
-								amount: -1 * operateBalance.absoluteAmount
-							)
-						)
-						secondaryBudget.balanceAdjustments.insert(
-							Budget.BalanceAdjustment(
-								id: UUID(),
-								date: .now,
-								amount: operateBalance.absoluteAmount
-							)
-						)
-						state.budgets[id: primaryBudgetID] = primaryBudget
-						state.budgets[id: secondaryBudgetID] = secondaryBudget
-					}
-				}
-				state.operateBalance = nil
-				return .none
-			case .operateBalance:
-				return .none
 			case .saveBudgetButtonTapped:
-				guard let addBudget = state.addBudget else { return .none }
+				guard case let .addBudget(addBudget) = state.destination else { return .none }
 				let trimmedName = addBudget.name.trimmingCharacters(in: .whitespacesAndNewlines)
 				guard !trimmedName.isEmpty else { return .none }
 				guard UIImage(systemName: addBudget.symbol) != nil else { return .none }
@@ -138,15 +101,95 @@ struct OverviewFeature {
 					newBudget.setMonthlyAllocation(addBudget.monthlyAllocation)
 				}
 				state.budgets.append(newBudget)
-				state.addBudget = nil
+				state.destination = nil
 				return .none
 			}
 		}
-		.ifLet(\.$addBudget, action: \.addBudget) {
-			BudgetFormFeature()
+		.ifLet(\.$destination, action: \.destination)
+
+		Reduce { state, _ in
+				.run { [budgets = state.budgets] _ in
+					enum CancelID { case saveDebounce }
+					try await withTaskCancellation(
+						id: CancelID.saveDebounce, cancelInFlight: true
+					) {
+						try await self.clock.sleep(for: .seconds(1))
+						try self.saveData(
+							JSONEncoder().encode(budgets),
+							.budgets
+						)
+					}
+				}
 		}
-		.ifLet(\.$operateBalance, action: \.operateBalance) {
-			BalanceOperatorFeature()
+	}
+
+	func reduceDestination(
+		state: inout OverviewFeature.State,
+		action: Destination.Action
+	) -> Effect<OverviewFeature.Action> {
+		switch action {
+		case .addBudget:
+			return .none
+		case .detail(.delegate(let delegate)):
+			switch delegate {
+			case let .budgetUpdated(budget):
+				state.budgets[id: budget.id] = budget
+			case let .deleteStandup(id: id):
+				state.budgets.remove(id: id)
+			}
+			return .none
+		case .detail:
+			return .none
+		case .operateBalance(.delegate(let delegate)):
+			switch delegate {
+			case .cancelled: break
+			case .confirmed:
+				guard case let .operateBalance(operateBalance) = state.destination else { return .none }
+				switch operateBalance.operation {
+				case .adjustment:
+					let amount: Decimal = {
+						switch operateBalance.direction {
+						case .outgoing: -1 * operateBalance.absoluteAmount
+						case .incoming: operateBalance.absoluteAmount
+						}
+					}()
+					guard let id = operateBalance.primaryBudgetID else { return .none }
+					guard var budget = state.budgets[id: id] else { return .none }
+					budget.balanceAdjustments.insert(
+						Budget.BalanceAdjustment(id: UUID(), date: .now, amount: amount)
+					)
+					state.budgets[id: id] = budget
+				case .transfer:
+					guard let primaryBudgetID = operateBalance.primaryBudgetID else { return .none }
+					guard let secondaryBudgetID = operateBalance.secondaryBudgetID else { return .none }
+
+					guard primaryBudgetID != secondaryBudgetID else { return .none }
+
+					guard var primaryBudget = state.budgets[id: primaryBudgetID] else { return .none }
+					guard var secondaryBudget = state.budgets[id: secondaryBudgetID] else { return .none }
+
+					primaryBudget.balanceAdjustments.insert(
+						Budget.BalanceAdjustment(
+							id: UUID(),
+							date: .now,
+							amount: -1 * operateBalance.absoluteAmount
+						)
+					)
+					secondaryBudget.balanceAdjustments.insert(
+						Budget.BalanceAdjustment(
+							id: UUID(),
+							date: .now,
+							amount: operateBalance.absoluteAmount
+						)
+					)
+					state.budgets[id: primaryBudgetID] = primaryBudget
+					state.budgets[id: secondaryBudgetID] = secondaryBudget
+				}
+			}
+			state.destination = nil
+			return .none
+		case .operateBalance:
+			return .none
 		}
 	}
 }
@@ -164,13 +207,14 @@ struct OverviewView: View {
 					ForEach(groupBudgets(self.store.budgets).elements, id: \.key) { color, budgets in
 						Section(color.localizedName) {
 							ForEach(budgets) { budget in
-								NavigationLink(
-									state: AppFeature.Path.State.detail(
-										BudgetDetailFeature.State(budget: budget)
-									)
-								) {
-									BudgetRow(budget: budget)
+								Button {
+									self.store.send(.budgetRowTapped(budget.id))
+								} label: {
+									NavigationLink(destination: EmptyView()) {
+										BudgetRow(budget: budget)
+									}
 								}
+								.foregroundColor(Color(uiColor: .label))
 							}
 						}
 					}
@@ -203,8 +247,8 @@ struct OverviewView: View {
 		}
 		.sheet(
 			item: self.$store.scope(
-				state: \.addBudget,
-				action: \.addBudget
+				state: \.destination?.addBudget,
+				action: \.destination.addBudget
 			)
 		) { store in
 			NavigationStack {
@@ -243,11 +287,19 @@ struct OverviewView: View {
 		}
 		.fullScreenCover(
 			item: self.$store.scope(
-				state: \.operateBalance,
-				action: \.operateBalance
+				state: \.destination?.operateBalance,
+				action: \.destination.operateBalance
 			)
 		) { store in
 			BalanceOperatorView(store: store)
+		}
+		.navigationDestination(
+			item: self.$store.scope(
+				state: \.destination?.detail,
+				action: \.destination.detail
+			)
+		) { store in
+			BudgetDetailView(store: store)
 		}
 	}
 }

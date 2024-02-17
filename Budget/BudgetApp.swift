@@ -5,16 +5,16 @@ import SwiftUI
 struct BudgetApp: App {
 	var body: some Scene {
 		WindowGroup {
-			AppView(
-				store: Store(
-					initialState: AppFeature.State(
-						overview: OverviewFeature.State()
-					)
-				) {
-					AppFeature()
-//						._printChanges()
-				}
-			)
+			NavigationStack {
+				OverviewView(
+					store: Store(
+						initialState: OverviewFeature.State()
+					) {
+						OverviewFeature()
+//							._printChanges()
+					}
+				)
+			}
 		}
 	}
 }
