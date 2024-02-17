@@ -12,25 +12,6 @@ struct BudgetFormFeature {
 		var monthlyAllocation: Decimal
 		var nameFieldIsFocused: Bool
 		@Presents var pickSymbol: SymbolPickerFeature.State?
-
-		// TODO: Hopefully remove this init in the future and use generated one
-		init(
-			name: String,
-			symbol: String,
-			color: Budget.Color,
-			projectionIsEnabled: Bool,
-			monthlyAllocation: Decimal,
-			nameFieldIsFocused: Bool = true,
-			pickSymbol: SymbolPickerFeature.State? = nil
-		) {
-			self.name = name
-			self.symbol = symbol
-			self.color = color
-			self.projectionIsEnabled = projectionIsEnabled
-			self.monthlyAllocation = monthlyAllocation
-			self.nameFieldIsFocused = nameFieldIsFocused
-			self.pickSymbol = pickSymbol
-		}
 	}
 	enum Action: BindableAction {
 		case binding(BindingAction<State>)
@@ -161,7 +142,8 @@ struct BudgetFormView: View {
 					symbol: budget.symbol,
 					color: budget.color,
 					projectionIsEnabled: projection != nil,
-					monthlyAllocation: projection?.monthlyAllocation ?? 0
+					monthlyAllocation: projection?.monthlyAllocation ?? 0,
+					nameFieldIsFocused: true
 				)
 			) {
 				BudgetFormFeature()

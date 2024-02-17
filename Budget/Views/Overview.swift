@@ -60,7 +60,8 @@ struct OverviewFeature {
 					symbol: "",
 					color: .allCases.randomElement()!,
 					projectionIsEnabled: false,
-					monthlyAllocation: 0
+					monthlyAllocation: 0,
+					nameFieldIsFocused: true
 				)
 				return .none
 			case .addBudget:
