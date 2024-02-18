@@ -74,7 +74,7 @@
 				B6DD5AB12ACB70C500FC927F /* BalanceHistory.swift */,
 				B6F504BD260695E5005E20A5 /* BudgetRow.swift */,
 				B605B78C27EDD092008DA364 /* BudgetDetail.swift */,
-				B687F24E2B141DE7001F72DE /* BudgetForm */,
+				B6FC07242AFA9D1A00E425DB /* BudgetForm.swift */,
 				B67A913D2659AFC1003AADD8 /* BalanceOperator */,
 			);
 			path = Views;
@@ -88,14 +88,6 @@
 				B61DA5D126299259008CADBF /* CurrencyField.swift */,
 			);
 			path = BalanceOperator;
-			sourceTree = "<group>";
-		};
-		B687F24E2B141DE7001F72DE /* BudgetForm */ = {
-			isa = PBXGroup;
-			children = (
-				B6FC07242AFA9D1A00E425DB /* BudgetForm.swift */,
-			);
-			path = BudgetForm;
 			sourceTree = "<group>";
 		};
 		B6F504AF260695E5005E20A5 = {
