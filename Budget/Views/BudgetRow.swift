@@ -15,7 +15,7 @@ struct BudgetRow: View {
 					Text(budget.balance, format: .eur())
 				}
 			}
-			.monospacedDigit()
+			.foregroundStyle(.secondary)
 		}
 	}
 }
