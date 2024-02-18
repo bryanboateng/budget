@@ -5,15 +5,8 @@ struct BudgetRow: View {
 
 	var body: some View {
 		HStack {
-			Group {
-				Label {
-					Text(budget.name)
-				} icon: {
-					Image(systemName: budget.symbol)
-						.foregroundStyle(budget.color.swiftUIColor)
-				}
-			}
-			.multilineTextAlignment(.leading)
+			Text(budget.name)
+				.multilineTextAlignment(.leading)
 			Spacer()
 			Group {
 				if let projection = budget.projection {
@@ -31,13 +24,11 @@ struct BudgetRow: View {
 	let budget1 = Budget(
 		id: UUID(),
 		name: "Moinsen",
-		symbol: "figure.bowling",
 		color: .red
 	)
 	var budget2 = Budget(
 		id: UUID(),
 		name: "Moinsen",
-		symbol: "chair",
 		color: .green
 	)
 	budget2.setMonthlyAllocation(89.2)

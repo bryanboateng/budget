@@ -4,7 +4,6 @@ import SwiftUI
 struct Budget: Equatable, Codable, Identifiable {
 	let id: UUID
 	var name: String
-	var symbol: String
 	var color: Color
 	var balanceAdjustments: Set<BalanceAdjustment>
 
@@ -19,14 +18,12 @@ struct Budget: Equatable, Codable, Identifiable {
 	init(
 		id: UUID,
 		name: String,
-		symbol: String,
 		color: Color,
 		balanceAdjustments: Set<BalanceAdjustment> = [],
 		monthlyAllocation: Decimal? = nil
 	) {
 		self.id = id
 		self.name = name
-		self.symbol = symbol
 		self.color = color
 		self.balanceAdjustments = balanceAdjustments
 		self.monthlyAllocation = monthlyAllocation
@@ -147,7 +144,6 @@ extension Budget {
 	static let mock = Self(
 		id: UUID(),
 		name: "Essen",
-		symbol: "frying.pan",
 		color: .orange,
 		balanceAdjustments: [
 			BalanceAdjustment(id: UUID(), date: .now, amount: 20.41)

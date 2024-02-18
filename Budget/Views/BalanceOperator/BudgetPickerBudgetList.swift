@@ -75,7 +75,6 @@ struct BudgetPickerBudgetListView: View {
 						Budget(
 							id: UUID(),
 							name: "Bolzen",
-							symbol: "steeringwheel",
 							color: .red,
 							balanceAdjustments: [.init(id: UUID(), date: .now, amount: 402)],
 							monthlyAllocation: 90

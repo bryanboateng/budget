@@ -6,18 +6,13 @@ struct BudgetFormFeature {
 	@ObservableState
 	struct State {
 		var name = ""
-		var symbol = ""
 		var color = Budget.Color.allCases.randomElement()!
 		var projectionIsEnabled = false
 		var monthlyAllocation: Decimal = 0
 		var nameFieldIsFocused = true
-		@Presents var pickSymbol: SymbolPickerFeature.State?
 	}
 	enum Action: BindableAction {
 		case binding(BindingAction<State>)
-		case pickSymbol(PresentationAction<SymbolPickerFeature.Action>)
-		case pickSymbolButtonTapped
-		case symbolPickerCancelButtonTapped
 	}
 	var body: some ReducerOf<Self> {
 		BindingReducer()
@@ -25,29 +20,7 @@ struct BudgetFormFeature {
 			switch action {
 			case .binding:
 				return .none
-			case .pickSymbol(.presented(.delegate(let delegate))):
-				switch delegate {
-				case .symbolPicked:
-					guard let pickSymbol = state.pickSymbol else { return .none }
-					state.symbol = pickSymbol.pickedSymbol
-					state.pickSymbol = nil
-				}
-				return .none
-			case .pickSymbol:
-				return .none
-			case .pickSymbolButtonTapped:
-				state.pickSymbol = .init(
-					color: state.color,
-					pickedSymbol: state.symbol
-				)
-				return .none
-			case .symbolPickerCancelButtonTapped:
-				state.pickSymbol = nil
-				return .none
 			}
-		}
-		.ifLet(\.$pickSymbol, action: \.pickSymbol) {
-			SymbolPickerFeature()
 		}
 	}
 }
@@ -58,27 +31,6 @@ struct BudgetFormView: View {
 
 	var body: some View {
 		Form {
-			Section {
-				VStack(alignment: .center) {
-					Group {
-						if UIImage(systemName: self.store.symbol) != nil {
-							Image(systemName: self.store.symbol)
-						} else {
-							Image(systemName: "questionmark.square.dashed")
-								.foregroundStyle(.secondary)
-						}
-					}
-					.foregroundStyle(self.store.color.swiftUIColor)
-					.font(.system(size: 100))
-					.frame(maxWidth: .infinity, alignment: .center)
-					Button("Symbol auswählen") {
-						self.store.send(.pickSymbolButtonTapped)
-					}
-					.buttonStyle(.bordered)
-					.buttonBorderShape(.capsule)
-				}
-			}
-			.listRowBackground(Color(UIColor.systemGroupedBackground))
 			Section("Name") {
 				TextField("Name", text: self.$store.name, axis: .vertical)
 					.focused($nameFieldIsFocused)
@@ -109,25 +61,6 @@ struct BudgetFormView: View {
 			}
 		}
 		.bind(self.$store.nameFieldIsFocused, to: self.$nameFieldIsFocused)
-		.sheet(
-			item: self.$store.scope(
-				state: \.pickSymbol,
-				action: \.pickSymbol
-			)
-		) { store in
-			NavigationStack {
-				SymbolPickerView(store: store)
-					.navigationTitle("Symbol auswählen")
-					.navigationBarTitleDisplayMode(.inline)
-					.toolbar {
-						ToolbarItem(placement: .cancellationAction) {
-							Button("Abbrechen") {
-								self.store.send(.symbolPickerCancelButtonTapped)
-							}
-						}
-					}
-			}
-		}
 	}
 }
 
@@ -139,7 +72,6 @@ struct BudgetFormView: View {
 			store: Store(
 				initialState: BudgetFormFeature.State(
 					name: budget.name,
-					symbol: budget.symbol,
 					color: budget.color,
 					projectionIsEnabled: projection != nil,
 					monthlyAllocation: projection?.monthlyAllocation ?? 0

@@ -121,28 +121,24 @@ struct BalanceHistory: View {
 	var groceriesBudget = Budget(
 		id: UUID(),
 		name: "Groceries",
-		symbol: "carrot",
 		color: .green,
 		monthlyAllocation: 300
 	)
 	var rentBudget = Budget(
 		id: UUID(),
 		name: "Rent",
-		symbol: "house",
 		color: .red,
 		monthlyAllocation: 800
 	)
 	var entertainmentBudget = Budget(
 		id: UUID(),
 		name: "Entertainment",
-		symbol: "popcorn",
 		color: .cyan,
 		monthlyAllocation: 100
 	)
 	var travelBudget = Budget(
 		id: UUID(),
 		name: "Travel",
-		symbol: "globe.europe.africa",
 		color: .blue,
 		monthlyAllocation: 200
 	)

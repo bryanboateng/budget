@@ -73,7 +73,6 @@ struct BudgetDetailFeature {
 				state.destination = .editBudget(
 					BudgetFormFeature.State(
 						name: state.budget.name,
-						symbol: state.budget.symbol,
 						color: state.budget.color,
 						projectionIsEnabled: projection != nil,
 						monthlyAllocation: projection?.monthlyAllocation ?? 0
@@ -85,7 +84,6 @@ struct BudgetDetailFeature {
 
 				let trimmedName = budgetForm.name.trimmingCharacters(in: .whitespacesAndNewlines)
 				guard !trimmedName.isEmpty else { return .none }
-				guard UIImage(systemName: budgetForm.symbol) != nil else { return .none }
 
 				let projectionHasChanged = {
 					if let projection = state.budget.projection {
@@ -99,13 +97,11 @@ struct BudgetDetailFeature {
 					}
 				}()
 				guard state.budget.name != trimmedName
-							|| state.budget.symbol != budgetForm.symbol
 							|| state.budget.color != budgetForm.color
 							|| projectionHasChanged
 				else { return .none }
 
 				state.budget.name = trimmedName
-				state.budget.symbol = budgetForm.symbol
 				state.budget.color = budgetForm.color
 				if budgetForm.projectionIsEnabled {
 					state.budget.setMonthlyAllocation(budgetForm.monthlyAllocation)
@@ -130,15 +126,8 @@ struct BudgetDetailView: View {
 	var body: some View {
 		List {
 			Section {
-				HStack {
-					Label {
-						Text(self.store.budget.name)
-							.multilineTextAlignment(.leading)
-					} icon: {
-						Image(systemName: self.store.budget.symbol)
-							.foregroundStyle(self.store.budget.color.swiftUIColor)
-					}
-				}
+				Text(self.store.budget.name)
+					.multilineTextAlignment(.leading)
 			}
 			BudgetView(budget: self.store.budget)
 			Section("Verlauf") {
@@ -221,7 +210,6 @@ struct BudgetDetailView: View {
 							var budget = Budget(
 								id: UUID(),
 								name: "Urlaub",
-								symbol: "globe.europe.africa",
 								color: .green
 							)
 							budget.adjustBalance(4.5)
