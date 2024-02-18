@@ -126,8 +126,13 @@ struct BudgetDetailView: View {
 	var body: some View {
 		List {
 			Section {
-				Text(self.store.budget.name)
-					.multilineTextAlignment(.leading)
+				HStack {
+					Image(systemName: "circlebadge")
+						.foregroundStyle(self.store.budget.color.swiftUIColor)
+						.symbolVariant(.fill)
+						.imageScale(.small)
+					Text(self.store.budget.name)
+				}
 			}
 			BudgetView(budget: self.store.budget)
 			Section("Verlauf") {

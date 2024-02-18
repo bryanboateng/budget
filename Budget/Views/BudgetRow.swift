@@ -5,8 +5,13 @@ struct BudgetRow: View {
 
 	var body: some View {
 		HStack {
-			Text(budget.name)
-				.multilineTextAlignment(.leading)
+			HStack {
+				Image(systemName: "circlebadge")
+					.foregroundStyle(budget.color.swiftUIColor)
+					.symbolVariant(.fill)
+					.imageScale(.small)
+				Text(budget.name)
+			}
 			Spacer()
 			Group {
 				if let projection = budget.projection {
