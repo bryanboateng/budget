@@ -37,7 +37,7 @@ struct BudgetPickerBudgetListView: View {
 
 	var body: some View {
 		if self.store.budgets.isEmpty {
-			ContentUnavailableView("Keine Budgets", systemImage: "folder")
+			ContentUnavailableView("Keine Budgets", systemImage: "circle")
 		} else {
 			List {
 				ForEach(groupBudgets(self.store.budgets).elements, id: \.key) { color, budgets in

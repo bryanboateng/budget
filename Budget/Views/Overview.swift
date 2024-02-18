@@ -198,7 +198,7 @@ struct OverviewView: View {
 	var body: some View {
 		Group {
 			if self.store.budgets.isEmpty {
-				ContentUnavailableView("Keine Budgets", systemImage: "folder")
+				ContentUnavailableView("Keine Budgets", systemImage: "circle")
 			} else {
 				List {
 					BalanceDisplay(balance: self.store.totalBalance)
@@ -232,7 +232,7 @@ struct OverviewView: View {
 				Button {
 					self.store.send(.addBudgetButtonTapped)
 				} label: {
-					Label("Kategorien", systemImage: "folder.badge.plus")
+					Label("Kategorien", systemImage: "circle.badge.plus")
 				}
 			}
 			ToolbarItemGroup(placement: .bottomBar) {
