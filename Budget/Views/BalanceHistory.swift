@@ -71,6 +71,7 @@ struct BalanceHistory: View {
 							HStack{
 								Image(systemName: "circlebadge")
 									.symbolVariant(.fill)
+									.imageScale(.small)
 									.foregroundStyle(row.budgetColor.swiftUIColor)
 								Text(row.budgetName)
 							}

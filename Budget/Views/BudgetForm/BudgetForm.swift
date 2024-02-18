@@ -41,6 +41,7 @@ struct BudgetFormView: View {
 						HStack{
 							Image(systemName: "circlebadge")
 								.symbolVariant(.fill)
+								.imageScale(.small)
 								.foregroundStyle(color.swiftUIColor)
 							Text(color.localizedName)
 						}
