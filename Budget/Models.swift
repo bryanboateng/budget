@@ -102,7 +102,7 @@ struct Budget: Equatable, Codable, Identifiable {
 			case .blue: .blue
 			case .indigo: .indigo
 			case .purple: .purple
-			case .pink: SwiftUI.Color("CustomPink")
+			case .pink: SwiftUI.Color.customPink
 			case .brown: .brown
 			}
 		}
