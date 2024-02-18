@@ -307,11 +307,7 @@ private struct BalanceDisplay: View {
 
 	var body: some View {
 		HStack {
-			Label {
-				Text("Kontostand")
-			} icon: {
-				Image(systemName: "building.columns")
-			}
+			Label("Kontostand", systemImage: "building.columns")
 			Spacer()
 			Text(balance, format: .eur())
 				.monospacedDigit()
