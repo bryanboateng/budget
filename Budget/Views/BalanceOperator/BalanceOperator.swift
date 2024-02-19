@@ -103,78 +103,22 @@ struct BalanceOperatorView: View {
 	@FocusState var currencyFieldIsFocused: Bool
 	@ScaledMetric private var fontSize: CGFloat = 65
 
-	@MainActor
-	func woefn(
-		budgetField: BalanceOperatorFeature.Action.BudgetField
-	) -> some View {
-		return Button {
-			self.store.send(.budgetFieldTapped(budgetField))
-		} label: {
-			NavigationLink(destination: EmptyView()) {
-				let budgetID = {
-					switch budgetField {
-					case .adjustment, .transferSender:
-						return self.store.state.primaryBudgetID
-					case .transferReceiver:
-						return self.store.state.secondaryBudgetID
-					}
-				}()
-				if let budgetID, let budget = self.store.budgets[id: budgetID] {
-					BudgetRow(budget: budget)
-				} else {
-					Text("Kein Budget")
-						.foregroundStyle(.secondary)
-				}
-			}
-		}
-		.foregroundColor(Color(uiColor: .label))
-	}
-
 	var body: some View {
 		NavigationStack {
 			Form {
-				CurrencyField(
-					amount: self.$store.absoluteAmount,
-					sign: {
-						switch self.store.operation {
-						case .adjustment:
-							switch self.store.direction {
-							case .outgoing: return .minus
-							case .incoming: return .plus
-							}
-						case .transfer:
-							return nil
-						}
-					}(),
-					fontSize: fontSize
-				)
-				.focused($currencyFieldIsFocused)
-				.frame(maxWidth: .infinity, alignment: .center)
-				.listRowBackground(Color(UIColor.systemGroupedBackground))
+				currencyField
 				switch self.store.operation {
 				case .adjustment:
 					Section("Budget") {
-						woefn(budgetField: .adjustment)
+						budgetField(for: .adjustment)
 					}
-					Picker("Richtung", selection: self.$store.direction) {
-						ForEach(AdjustmentBalanceOperationDirection.allCases, id: \.self) { color in
-							Text(
-								{
-									switch color {
-									case .outgoing: "Ausgabe"
-									case .incoming: "Einnahme"
-									}
-								}()
-							)
-						}
-					}
-					.pickerStyle(.menu)
+					directionSection
 				case .transfer:
 					Section("Sender") {
-						woefn(budgetField: .transferSender)
+						budgetField(for: .transferSender)
 					}
 					Section("Empfänger") {
-						woefn(budgetField: .transferReceiver)
+						budgetField(for: .transferReceiver)
 					}
 				}
 				Section {
@@ -221,6 +165,71 @@ struct BalanceOperatorView: View {
 					.navigationTitle("Budget auswählen")
 					.navigationBarTitleDisplayMode(.inline)
 			}
+		}
+	}
+
+	private var currencyField: some View {
+		CurrencyField(
+			amount: self.$store.absoluteAmount,
+			sign: {
+				switch self.store.operation {
+				case .adjustment:
+					switch self.store.direction {
+					case .outgoing: return .minus
+					case .incoming: return .plus
+					}
+				case .transfer:
+					return nil
+				}
+			}(),
+			fontSize: fontSize
+		)
+		.focused($currencyFieldIsFocused)
+		.frame(maxWidth: .infinity, alignment: .center)
+		.listRowBackground(Color(UIColor.systemGroupedBackground))
+	}
+
+	private func budgetField(
+		for type: BalanceOperatorFeature.Action.BudgetField
+	) -> some View {
+		Button {
+			self.store.send(.budgetFieldTapped(type))
+		} label: {
+			NavigationLink(destination: EmptyView()) {
+				let budgetID = {
+					switch type {
+					case .adjustment, .transferSender:
+						return self.store.state.primaryBudgetID
+					case .transferReceiver:
+						return self.store.state.secondaryBudgetID
+					}
+				}()
+				if let budgetID, let budget = self.store.budgets[id: budgetID] {
+					BudgetRow(budget: budget)
+				} else {
+					Text("Kein Budget")
+						.foregroundStyle(.secondary)
+				}
+			}
+		}
+		.foregroundColor(Color(uiColor: .label))
+	}
+
+	private var directionSection: some View {
+		Section("Richtung") {
+			Picker("Richtung", selection: self.$store.direction) {
+				ForEach(AdjustmentBalanceOperationDirection.allCases, id: \.self) { color in
+					Text(
+						{
+							switch color {
+							case .outgoing: "Ausgabe"
+							case .incoming: "Einnahme"
+							}
+						}()
+					)
+				}
+			}
+			.pickerStyle(.menu)
 		}
 	}
 
