@@ -38,13 +38,7 @@ struct BudgetFormView: View {
 			Section {
 				Picker("Farbe", selection: self.$store.color) {
 					ForEach(Budget.Color.allCases, id: \.self) { color in
-						HStack{
-							Image(systemName: "circlebadge")
-								.symbolVariant(.fill)
-								.imageScale(.small)
-								.foregroundStyle(color.swiftUIColor)
-							Text(color.localizedName)
-						}
+						CirclebadgeLabel(color.localizedName, color: color)
 					}
 				}
 				.pickerStyle(.navigationLink)

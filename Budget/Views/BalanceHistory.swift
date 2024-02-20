@@ -68,13 +68,7 @@ struct BalanceHistory: View {
 				ForEach(rowGroup.1, id: \.balanceAdjustment) { row in
 					HStack(alignment: .firstTextBaseline) {
 						VStack(alignment: .leading) {
-							HStack{
-								Image(systemName: "circlebadge")
-									.symbolVariant(.fill)
-									.imageScale(.small)
-									.foregroundStyle(row.budgetColor.swiftUIColor)
-								Text(row.budgetName)
-							}
+							CirclebadgeLabel(row.budgetName, color: row.budgetColor)
 							Text(
 								row.balanceAdjustment.date,
 								format: .dateTime.day().month().hour().minute().second()

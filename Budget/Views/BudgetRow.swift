@@ -4,14 +4,8 @@ struct BudgetRow: View {
 	let budget: Budget
 
 	var body: some View {
-		HStack {
-			Image(systemName: "circlebadge")
-				.foregroundStyle(budget.color.swiftUIColor)
-				.symbolVariant(.fill)
-				.imageScale(.small)
-			Text(budget.name)
-		}
-		.badge(badge)
+		CirclebadgeLabel(budget.name, color: budget.color)
+			.badge(badge)
 	}
 
 	var badge: Text {

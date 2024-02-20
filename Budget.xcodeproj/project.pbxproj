@@ -15,6 +15,7 @@
 		B687B7C92AF1AADC00AA4A1E /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = B687B7C82AF1AADC00AA4A1E /* OrderedCollections */; };
 		B6982BD92B041AFB008190A0 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6982BD82B041AFB008190A0 /* DataManager.swift */; };
 		B6982BDB2B042020008190A0 /* URL+budgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6982BDA2B04201F008190A0 /* URL+budgets.swift */; };
+		B6ACD2252B855DA800A95EFC /* CirclebadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ACD2242B855DA800A95EFC /* CirclebadgeLabel.swift */; };
 		B6C1FA0127C638DE00758BE4 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C1FA0027C638DD00758BE4 /* Models.swift */; };
 		B6C3C9822B1166B400D14E50 /* BudgetPickerBudgetList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C3C9812B1166B400D14E50 /* BudgetPickerBudgetList.swift */; };
 		B6C3C9842B1167DF00D14E50 /* Function+groupBudgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C3C9832B1167DD00D14E50 /* Function+groupBudgets.swift */; };
@@ -38,6 +39,7 @@
 		B683B27726069F7800F7F347 /* Overview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overview.swift; sourceTree = "<group>"; };
 		B6982BD82B041AFB008190A0 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		B6982BDA2B04201F008190A0 /* URL+budgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+budgets.swift"; sourceTree = "<group>"; };
+		B6ACD2242B855DA800A95EFC /* CirclebadgeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclebadgeLabel.swift; sourceTree = "<group>"; };
 		B6C1FA0027C638DD00758BE4 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		B6C3C9812B1166B400D14E50 /* BudgetPickerBudgetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetPickerBudgetList.swift; sourceTree = "<group>"; };
 		B6C3C9832B1167DD00D14E50 /* Function+groupBudgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Function+groupBudgets.swift"; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 				B683B27726069F7800F7F347 /* Overview.swift */,
 				B6DD5AB12ACB70C500FC927F /* BalanceHistory.swift */,
 				B6F504BD260695E5005E20A5 /* BudgetRow.swift */,
+				B6ACD2242B855DA800A95EFC /* CirclebadgeLabel.swift */,
 				B605B78C27EDD092008DA364 /* BudgetDetail.swift */,
 				B6FC07242AFA9D1A00E425DB /* BudgetForm.swift */,
 				B67A913D2659AFC1003AADD8 /* BalanceOperator */,
@@ -251,6 +254,7 @@
 				B683B27826069F7800F7F347 /* Overview.swift in Sources */,
 				B6C1FA0127C638DE00758BE4 /* Models.swift in Sources */,
 				B6982BD92B041AFB008190A0 /* DataManager.swift in Sources */,
+				B6ACD2252B855DA800A95EFC /* CirclebadgeLabel.swift in Sources */,
 				B6F7C5942AF6DF0300F5C26C /* UserDefaultKeys.swift in Sources */,
 				B6C3C9822B1166B400D14E50 /* BudgetPickerBudgetList.swift in Sources */,
 			);
