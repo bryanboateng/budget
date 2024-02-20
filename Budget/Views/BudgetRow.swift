@@ -37,16 +37,8 @@ struct BudgetRow: View {
 	budget2.setMonthlyAllocation(89.2)
 	return NavigationStack {
 		List(0..<100) { _ in
-			Menu {
-				Text("Lorem")
-			} label: {
-				BudgetRow(budget: budget1)
-			}
-			Menu {
-				Text("Lorem")
-			} label: {
-				BudgetRow(budget: budget2)
-			}
+			BudgetRow(budget: budget1)
+			BudgetRow(budget: budget2)
 		}
 	}
 }
