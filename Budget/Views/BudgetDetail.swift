@@ -242,43 +242,38 @@ private struct BudgetView: View {
 	var body: some View {
 		if let projection = budget.projection {
 			Section("Verfügbar") {
-				HStack {
-					Text("Verfügbares Guthaben")
-						.foregroundStyle(.secondary)
-					Spacer()
-					Text(projection.discretionaryFunds, format: .eur())
-				}
-				HStack {
-					Text("Verfügbare Tage")
-						.foregroundStyle(.secondary)
-					Spacer()
-					Text(
-						"\(projection.discretionaryDays.formatted(.number.precision(.fractionLength(1)))) d"
+				Text("Verfügbares Guthaben")
+					.foregroundStyle(.secondary)
+					.badge(
+						Text(projection.discretionaryFunds, format: .eur())
 					)
-				}
+				Text("Verfügbare Tage")
+					.foregroundStyle(.secondary)
+					.badge(
+						Text(
+							"\(projection.discretionaryDays.formatted(.number.precision(.fractionLength(1)))) d"
+						)
+					)
 			}
 		}
 		Section {
 			Group {
-				HStack {
-					Text("Aktueller Saldo")
-						.foregroundStyle(.secondary)
-					Spacer()
-					Text(budget.balance, format: .eur())
-				}
+				Text("Aktueller Saldo")
+					.foregroundStyle(.secondary)
+					.badge(
+						Text(budget.balance, format: .eur())
+					)
 				if let projection = budget.projection {
-					HStack {
-						Text("Prognostizierter Saldo")
-							.foregroundStyle(.secondary)
-						Spacer()
-						Text(projection.projectedBalance, format: .eur())
-					}
-					HStack {
-						Text("Monatliche Zuweisung")
-							.foregroundStyle(.secondary)
-						Spacer()
-						Text(projection.monthlyAllocation, format: .eur())
-					}
+					Text("Prognostizierter Saldo")
+						.foregroundStyle(.secondary)
+						.badge(
+							Text(projection.projectedBalance, format: .eur())
+						)
+					Text("Monatliche Zuweisung")
+						.foregroundStyle(.secondary)
+						.badge(
+							Text(projection.monthlyAllocation, format: .eur())
+						)
 				}
 			}
 			.monospacedDigit()
@@ -296,14 +291,13 @@ private struct BalanceAdjustmentList: View {
 			}
 		} else {
 			ForEach(balanceAdjustments.sorted { $0.date > $1.date }) { adjustment in
-				HStack {
-					Text(adjustment.date, format: .dateTime.day().month().hour().minute().second())
-						.foregroundStyle(.secondary)
-					Spacer()
-					Text(adjustment.amount, format: .eur().sign(strategy: .always()))
-						.monospacedDigit()
-						.foregroundStyle(adjustment.amount > 0 ? .green : .primary)
-				}
+				Text(adjustment.date, format: .dateTime.day().month().hour().minute().second())
+					.foregroundStyle(.secondary)
+					.badge(
+						Text(adjustment.amount, format: .eur().sign(strategy: .always()))
+							.monospacedDigit()
+							.foregroundStyle(adjustment.amount > 0 ? .green : .primary)
+					)
 			}
 		}
 	}

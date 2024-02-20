@@ -5,22 +5,20 @@ struct BudgetRow: View {
 
 	var body: some View {
 		HStack {
-			HStack {
-				Image(systemName: "circlebadge")
-					.foregroundStyle(budget.color.swiftUIColor)
-					.symbolVariant(.fill)
-					.imageScale(.small)
-				Text(budget.name)
-			}
-			Spacer()
-			Group {
-				if let projection = budget.projection {
-					Text("• \(projection.discretionaryFunds, format: .eur())")
-				} else {
-					Text(budget.balance, format: .eur())
-				}
-			}
-			.foregroundStyle(.secondary)
+			Image(systemName: "circlebadge")
+				.foregroundStyle(budget.color.swiftUIColor)
+				.symbolVariant(.fill)
+				.imageScale(.small)
+			Text(budget.name)
+		}
+		.badge(badge)
+	}
+
+	var badge: Text {
+		if let projection = budget.projection {
+			return Text("• \(projection.discretionaryFunds, format: .eur())")
+		} else {
+			return Text(budget.balance, format: .eur())
 		}
 	}
 }

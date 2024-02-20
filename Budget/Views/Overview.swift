@@ -306,13 +306,12 @@ private struct BalanceDisplay: View {
 	let balance: Decimal
 
 	var body: some View {
-		HStack {
-			Label("Kontostand", systemImage: "building.columns")
-			Spacer()
-			Text(balance, format: .eur())
-				.monospacedDigit()
-		}
-		.foregroundColor(.secondary)
+		Label("Kontostand", systemImage: "building.columns")
+			.foregroundColor(.secondary)
+			.badge(
+				Text(balance, format: .eur())
+					.monospacedDigit()
+			)
 	}
 }
 
