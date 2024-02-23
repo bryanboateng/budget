@@ -185,7 +185,7 @@ struct AccountDetailView: View {
 				}
 			}
 		}
-		.navigationTitle("Konto")
+		.navigationTitle(self.store.account.name)
 //		.toolbar {
 //			ToolbarItem(placement: .topBarTrailing) {
 //				Button {

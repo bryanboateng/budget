@@ -17,6 +17,9 @@ struct AccountListFeature {
 					Accounts?.self,
 					from: loadData(.accounts)
 				)
+				if let accounts {
+					self.destination = .detail(.init(account: accounts.primary))
+				}
 			} catch {
 				self.accounts = nil
 			}
