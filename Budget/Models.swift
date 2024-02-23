@@ -3,14 +3,14 @@ import IdentifiedCollections
 import SwiftUI
 
 struct Accounts: Codable {
-	let primary: Account
+	var primary: Account
 	var remaining: IdentifiedArrayOf<Account> = []
 }
 
-struct Account: Codable, Identifiable {
+struct Account: Codable, Identifiable, Equatable {
 	let id: UUID
 	let name: String
-	let budgets: IdentifiedArrayOf<Budget>
+	var budgets: IdentifiedArrayOf<Budget>
 	var balance: Decimal {
 		budgets.reduce(0) { partialResult, budget in
 			partialResult + budget.balance

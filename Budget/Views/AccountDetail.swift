@@ -24,8 +24,13 @@ struct AccountDetailFeature {
 		case createBudgetButtonTapped
 		case createBudgetCancelButtonTapped
 		case createBudgetSaveButtonTapped
+		case delegate(Delegate)
 		case destination(PresentationAction<Destination.Action>)
 		case historyButtonTapped
+		enum Delegate {
+//			case deleteStandup(id: Account.Budget.ID)
+			case accountChanged(Account)
+		}
 	}
 	@Reducer
 	enum Destination {
@@ -61,19 +66,21 @@ struct AccountDetailFeature {
 				state.destination = nil
 				return .none
 			case .createBudgetSaveButtonTapped:
-//				guard case .createBudget(let budgetForm) = state.destination else { return .none }
-//				let trimmedName = budgetForm.name.trimmingCharacters(in: .whitespacesAndNewlines)
-//				guard !trimmedName.isEmpty else { return .none }
-//				var newBudget = Account.Budget(
-//					id: self.uuid(),
-//					name: trimmedName,
-//					color: budgetForm.color
-//				)
-//				if budgetForm.projectionIsEnabled {
-//					newBudget.setMonthlyAllocation(budgetForm.monthlyAllocation)
-//				}
-//				state.budgets.append(newBudget)
+				guard case .createBudget(let budgetForm) = state.destination else { return .none }
+				let trimmedName = budgetForm.name.trimmingCharacters(in: .whitespacesAndNewlines)
+				guard !trimmedName.isEmpty else { return .none }
+				var budget = Account.Budget(
+					id: self.uuid(),
+					name: trimmedName,
+					color: budgetForm.color
+				)
+				if budgetForm.projectionIsEnabled {
+					budget.setMonthlyAllocation(budgetForm.monthlyAllocation)
+				}
+				state.account.budgets.append(budget)
 				state.destination = nil
+				return .none
+			case .delegate:
 				return .none
 			case .destination(.presented(let destination)):
 				return reduceDestination(state: &state, action: destination)
@@ -85,6 +92,11 @@ struct AccountDetailFeature {
 			}
 		}
 		.ifLet(\.$destination, action: \.destination)
+		.onChange(of: \.account) { _, newAccount in
+			Reduce { state, action in
+					.send(.delegate(.accountChanged(newAccount)))
+			}
+		}
 	}
 
 	func reduceDestination(
@@ -95,12 +107,12 @@ struct AccountDetailFeature {
 		case .createBudget:
 			return .none
 		case .detail(.delegate(let delegate)):
-//			switch delegate {
-//			case let .budgetUpdated(budget):
-//				state.budgets[id: budget.id] = budget
-//			case let .deleteStandup(id: id):
-//				state.budgets.remove(id: id)
-//			}
+			switch delegate {
+			case let .budgetUpdated(budget):
+				state.account.budgets[id: budget.id] = budget
+			case let .deleteStandup(id: id):
+				state.account.budgets.remove(id: id)
+			}
 			return .none
 		case .detail:
 			return .none
@@ -118,11 +130,11 @@ struct AccountDetailFeature {
 						}
 					}()
 					guard let id = operateBalance.primaryBudgetID else { return .none }
-//					guard var budget = state.budgets[id: id] else { return .none }
-//					budget.balanceAdjustments.insert(
-//						Account.Budget.BalanceAdjustment(id: self.uuid(), date: .now, amount: amount)
-//					)
-//					state.budgets[id: id] = budget
+					guard var budget = state.account.budgets[id: id] else { return .none }
+					budget.balanceAdjustments.append(
+						Account.Budget.BalanceAdjustment(id: self.uuid(), date: .now, amount: amount)
+					)
+					state.account.budgets[id: id] = budget
 				case .transfer:
 					guard let primaryBudgetID = operateBalance.primaryBudgetID else { return .none }
 					guard let secondaryBudgetID = operateBalance.secondaryBudgetID else { return .none }
@@ -186,85 +198,85 @@ struct AccountDetailView: View {
 			}
 		}
 		.navigationTitle(self.store.account.name)
-//		.toolbar {
-//			ToolbarItem(placement: .topBarTrailing) {
-//				Button {
-//					self.store.send(.historyButtonTapped)
-//				} label: {
-//					Label("Verlauf", systemImage: "clock")
-//				}
-//			}
-//			ToolbarItem(placement: .bottomBar) {
-//				Button {
-//					self.store.send(.createBudgetButtonTapped)
-//				} label: {
-//					Label("Neues Budget", systemImage: "circle.badge.plus")
-//				}
-//			}
-//			ToolbarItemGroup(placement: .bottomBar) {
-//				Spacer()
-//				Button("Saldo anpassen", systemImage: "eurosign") {
-//					self.store.send(.balanceOperationButtonTapped)
-//				}
-//				.symbolVariant(.circle)
-//			}
-//		}
-//		.sheet(
-//			item: self.$store.scope(
-//				state: \.destination?.createBudget,
-//				action: \.destination.createBudget
-//			)
-//		) { store in
-//			NavigationStack {
-//				BudgetFormView(store: store)
-//					.navigationTitle("Neues Budget")
-//					.navigationBarTitleDisplayMode(.inline)
-//					.toolbar {
-//						ToolbarItem(placement: .cancellationAction) {
-//							Button("Abbrechen") {
-//								self.store.send(.createBudgetCancelButtonTapped)
-//							}
-//						}
-//						ToolbarItem(placement: .confirmationAction) {
-//							Button("Fertig") {
-//								self.store.send(.createBudgetSaveButtonTapped)
-//							}
-//						}
-//					}
-//			}
-//		}
-//		.fullScreenCover(
-//			isPresented: self.$store.historyIsOpen
-//		) {
-//			NavigationStack {
-//				BalanceHistory(budgets: self.store.budgets)
-//					.navigationTitle("Verlauf")
-//					.navigationBarTitleDisplayMode(.inline)
-//					.toolbar {
-//						ToolbarItem(placement: .confirmationAction) {
-//							Button("Fertig") {
-//								self.store.send(.balanceHistoryDoneButtonTapped)
-//							}
-//						}
-//					}
-//			}
-//		}
-//		.fullScreenCover(
-//			item: self.$store.scope(
-//				state: \.destination?.operateBalance,
-//				action: \.destination.operateBalance
-//			)
-//		) { store in
-//			BalanceOperatorView(store: store)
-//		}
-//		.navigationDestination(
-//			item: self.$store.scope(
-//				state: \.destination?.detail,
-//				action: \.destination.detail
-//			)
-//		) { store in
-//			BudgetDetailView(store: store)
-//		}
+		.toolbar {
+			ToolbarItem(placement: .topBarTrailing) {
+				Button {
+					self.store.send(.historyButtonTapped)
+				} label: {
+					Label("Verlauf", systemImage: "clock")
+				}
+			}
+			ToolbarItem(placement: .bottomBar) {
+				Button {
+					self.store.send(.createBudgetButtonTapped)
+				} label: {
+					Label("Neues Budget", systemImage: "circle.badge.plus")
+				}
+			}
+			ToolbarItemGroup(placement: .bottomBar) {
+				Spacer()
+				Button("Saldo anpassen", systemImage: "eurosign") {
+					self.store.send(.balanceOperationButtonTapped)
+				}
+				.symbolVariant(.circle)
+			}
+		}
+		.sheet(
+			item: self.$store.scope(
+				state: \.destination?.createBudget,
+				action: \.destination.createBudget
+			)
+		) { store in
+			NavigationStack {
+				BudgetFormView(store: store)
+					.navigationTitle("Neues Budget")
+					.navigationBarTitleDisplayMode(.inline)
+					.toolbar {
+						ToolbarItem(placement: .cancellationAction) {
+							Button("Abbrechen") {
+								self.store.send(.createBudgetCancelButtonTapped)
+							}
+						}
+						ToolbarItem(placement: .confirmationAction) {
+							Button("Fertig") {
+								self.store.send(.createBudgetSaveButtonTapped)
+							}
+						}
+					}
+			}
+		}
+		.fullScreenCover(
+			isPresented: self.$store.historyIsOpen
+		) {
+			NavigationStack {
+				BalanceHistory(budgets: self.store.account.budgets)
+					.navigationTitle("Verlauf")
+					.navigationBarTitleDisplayMode(.inline)
+					.toolbar {
+						ToolbarItem(placement: .confirmationAction) {
+							Button("Fertig") {
+								self.store.send(.balanceHistoryDoneButtonTapped)
+							}
+						}
+					}
+			}
+		}
+		.fullScreenCover(
+			item: self.$store.scope(
+				state: \.destination?.operateBalance,
+				action: \.destination.operateBalance
+			)
+		) { store in
+			BalanceOperatorView(store: store)
+		}
+		.navigationDestination(
+			item: self.$store.scope(
+				state: \.destination?.detail,
+				action: \.destination.detail
+			)
+		) { store in
+			BudgetDetailView(store: store)
+		}
 	}
 }
 

@@ -6,25 +6,6 @@ import SwiftUI
 struct AccountListFeature {
 	@ObservableState
 	struct State {
-		init(
-			destination: Destination.State? = nil
-		) {
-			self.destination = destination
-
-			do {
-				@Dependency(\.dataManager.load) var loadData
-				self.accounts = try JSONDecoder().decode(
-					Accounts?.self,
-					from: loadData(.accounts)
-				)
-				if let accounts {
-					self.destination = .detail(.init(account: accounts.primary))
-				}
-			} catch {
-				self.accounts = nil
-			}
-		}
-
 		var accounts: Accounts?
 		@Presents var destination: Destination.State?
 	}
@@ -119,14 +100,20 @@ struct AccountListFeature {
 		switch action {
 		case .createAccount:
 			return .none
-			//		case .detail(.delegate(let delegate)):
-			//			switch delegate {
-			//			case let .budgetUpdated(budget):
-			//				state.accounts[id: budget.id] = budget
-			//			case let .deleteStandup(id: id):
-			//				state.accounts.remove(id: id)
-			//			}
-			//			return .none
+		case .detail(.delegate(let delegate)):
+			switch delegate {
+			case .accountChanged(let account):
+				guard var accounts = state.accounts else { return .none }
+				if accounts.primary.id == account.id {
+					accounts.primary = account
+				} else {
+					accounts.remaining[id: account.id] = account
+				}
+				state.accounts = accounts
+//			case let .deleteStandup(id: id):
+//				state.accounts.remove(id: id)
+			}
+			return .none
 		case .detail:
 			return .none
 		}
