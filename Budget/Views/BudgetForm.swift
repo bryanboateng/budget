@@ -6,7 +6,7 @@ struct BudgetFormFeature {
 	@ObservableState
 	struct State {
 		var name = ""
-		var color = Budget.Color.allCases.randomElement()!
+		var color = Account.Budget.Color.allCases.randomElement()!
 		var projectionIsEnabled = false
 		var monthlyAllocation: Decimal = 0
 		var nameFieldIsFocused = true
@@ -37,7 +37,7 @@ struct BudgetFormView: View {
 			}
 			Section {
 				Picker("Farbe", selection: self.$store.color) {
-					ForEach(Budget.Color.allCases, id: \.self) { color in
+					ForEach(Account.Budget.Color.allCases, id: \.self) { color in
 						CirclebadgeLabel(color.localizedName, color: color)
 					}
 				}
@@ -60,16 +60,12 @@ struct BudgetFormView: View {
 }
 
 #Preview {
-	let budget = Budget.mock
-	let projection = budget.projection
-	return NavigationStack {
+	NavigationStack {
 		BudgetFormView(
 			store: Store(
 				initialState: BudgetFormFeature.State(
-					name: budget.name,
-					color: budget.color,
-					projectionIsEnabled: projection != nil,
-					monthlyAllocation: projection?.monthlyAllocation ?? 0
+					name: "Essen",
+					color: .orange
 				)
 			) {
 				BudgetFormFeature()

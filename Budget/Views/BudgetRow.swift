@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct BudgetRow: View {
-	let budget: Budget
+	let budget: Account.Budget
 
 	var body: some View {
 		CirclebadgeLabel(budget.name, color: budget.color)
@@ -18,12 +18,12 @@ struct BudgetRow: View {
 }
 
 #Preview {
-	let budget1 = Budget(
+	let budget1 = Account.Budget(
 		id: UUID(),
 		name: "Moinsen",
 		color: .red
 	)
-	var budget2 = Budget(
+	var budget2 = Account.Budget(
 		id: UUID(),
 		name: "Moinsen",
 		color: .green

@@ -2,9 +2,9 @@ import SwiftUI
 
 struct CirclebadgeLabel<S: StringProtocol>: View {
 	let title: S
-	let color: Budget.Color
+	let color: Account.Budget.Color
 
-	init(_ title: S, color: Budget.Color) {
+	init(_ title: S, color: Account.Budget.Color) {
 		self.title = title
 		self.color = color
 	}

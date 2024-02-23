@@ -3,9 +3,9 @@ import Foundation
 import OrderedCollections
 
 func groupBudgets(
-	_ budgets: IdentifiedArrayOf<Budget>
-) -> OrderedDictionary<Budget.Color, [Budget]> {
-	func comparisonValue(_ budget: Budget) -> Decimal {
+	_ budgets: IdentifiedArrayOf<Account.Budget>
+) -> OrderedDictionary<Account.Budget.Color, [Account.Budget]> {
+	func comparisonValue(_ budget: Account.Budget) -> Decimal {
 		if let projection = budget.projection {
 			return projection.discretionaryFunds
 		} else {
@@ -26,7 +26,7 @@ func groupBudgets(
 		}
 	
 	return OrderedDictionary(
-		Budget.Color.allCases.compactMap { color in
+		Account.Budget.Color.allCases.compactMap { color in
 			hello[color].map { budgets in
 				(color, budgets)
 			}

@@ -6,12 +6,12 @@ struct BudgetApp: App {
 	var body: some Scene {
 		WindowGroup {
 			NavigationStack {
-				OverviewView(
+				AccountListView(
 					store: Store(
-						initialState: OverviewFeature.State()
+						initialState: AccountListFeature.State()
 					) {
-						OverviewFeature()
-//							._printChanges()
+						AccountListFeature()
+							._printChanges()
 					}
 				)
 			}

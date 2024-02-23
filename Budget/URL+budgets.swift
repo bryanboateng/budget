@@ -1,7 +1,7 @@
 import Foundation
 
 extension URL {
-	static let budgets = Self.documentsDirectory
-		.appending(component: "budgets")
+	static let accounts = Self.documentsDirectory
+		.appending(component: "accounts")
 		.appendingPathExtension("json")
 }

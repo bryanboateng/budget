@@ -5,24 +5,13 @@ import SwiftUI
 struct BalanceOperatorFeature {
 	@ObservableState
 	struct State {
-		init() {
-			do {
-				@Dependency(\.dataManager.load) var loadData
-				self.budgets = try JSONDecoder().decode(
-					IdentifiedArrayOf<Budget>.self,
-					from: loadData(.budgets)
-				)
-			} catch {
-				self.budgets = []
-			}
-		}
-		var budgets: IdentifiedArrayOf<Budget> = []
+		var budgets: IdentifiedArrayOf<Account.Budget>
 		var absoluteAmount: Decimal = 0
 		var operation: BalanceOperation = .adjustment
-		var direction: AdjustmentBalanceOperationDirection = .outgoing
+		var direction: BalanceOperation.AdjustmentDirection = .outgoing
 		var currencyFieldIsFocused: Bool = true
-		var primaryBudgetID: Budget.ID?
-		var secondaryBudgetID: Budget.ID?
+		var primaryBudgetID: Account.Budget.ID?
+		var secondaryBudgetID: Account.Budget.ID?
 
 		@Presents var destination: Destination.State?
 	}
@@ -218,7 +207,7 @@ struct BalanceOperatorView: View {
 	private var directionSection: some View {
 		Section("Richtung") {
 			Picker("Richtung", selection: self.$store.direction) {
-				ForEach(AdjustmentBalanceOperationDirection.allCases, id: \.self) { color in
+				ForEach(BalanceOperation.AdjustmentDirection.allCases, id: \.self) { color in
 					Text(
 						{
 							switch color {
@@ -257,22 +246,28 @@ struct BalanceOperatorView: View {
 	NavigationStack {
 		BalanceOperatorView(
 			store: Store(
-				initialState: BalanceOperatorFeature.State()
+				initialState: BalanceOperatorFeature.State(
+					budgets:
+						[
+							Account.Budget(
+								id: UUID(),
+								name: "Essen",
+								color: .orange,
+								balanceAdjustments: [
+									.init(id: UUID(), date: .now, amount: 20.41)
+								]
+							),
+							Account.Budget(
+								id: UUID(),
+								name: "Bolzen",
+								color: .red,
+								balanceAdjustments: [.init(id: UUID(), date: .now, amount: 402)],
+								monthlyAllocation: 90
+							)
+						]
+				)
 			) {
 				BalanceOperatorFeature()
-			} withDependencies: {
-				$0.dataManager = .mock(
-					initialData: try? JSONEncoder().encode([
-						Budget.mock,
-						Budget(
-							id: UUID(),
-							name: "Bolzen",
-							color: .red,
-							balanceAdjustments: [.init(id: UUID(), date: .now, amount: 402)],
-							monthlyAllocation: 90
-						)
-					])
-				)
 			}
 		)
 	}

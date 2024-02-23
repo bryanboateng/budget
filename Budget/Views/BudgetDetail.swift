@@ -1,11 +1,12 @@
 import ComposableArchitecture
+import IdentifiedCollections
 import SwiftUI
 
 @Reducer
 struct BudgetDetailFeature {
 	@ObservableState
 	struct State {
-		var budget: Budget
+		var budget: Account.Budget
 		@Presents var destination: Destination.State?
 	}
 	enum Action {
@@ -17,8 +18,8 @@ struct BudgetDetailFeature {
 		case editButtonTapped
 		case saveBudgetButtonTapped
 		enum Delegate {
-			case deleteStandup(id: Budget.ID)
-			case budgetUpdated(Budget)
+			case deleteStandup(id: Account.Budget.ID)
+			case budgetUpdated(Account.Budget)
 		}
 	}
 	@Dependency(\.dismiss) var dismiss
@@ -206,13 +207,13 @@ struct BudgetDetailView: View {
 				store: Store(
 					initialState: BudgetDetailFeature.State(
 						budget: {
-							var budget = Budget(
+							var budget = Account.Budget(
 								id: UUID(),
 								name: "Urlaub",
 								color: .green
 							)
 							budget.adjustBalance(4.5)
-							budget.balanceAdjustments.insert(
+							budget.balanceAdjustments.append(
 								.init(
 									id: UUID(),
 									date: .now.addingTimeInterval(1_000),
@@ -231,7 +232,7 @@ struct BudgetDetailView: View {
 }
 
 private struct BudgetView: View {
-	let budget: Budget
+	let budget: Account.Budget
 
 	var body: some View {
 		if let projection = budget.projection {
@@ -276,7 +277,7 @@ private struct BudgetView: View {
 }
 
 private struct BalanceAdjustmentList: View {
-	let balanceAdjustments: Set<Budget.BalanceAdjustment>
+	let balanceAdjustments: IdentifiedArrayOf<Account.Budget.BalanceAdjustment>
 
 	var body: some View {
 		if balanceAdjustments.isEmpty {

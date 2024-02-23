@@ -6,14 +6,14 @@ import SwiftUI
 struct BudgetPickerBudgetListFeature {
 	@ObservableState
 	struct State {
-		let budgets: IdentifiedArrayOf<Budget>
-		var chosenBudgetID: Budget.ID?
+		let budgets: IdentifiedArrayOf<Account.Budget>
+		var chosenBudgetID: Account.Budget.ID?
 	}
 	enum Action {
-		case budgetTapped(Budget.ID)
+		case budgetTapped(Account.Budget.ID)
 		case delegate(Delegate)
 		enum Delegate {
-			case budgetPicked(Budget.ID)
+			case budgetPicked(Account.Budget.ID)
 		}
 	}
 
@@ -66,13 +66,21 @@ struct BudgetPickerBudgetListView: View {
 }
 
 #Preview {
-	NavigationStack {
+	let chosenBudget = Account.Budget(
+		id: UUID(),
+		name: "Essen",
+		color: .orange,
+		balanceAdjustments: [
+			Account.Budget.BalanceAdjustment(id: UUID(), date: .now, amount: 20.41)
+		]
+	)
+	return NavigationStack {
 		BudgetPickerBudgetListView(
 			store: Store(
 				initialState: BudgetPickerBudgetListFeature.State(
 					budgets: [
-						Budget.mock,
-						Budget(
+						chosenBudget,
+						Account.Budget(
 							id: UUID(),
 							name: "Bolzen",
 							color: .red,
@@ -80,7 +88,7 @@ struct BudgetPickerBudgetListView: View {
 							monthlyAllocation: 90
 						)
 					],
-					chosenBudgetID: Budget.mock.id
+					chosenBudgetID: chosenBudget.id
 				)
 			) {
 				BudgetPickerBudgetListFeature()

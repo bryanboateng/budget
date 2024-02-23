@@ -2,7 +2,7 @@ import OrderedCollections
 import SwiftUI
 
 struct BalanceHistory: View {
-	let budgets: any Collection<Budget>
+	let budgets: any Collection<Account.Budget>
 
 	private var groupedRows: OrderedDictionary<YearMonth, [Row]> {
 		var groupedRows: OrderedDictionary<YearMonth, [Row]> = [:]
@@ -65,7 +65,7 @@ struct BalanceHistory: View {
 					.date(from: DateComponents(year: rowGroup.0.year, month: rowGroup.0.month))!
 					.formatted(.dateTime.year().month(.wide))
 			) {
-				ForEach(rowGroup.1, id: \.balanceAdjustment) { row in
+				ForEach(rowGroup.1, id: \.balanceAdjustment.id) { row in
 					HStack(alignment: .firstTextBaseline) {
 						VStack(alignment: .leading) {
 							CirclebadgeLabel(row.budgetName, color: row.budgetColor)
@@ -107,31 +107,31 @@ struct BalanceHistory: View {
 
 	private struct Row {
 		let budgetName: String
-		let budgetColor: Budget.Color
-		let balanceAdjustment: Budget.BalanceAdjustment
+		let budgetColor: Account.Budget.Color
+		let balanceAdjustment: Account.Budget.BalanceAdjustment
 	}
 }
 
 #Preview {
-	var groceriesBudget = Budget(
+	var groceriesBudget = Account.Budget(
 		id: UUID(),
 		name: "Groceries",
 		color: .green,
 		monthlyAllocation: 300
 	)
-	var rentBudget = Budget(
+	var rentBudget = Account.Budget(
 		id: UUID(),
 		name: "Rent",
 		color: .red,
 		monthlyAllocation: 800
 	)
-	var entertainmentBudget = Budget(
+	var entertainmentBudget = Account.Budget(
 		id: UUID(),
 		name: "Entertainment",
 		color: .cyan,
 		monthlyAllocation: 100
 	)
-	var travelBudget = Budget(
+	var travelBudget = Account.Budget(
 		id: UUID(),
 		name: "Travel",
 		color: .blue,
@@ -150,16 +150,16 @@ struct BalanceHistory: View {
 	let date4 = dateFormatter.date(from: "2023/09/25")!
 
 	// Create BalanceAdjustment objects
-	let adjustment1 = Budget.BalanceAdjustment(id: UUID(), date: date1, amount: 50)
-	let adjustment2 = Budget.BalanceAdjustment(id: UUID(), date: date2, amount: -25)
-	let adjustment3 = Budget.BalanceAdjustment(id: UUID(), date: date3, amount: 30)
-	let adjustment4 = Budget.BalanceAdjustment(id: UUID(), date: date4, amount: -10)
+	let adjustment1 = Account.Budget.BalanceAdjustment(id: UUID(), date: date1, amount: 50)
+	let adjustment2 = Account.Budget.BalanceAdjustment(id: UUID(), date: date2, amount: -25)
+	let adjustment3 = Account.Budget.BalanceAdjustment(id: UUID(), date: date3, amount: 30)
+	let adjustment4 = Account.Budget.BalanceAdjustment(id: UUID(), date: date4, amount: -10)
 
 	// Add BalanceAdjustment objects to appropriate budgets
-	groceriesBudget.balanceAdjustments.insert(adjustment1)
-	groceriesBudget.balanceAdjustments.insert(adjustment2)
-	entertainmentBudget.balanceAdjustments.insert(adjustment3)
-	entertainmentBudget.balanceAdjustments.insert(adjustment4)
+	groceriesBudget.balanceAdjustments.append(adjustment1)
+	groceriesBudget.balanceAdjustments.append(adjustment2)
+	entertainmentBudget.balanceAdjustments.append(adjustment3)
+	entertainmentBudget.balanceAdjustments.append(adjustment4)
 
 	// Create more adjustments using the adjustBalance method
 	groceriesBudget.adjustBalance(-15)
