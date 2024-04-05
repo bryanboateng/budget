@@ -5,18 +5,7 @@ import SwiftUI
 struct BalanceOperatorFeature {
 	@ObservableState
 	struct State {
-		init() {
-			do {
-				@Dependency(\.dataManager.load) var loadData
-				self.budgets = try JSONDecoder().decode(
-					IdentifiedArrayOf<Budget>.self,
-					from: loadData(.budgets)
-				)
-			} catch {
-				self.budgets = []
-			}
-		}
-		var budgets: IdentifiedArrayOf<Budget> = []
+		@Shared(.fileStorage(.budgets)) var budgets: IdentifiedArrayOf<Budget> = []
 		var absoluteAmount: Decimal = 0
 		var operation: BalanceOperation = .adjustment
 		var direction: AdjustmentBalanceOperationDirection = .outgoing
@@ -31,16 +20,11 @@ struct BalanceOperatorFeature {
 		case budgetFieldTapped(BudgetField)
 		case cancelButtonTapped
 		case confirmButtonTapped
-		case delegate(Delegate)
 		case destination(PresentationAction<Destination.Action>)
 		enum BudgetField {
 			case adjustment
 			case transferSender
 			case transferReceiver
-		}
-		enum Delegate {
-			case cancelled
-			case confirmed
 		}
 	}
 	@Reducer
@@ -48,6 +32,7 @@ struct BalanceOperatorFeature {
 		case pickPrimaryBudget(BudgetPickerBudgetListFeature)
 		case pickSecondaryBudget(BudgetPickerBudgetListFeature)
 	}
+	@Dependency(\.dismiss) var dismiss
 	var body: some ReducerOf<Self> {
 		BindingReducer()
 		Reduce { state, action in
@@ -73,15 +58,53 @@ struct BalanceOperatorFeature {
 				}
 				return .none
 			case .cancelButtonTapped:
-				return .run { send in
-					await send(.delegate(.cancelled))
+				return .run { _ in
+					await self.dismiss()
 				}
 			case .confirmButtonTapped:
-				return .run { send in
-					await send(.delegate(.confirmed))
+				switch state.operation {
+				case .adjustment:
+					let amount: Decimal = {
+						switch state.direction {
+						case .outgoing: -1 * state.absoluteAmount
+						case .incoming: state.absoluteAmount
+						}
+					}()
+					guard let id = state.primaryBudgetID else { return .none }
+					guard var budget = state.budgets[id: id] else { return .none }
+					budget.balanceAdjustments.insert(
+						Budget.BalanceAdjustment(id: UUID(), date: .now, amount: amount)
+					)
+					state.budgets[id: id] = budget
+				case .transfer:
+					guard let primaryBudgetID = state.primaryBudgetID else { return .none }
+					guard let secondaryBudgetID = state.secondaryBudgetID else { return .none }
+
+					guard primaryBudgetID != secondaryBudgetID else { return .none }
+
+					guard var primaryBudget = state.budgets[id: primaryBudgetID] else { return .none }
+					guard var secondaryBudget = state.budgets[id: secondaryBudgetID] else { return .none }
+
+					primaryBudget.balanceAdjustments.insert(
+						Budget.BalanceAdjustment(
+							id: UUID(),
+							date: .now,
+							amount: -1 * state.absoluteAmount
+						)
+					)
+					secondaryBudget.balanceAdjustments.insert(
+						Budget.BalanceAdjustment(
+							id: UUID(),
+							date: .now,
+							amount: state.absoluteAmount
+						)
+					)
+					state.budgets[id: primaryBudgetID] = primaryBudget
+					state.budgets[id: secondaryBudgetID] = secondaryBudget
 				}
-			case .delegate:
-				return .none
+				return .run { _ in
+					await self.dismiss()
+				}
 			case .destination(.presented(.pickPrimaryBudget(.delegate(.budgetPicked(let id))))):
 				state.primaryBudgetID = id
 				state.destination = nil
@@ -257,12 +280,8 @@ struct BalanceOperatorView: View {
 	NavigationStack {
 		BalanceOperatorView(
 			store: Store(
-				initialState: BalanceOperatorFeature.State()
-			) {
-				BalanceOperatorFeature()
-			} withDependencies: {
-				$0.dataManager = .mock(
-					initialData: try? JSONEncoder().encode([
+				initialState: BalanceOperatorFeature.State(
+					budgets: [
 						Budget.mock,
 						Budget(
 							id: UUID(),
@@ -271,8 +290,10 @@ struct BalanceOperatorView: View {
 							balanceAdjustments: [.init(id: UUID(), date: .now, amount: 402)],
 							monthlyAllocation: 90
 						)
-					])
+					]
 				)
+			) {
+				BalanceOperatorFeature()
 			}
 		)
 	}

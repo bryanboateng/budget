@@ -6,26 +6,7 @@ import SwiftUI
 struct OverviewFeature {
 	@ObservableState
 	struct State {
-
-		init(
-			destination: Destination.State? = nil,
-			historyIsOpen: Bool = false
-		) {
-			self.destination = destination
-			self.historyIsOpen = historyIsOpen
-
-			do {
-				@Dependency(\.dataManager.load) var loadData
-				self.budgets = try JSONDecoder().decode(
-					IdentifiedArrayOf<Budget>.self,
-					from: loadData(.budgets)
-				)
-			} catch {
-				self.budgets = []
-			}
-		}
-
-		var budgets: IdentifiedArrayOf<Budget> = []
+		@Shared(.fileStorage(.budgets)) var budgets: IdentifiedArrayOf<Budget> = []
 		@Presents var destination: Destination.State?
 		var historyIsOpen = false
 
@@ -53,8 +34,6 @@ struct OverviewFeature {
 		case operateBalance(BalanceOperatorFeature)
 	}
 	@Dependency(\.uuid) var uuid
-	@Dependency(\.continuousClock) var clock
-	@Dependency(\.dataManager.save) var saveData
 	var body: some ReducerOf<Self> {
 		BindingReducer()
 		Reduce { state, action in
@@ -104,21 +83,6 @@ struct OverviewFeature {
 			}
 		}
 		.ifLet(\.$destination, action: \.destination)
-
-		Reduce { state, _ in
-				.run { [budgets = state.budgets] _ in
-					enum CancelID { case saveDebounce }
-					try await withTaskCancellation(
-						id: CancelID.saveDebounce, cancelInFlight: true
-					) {
-						try await self.clock.sleep(for: .seconds(1))
-						try self.saveData(
-							JSONEncoder().encode(budgets),
-							.budgets
-						)
-					}
-				}
-		}
 	}
 
 	func reduceDestination(
@@ -137,54 +101,6 @@ struct OverviewFeature {
 			}
 			return .none
 		case .detail:
-			return .none
-		case .operateBalance(.delegate(let delegate)):
-			switch delegate {
-			case .cancelled: break
-			case .confirmed:
-				guard case let .operateBalance(operateBalance) = state.destination else { return .none }
-				switch operateBalance.operation {
-				case .adjustment:
-					let amount: Decimal = {
-						switch operateBalance.direction {
-						case .outgoing: -1 * operateBalance.absoluteAmount
-						case .incoming: operateBalance.absoluteAmount
-						}
-					}()
-					guard let id = operateBalance.primaryBudgetID else { return .none }
-					guard var budget = state.budgets[id: id] else { return .none }
-					budget.balanceAdjustments.insert(
-						Budget.BalanceAdjustment(id: UUID(), date: .now, amount: amount)
-					)
-					state.budgets[id: id] = budget
-				case .transfer:
-					guard let primaryBudgetID = operateBalance.primaryBudgetID else { return .none }
-					guard let secondaryBudgetID = operateBalance.secondaryBudgetID else { return .none }
-
-					guard primaryBudgetID != secondaryBudgetID else { return .none }
-
-					guard var primaryBudget = state.budgets[id: primaryBudgetID] else { return .none }
-					guard var secondaryBudget = state.budgets[id: secondaryBudgetID] else { return .none }
-
-					primaryBudget.balanceAdjustments.insert(
-						Budget.BalanceAdjustment(
-							id: UUID(),
-							date: .now,
-							amount: -1 * operateBalance.absoluteAmount
-						)
-					)
-					secondaryBudget.balanceAdjustments.insert(
-						Budget.BalanceAdjustment(
-							id: UUID(),
-							date: .now,
-							amount: operateBalance.absoluteAmount
-						)
-					)
-					state.budgets[id: primaryBudgetID] = primaryBudget
-					state.budgets[id: secondaryBudgetID] = secondaryBudget
-				}
-			}
-			state.destination = nil
 			return .none
 		case .operateBalance:
 			return .none
@@ -319,13 +235,11 @@ private struct BalanceDisplay: View {
 	NavigationStack {
 		OverviewView(
 			store: Store(
-				initialState: OverviewFeature.State()
+				initialState: OverviewFeature.State(
+					budgets: [Budget.mock]
+				)
 			) {
 				OverviewFeature()
-			} withDependencies: {
-				$0.dataManager = .mock(
-					initialData: try? JSONEncoder().encode([Budget.mock])
-				)
 			}
 		)
 	}
