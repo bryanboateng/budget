@@ -50,16 +50,13 @@ struct OverviewFeature {
 			case .binding:
 				return .none
 			case .budgetRowTapped(let budgetID):
-				guard let budget = state.budgets[id: budgetID] else { return .none }
 				state.destination = .detail(
-					BudgetDetailFeature.State(budget: budget)
+					BudgetDetailFeature.State(budgetID: budgetID)
 				)
 				return .none
 			case .cancelBudgetButtonTapped:
 				state.destination = nil
 				return .none
-			case .destination(.presented(let destination)):
-				return reduceDestination(state: &state, action: destination)
 			case .destination:
 				return .none
 			case .historyButtonTapped:
@@ -83,28 +80,6 @@ struct OverviewFeature {
 			}
 		}
 		.ifLet(\.$destination, action: \.destination)
-	}
-
-	func reduceDestination(
-		state: inout OverviewFeature.State,
-		action: Destination.Action
-	) -> Effect<OverviewFeature.Action> {
-		switch action {
-		case .addBudget:
-			return .none
-		case .detail(.delegate(let delegate)):
-			switch delegate {
-			case let .budgetUpdated(budget):
-				state.budgets[id: budget.id] = budget
-			case let .deleteStandup(id: id):
-				state.budgets.remove(id: id)
-			}
-			return .none
-		case .detail:
-			return .none
-		case .operateBalance:
-			return .none
-		}
 	}
 }
 
