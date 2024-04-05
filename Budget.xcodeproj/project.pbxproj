@@ -25,7 +25,7 @@
 		B6F504BE260695E5005E20A5 /* BudgetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F504BD260695E5005E20A5 /* BudgetRow.swift */; };
 		B6F504C0260695E7005E20A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6F504BF260695E7005E20A5 /* Assets.xcassets */; };
 		B6F504C3260695E7005E20A5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6F504C2260695E7005E20A5 /* Preview Assets.xcassets */; };
-		B6F7C5942AF6DF0300F5C26C /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F7C5932AF6DF0200F5C26C /* UserDefaultKeys.swift */; };
+		B6F7C5942AF6DF0300F5C26C /* UUID+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F7C5932AF6DF0200F5C26C /* UUID+RawRepresentable.swift */; };
 		B6FC07232AFA848000E425DB /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = B6FC07222AFA848000E425DB /* ComposableArchitecture */; };
 		B6FC07252AFA9D1A00E425DB /* BudgetForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FC07242AFA9D1A00E425DB /* BudgetForm.swift */; };
 /* End PBXBuildFile section */
@@ -50,7 +50,7 @@
 		B6F504BF260695E7005E20A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B6F504C2260695E7005E20A5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B6F504C4260695E7005E20A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B6F7C5932AF6DF0200F5C26C /* UserDefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
+		B6F7C5932AF6DF0200F5C26C /* UUID+RawRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UUID+RawRepresentable.swift"; sourceTree = "<group>"; };
 		B6FC07242AFA9D1A00E425DB /* BudgetForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetForm.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,7 +116,7 @@
 				B6982BDA2B04201F008190A0 /* URL+budgets.swift */,
 				B6514C42279B6964006E7A3E /* FormatStyle+Euro.swift */,
 				B6C3C9832B1167DD00D14E50 /* Function+groupBudgets.swift */,
-				B6F7C5932AF6DF0200F5C26C /* UserDefaultKeys.swift */,
+				B6F7C5932AF6DF0200F5C26C /* UUID+RawRepresentable.swift */,
 				B67A913C2659AF96003AADD8 /* Views */,
 				B6F504BF260695E7005E20A5 /* Assets.xcassets */,
 				B6F504C4260695E7005E20A5 /* Info.plist */,
@@ -251,7 +251,7 @@
 				B683B27826069F7800F7F347 /* Overview.swift in Sources */,
 				B6C1FA0127C638DE00758BE4 /* Models.swift in Sources */,
 				B6ACD2252B855DA800A95EFC /* CirclebadgeLabel.swift in Sources */,
-				B6F7C5942AF6DF0300F5C26C /* UserDefaultKeys.swift in Sources */,
+				B6F7C5942AF6DF0300F5C26C /* UUID+RawRepresentable.swift in Sources */,
 				B6C3C9822B1166B400D14E50 /* BudgetPickerBudgetList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

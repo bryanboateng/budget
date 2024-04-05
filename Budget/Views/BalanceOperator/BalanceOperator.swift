@@ -6,6 +6,10 @@ struct BalanceOperatorFeature {
 	@ObservableState
 	struct State {
 		@Shared(.fileStorage(.budgets)) var budgets: IdentifiedArrayOf<Budget> = []
+
+		@Shared(.appStorage("lastUsedPrimaryBudgetID"))
+		var lastUsedPrimaryBudgetID: Budget.ID? = nil
+
 		var absoluteAmount: Decimal = 0
 		var operation: BalanceOperation = .adjustment
 		var direction: AdjustmentBalanceOperationDirection = .outgoing
@@ -62,6 +66,7 @@ struct BalanceOperatorFeature {
 					await self.dismiss()
 				}
 			case .confirmButtonTapped:
+				guard let primaryBudgetID = state.primaryBudgetID else { return .none }
 				switch state.operation {
 				case .adjustment:
 					let amount: Decimal = {
@@ -70,14 +75,12 @@ struct BalanceOperatorFeature {
 						case .incoming: state.absoluteAmount
 						}
 					}()
-					guard let id = state.primaryBudgetID else { return .none }
-					guard var budget = state.budgets[id: id] else { return .none }
+					guard var budget = state.budgets[id: primaryBudgetID] else { return .none }
 					budget.balanceAdjustments.insert(
 						Budget.BalanceAdjustment(id: UUID(), date: .now, amount: amount)
 					)
-					state.budgets[id: id] = budget
+					state.budgets[id: primaryBudgetID] = budget
 				case .transfer:
-					guard let primaryBudgetID = state.primaryBudgetID else { return .none }
 					guard let secondaryBudgetID = state.secondaryBudgetID else { return .none }
 
 					guard primaryBudgetID != secondaryBudgetID else { return .none }
@@ -102,6 +105,7 @@ struct BalanceOperatorFeature {
 					state.budgets[id: primaryBudgetID] = primaryBudget
 					state.budgets[id: secondaryBudgetID] = secondaryBudget
 				}
+				state.lastUsedPrimaryBudgetID = primaryBudgetID
 				return .run { _ in
 					await self.dismiss()
 				}

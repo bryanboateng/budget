@@ -7,6 +7,10 @@ struct OverviewFeature {
 	@ObservableState
 	struct State {
 		@Shared(.fileStorage(.budgets)) var budgets: IdentifiedArrayOf<Budget> = []
+
+		@Shared(.appStorage("lastUsedPrimaryBudgetID"))
+		var lastUsedPrimaryBudgetID: Budget.ID? = nil
+
 		@Presents var destination: Destination.State?
 		var historyIsOpen = false
 
@@ -45,7 +49,11 @@ struct OverviewFeature {
 				state.historyIsOpen = false
 				return .none
 			case .balanceOperationButtonTapped:
-				state.destination = .operateBalance(BalanceOperatorFeature.State())
+				state.destination = .operateBalance(
+					BalanceOperatorFeature.State(
+						primaryBudgetID: state.lastUsedPrimaryBudgetID
+					)
+				)
 				return .none
 			case .binding:
 				return .none
