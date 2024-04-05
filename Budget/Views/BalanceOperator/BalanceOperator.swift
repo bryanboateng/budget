@@ -10,15 +10,15 @@ struct BalanceOperatorFeature {
 		@Shared(.appStorage("lastUsedPrimaryBudgetID"))
 		var lastUsedPrimaryBudgetID: Budget.ID? = nil
 
-		@Shared(.appStorage("lastUsedSecondaryBudgetID"))
-		var lastUsedSecondaryBudgetID: Budget.ID? = nil
+		@Shared(.appStorage("lastUsedRecieverBudgetID"))
+		var lastUsedRecieverBudgetID: Budget.ID? = nil
 
 		var absoluteAmount: Decimal = 0
 		var operation: BalanceOperation = .adjustment
 		var direction: AdjustmentBalanceOperationDirection = .outgoing
 		var currencyFieldIsFocused: Bool = true
 		var primaryBudgetID: Budget.ID?
-		var secondaryBudgetID: Budget.ID?
+		var receiverBudgetID: Budget.ID?
 
 		@Presents var destination: Destination.State?
 	}
@@ -38,7 +38,7 @@ struct BalanceOperatorFeature {
 	@Reducer
 	enum Destination {
 		case pickPrimaryBudget(BudgetPickerBudgetListFeature)
-		case pickSecondaryBudget(BudgetPickerBudgetListFeature)
+		case pickReceiverBudget(BudgetPickerBudgetListFeature)
 	}
 	@Dependency(\.dismiss) var dismiss
 	var body: some ReducerOf<Self> {
@@ -57,10 +57,10 @@ struct BalanceOperatorFeature {
 						)
 					)
 				case .transferReceiver:
-					state.destination = .pickSecondaryBudget(
+					state.destination = .pickReceiverBudget(
 						BudgetPickerBudgetListFeature.State(
 							budgets: state.budgets,
-							chosenBudgetID: state.secondaryBudgetID
+							chosenBudgetID: state.receiverBudgetID
 						)
 					)
 				}
@@ -85,12 +85,12 @@ struct BalanceOperatorFeature {
 					)
 					state.budgets[id: primaryBudgetID] = budget
 				case .transfer:
-					guard let secondaryBudgetID = state.secondaryBudgetID else { return .none }
+					guard let receiverBudgetID = state.receiverBudgetID else { return .none }
 
-					guard primaryBudgetID != secondaryBudgetID else { return .none }
+					guard primaryBudgetID != receiverBudgetID else { return .none }
 
 					guard var primaryBudget = state.budgets[id: primaryBudgetID] else { return .none }
-					guard var secondaryBudget = state.budgets[id: secondaryBudgetID] else { return .none }
+					guard var receiverBudget = state.budgets[id: receiverBudgetID] else { return .none }
 
 					primaryBudget.balanceAdjustments.insert(
 						Budget.BalanceAdjustment(
@@ -99,7 +99,7 @@ struct BalanceOperatorFeature {
 							amount: -1 * state.absoluteAmount
 						)
 					)
-					secondaryBudget.balanceAdjustments.insert(
+					receiverBudget.balanceAdjustments.insert(
 						Budget.BalanceAdjustment(
 							id: UUID(),
 							date: .now,
@@ -107,8 +107,8 @@ struct BalanceOperatorFeature {
 						)
 					)
 					state.budgets[id: primaryBudgetID] = primaryBudget
-					state.budgets[id: secondaryBudgetID] = secondaryBudget
-					state.lastUsedSecondaryBudgetID = state.secondaryBudgetID
+					state.budgets[id: receiverBudgetID] = receiverBudget
+					state.lastUsedRecieverBudgetID = state.receiverBudgetID
 				}
 				state.lastUsedPrimaryBudgetID = primaryBudgetID
 				return .run { _ in
@@ -118,15 +118,15 @@ struct BalanceOperatorFeature {
 				state.primaryBudgetID = id
 				state.destination = nil
 				return .none
-			case .destination(.presented(.pickSecondaryBudget(.delegate(.budgetPicked(let id))))):
-				state.secondaryBudgetID = id
+			case .destination(.presented(.pickReceiverBudget(.delegate(.budgetPicked(let id))))):
+				state.receiverBudgetID = id
 				state.destination = nil
 				return .none
 			case .destination:
 				return .none
 			case .task:
-				if state.secondaryBudgetID == nil {
-					state.secondaryBudgetID = state.lastUsedSecondaryBudgetID
+				if state.receiverBudgetID == nil {
+					state.receiverBudgetID = state.lastUsedRecieverBudgetID
 				}
 				return .none
 			}
@@ -197,8 +197,8 @@ struct BalanceOperatorView: View {
 			}
 			.navigationDestination(
 				item: self.$store.scope(
-					state: \.destination?.pickSecondaryBudget,
-					action: \.destination.pickSecondaryBudget
+					state: \.destination?.pickReceiverBudget,
+					action: \.destination.pickReceiverBudget
 				)
 			) { store in
 				BudgetPickerBudgetListView(store: store)
@@ -241,7 +241,7 @@ struct BalanceOperatorView: View {
 					case .adjustment, .transferSender:
 						return self.store.state.primaryBudgetID
 					case .transferReceiver:
-						return self.store.state.secondaryBudgetID
+						return self.store.state.receiverBudgetID
 					}
 				}()
 				if let budgetID, let budget = self.store.budgets[id: budgetID] {
@@ -285,8 +285,8 @@ struct BalanceOperatorView: View {
 				case .adjustment:
 					return false
 				case .transfer:
-					guard let secondaryBudgetID = self.store.secondaryBudgetID else { return true }
-					return primaryBudgetID == secondaryBudgetID
+					guard let receiverBudgetID = self.store.receiverBudgetID else { return true }
+					return primaryBudgetID == receiverBudgetID
 				}
 			}()
 		)
