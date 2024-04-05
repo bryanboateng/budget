@@ -10,6 +10,9 @@ struct BalanceOperatorFeature {
 		@Shared(.appStorage("lastUsedPrimaryBudgetID"))
 		var lastUsedPrimaryBudgetID: Budget.ID? = nil
 
+		@Shared(.appStorage("lastUsedSecondaryBudgetID"))
+		var lastUsedSecondaryBudgetID: Budget.ID? = nil
+
 		var absoluteAmount: Decimal = 0
 		var operation: BalanceOperation = .adjustment
 		var direction: AdjustmentBalanceOperationDirection = .outgoing
@@ -25,6 +28,7 @@ struct BalanceOperatorFeature {
 		case cancelButtonTapped
 		case confirmButtonTapped
 		case destination(PresentationAction<Destination.Action>)
+		case task
 		enum BudgetField {
 			case adjustment
 			case transferSender
@@ -104,6 +108,7 @@ struct BalanceOperatorFeature {
 					)
 					state.budgets[id: primaryBudgetID] = primaryBudget
 					state.budgets[id: secondaryBudgetID] = secondaryBudget
+					state.lastUsedSecondaryBudgetID = state.secondaryBudgetID
 				}
 				state.lastUsedPrimaryBudgetID = primaryBudgetID
 				return .run { _ in
@@ -118,6 +123,11 @@ struct BalanceOperatorFeature {
 				state.destination = nil
 				return .none
 			case .destination:
+				return .none
+			case .task:
+				if state.secondaryBudgetID == nil {
+					state.secondaryBudgetID = state.lastUsedSecondaryBudgetID
+				}
 				return .none
 			}
 		}
@@ -153,6 +163,9 @@ struct BalanceOperatorView: View {
 				}
 			}
 			.bind(self.$store.currencyFieldIsFocused, to: self.$currencyFieldIsFocused)
+			.task {
+				self.store.send(.task)
+			}
 			.navigationTitle("Saldo-Operation")
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
