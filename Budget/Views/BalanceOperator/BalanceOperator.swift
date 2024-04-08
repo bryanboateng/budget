@@ -15,7 +15,7 @@ struct BalanceOperatorFeature {
 
 		var absoluteAmount: Decimal = 0
 		var operation: BalanceOperation = .adjustment
-		var direction: AdjustmentBalanceOperationDirection = .outgoing
+		var direction: BalanceOperation.AdjustmentDirection = .outgoing
 		var currencyFieldIsFocused: Bool = true
 		var primaryBudgetID: Budget.ID?
 		var receiverBudgetID: Budget.ID?
@@ -258,7 +258,7 @@ struct BalanceOperatorView: View {
 	private var directionSection: some View {
 		Section("Richtung") {
 			Picker("Richtung", selection: self.$store.direction) {
-				ForEach(AdjustmentBalanceOperationDirection.allCases, id: \.self) { color in
+				ForEach(BalanceOperation.AdjustmentDirection.allCases, id: \.self) { color in
 					Text(
 						{
 							switch color {

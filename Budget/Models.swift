@@ -154,18 +154,18 @@ extension Budget {
 enum BalanceOperation: CaseIterable {
 	case adjustment
 	case transfer
-}
 
-enum AdjustmentBalanceOperationDirection: CaseIterable {
-	case outgoing
-	case incoming
-	
-	mutating func toggle() {
-		switch self {
-		case .outgoing:
-			self = .incoming
-		case .incoming:
-			self = .outgoing
+	enum AdjustmentDirection: CaseIterable {
+		case outgoing
+		case incoming
+
+		mutating func toggle() {
+			switch self {
+			case .outgoing:
+				self = .incoming
+			case .incoming:
+				self = .outgoing
+			}
 		}
 	}
 }
