@@ -2,7 +2,7 @@ import Foundation
 import IdentifiedCollections
 import SwiftUI
 
-struct Budget: Equatable, Codable, Identifiable {
+struct Budget: Codable, Identifiable {
 	let id: UUID
 	var name: String
 	var color: Color
