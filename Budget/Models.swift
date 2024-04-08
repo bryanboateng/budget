@@ -1,11 +1,12 @@
 import Foundation
+import IdentifiedCollections
 import SwiftUI
 
 struct Budget: Equatable, Codable, Identifiable {
 	let id: UUID
 	var name: String
 	var color: Color
-	var balanceAdjustments: Set<BalanceAdjustment>
+	var balanceAdjustments: IdentifiedArrayOf<BalanceAdjustment>
 
 	var balance: Decimal {
 		balanceAdjustments.reduce(0) { partialResult, balanceAdjustment in
@@ -19,7 +20,7 @@ struct Budget: Equatable, Codable, Identifiable {
 		id: UUID,
 		name: String,
 		color: Color,
-		balanceAdjustments: Set<BalanceAdjustment> = [],
+		balanceAdjustments: IdentifiedArrayOf<BalanceAdjustment> = [],
 		monthlyAllocation: Decimal? = nil
 	) {
 		self.id = id
@@ -38,7 +39,7 @@ struct Budget: Equatable, Codable, Identifiable {
 	}
 
 	mutating func adjustBalance(_ amount: Decimal) {
-		balanceAdjustments.insert(.init(id: UUID(), date: .now, amount: amount))
+		balanceAdjustments.append(.init(id: UUID(), date: .now, amount: amount))
 	}
 
 	var projection: Projection? {
@@ -125,18 +126,10 @@ struct Budget: Equatable, Codable, Identifiable {
 		}
 	}
 
-	struct BalanceAdjustment: Codable, Identifiable, Hashable {
+	struct BalanceAdjustment: Codable, Identifiable {
 		let id: UUID
 		let date: Date
 		let amount: Decimal
-
-		static func == (lhs: Self, rhs: Self) -> Bool {
-			lhs.id == rhs.id
-		}
-
-		func hash(into hasher: inout Hasher) {
-			hasher.combine(id)
-		}
 	}
 }
 

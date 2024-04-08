@@ -65,7 +65,7 @@ struct BalanceHistory: View {
 					.date(from: DateComponents(year: rowGroup.0.year, month: rowGroup.0.month))!
 					.formatted(.dateTime.year().month(.wide))
 			) {
-				ForEach(rowGroup.1, id: \.balanceAdjustment) { row in
+				ForEach(rowGroup.1, id: \.balanceAdjustment.id) { row in
 					HStack(alignment: .firstTextBaseline) {
 						VStack(alignment: .leading) {
 							CirclebadgeLabel(row.budgetName, color: row.budgetColor)
@@ -156,10 +156,10 @@ struct BalanceHistory: View {
 	let adjustment4 = Budget.BalanceAdjustment(id: UUID(), date: date4, amount: -10)
 
 	// Add BalanceAdjustment objects to appropriate budgets
-	groceriesBudget.balanceAdjustments.insert(adjustment1)
-	groceriesBudget.balanceAdjustments.insert(adjustment2)
-	entertainmentBudget.balanceAdjustments.insert(adjustment3)
-	entertainmentBudget.balanceAdjustments.insert(adjustment4)
+	groceriesBudget.balanceAdjustments.append(adjustment1)
+	groceriesBudget.balanceAdjustments.append(adjustment2)
+	entertainmentBudget.balanceAdjustments.append(adjustment3)
+	entertainmentBudget.balanceAdjustments.append(adjustment4)
 
 	// Create more adjustments using the adjustBalance method
 	groceriesBudget.adjustBalance(-15)

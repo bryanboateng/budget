@@ -80,7 +80,7 @@ struct BalanceOperatorFeature {
 						}
 					}()
 					guard var budget = state.budgets[id: primaryBudgetID] else { return .none }
-					budget.balanceAdjustments.insert(
+					budget.balanceAdjustments.append(
 						Budget.BalanceAdjustment(id: UUID(), date: .now, amount: amount)
 					)
 					state.budgets[id: primaryBudgetID] = budget
@@ -92,14 +92,14 @@ struct BalanceOperatorFeature {
 					guard var primaryBudget = state.budgets[id: primaryBudgetID] else { return .none }
 					guard var receiverBudget = state.budgets[id: receiverBudgetID] else { return .none }
 
-					primaryBudget.balanceAdjustments.insert(
+					primaryBudget.balanceAdjustments.append(
 						Budget.BalanceAdjustment(
 							id: UUID(),
 							date: .now,
 							amount: -1 * state.absoluteAmount
 						)
 					)
-					receiverBudget.balanceAdjustments.insert(
+					receiverBudget.balanceAdjustments.append(
 						Budget.BalanceAdjustment(
 							id: UUID(),
 							date: .now,

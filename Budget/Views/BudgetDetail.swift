@@ -217,7 +217,7 @@ struct BudgetDetailView: View {
 			color: .green
 		)
 		budget.adjustBalance(4.5)
-		budget.balanceAdjustments.insert(
+		budget.balanceAdjustments.append(
 			.init(
 				id: UUID(),
 				date: .now.addingTimeInterval(1_000),
@@ -288,7 +288,7 @@ private struct BudgetView: View {
 }
 
 private struct BalanceAdjustmentList: View {
-	let balanceAdjustments: Set<Budget.BalanceAdjustment>
+	let balanceAdjustments: IdentifiedArrayOf<Budget.BalanceAdjustment>
 
 	var body: some View {
 		if balanceAdjustments.isEmpty {
