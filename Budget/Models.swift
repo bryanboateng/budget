@@ -38,10 +38,6 @@ struct Budget: Equatable, Codable, Identifiable {
 		self.monthlyAllocation = nil
 	}
 
-	mutating func adjustBalance(_ amount: Decimal) {
-		balanceAdjustments.append(.init(id: UUID(), date: .now, amount: amount))
-	}
-
 	var projection: Projection? {
 		guard let monthlyAllocation else { return nil }
 		return .init(monthlyAllocation: monthlyAllocation, balance: balance)

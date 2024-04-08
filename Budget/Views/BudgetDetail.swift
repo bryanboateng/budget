@@ -216,7 +216,7 @@ struct BudgetDetailView: View {
 			name: "Urlaub",
 			color: .green
 		)
-		budget.adjustBalance(4.5)
+		budget.balanceAdjustments.append(.init(id: .init(), date: .now, amount: 4.5))
 		budget.balanceAdjustments.append(
 			.init(
 				id: UUID(),

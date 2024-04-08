@@ -162,10 +162,10 @@ struct BalanceHistory: View {
 	entertainmentBudget.balanceAdjustments.append(adjustment4)
 
 	// Create more adjustments using the adjustBalance method
-	groceriesBudget.adjustBalance(-15)
-	rentBudget.adjustBalance(-800)
-	entertainmentBudget.adjustBalance(-5)
-	travelBudget.adjustBalance(500)
+	groceriesBudget.balanceAdjustments.append(.init(id: .init(), date: .now, amount: -15))
+	rentBudget.balanceAdjustments.append(.init(id: .init(), date: .now, amount: -800))
+	entertainmentBudget.balanceAdjustments.append(.init(id: .init(), date: .now, amount: -5))
+	travelBudget.balanceAdjustments.append(.init(id: .init(), date: .now, amount: 500))
 
 	// Update the array with the modified budget objects (since Budget is a value type)
 	allBudgets[0] = groceriesBudget
